@@ -24,12 +24,12 @@
 
 ### Examples
 
-init: add base project structure
-feat: implement 'cd' built-in command
-fix: handle NULL input in parser
-refactor: optimize command execution loop
-docs: update README or other .md file with usage instructions
-style: fix indentation in parser.c
+- init: add base project structure
+- feat: implement 'cd' built-in command
+- fix: handle NULL input in parser
+- refactor: optimize command execution loop
+- docs: update README or other .md file with usage instructions
+- style: fix indentation in parser.c
 
 ### Working with Branches
 
