@@ -21,6 +21,7 @@
 - `style:` — code style changes (formatting, indentation, etc.) with no logic changes.
 - `test:` — add or modify tests.
 - `build:` — changes affecting build system or external dependencies.
+- `chore:` — other tasks like cleanup, maintenance, tooling, or non-functional changes.
 
 ### Examples
 
@@ -30,6 +31,7 @@
 - refactor: optimize command execution loop
 - docs: update README or other .md file with usage instructions
 - style: fix indentation in parser.c
+- chore: add learning/fork notes and directory for training
 
 ### Working with Branches
 
