@@ -1,8 +1,69 @@
 # Minishell
 
-A small shell implementation in C as part of the 42 School curriculum.  
-The goal is to create a simple shell that behaves like bash,  
-handling commands, pipes, redirects, environment variables, and built-ins.
+## 📖 Описание
+Minishell — это учебный проект школы 42, в котором требуется написать собственный мини-интерпретатор команд (маленький bash).  
+Проект помогает глубже понять процессы, файловые дескрипторы, работу сигналов, пайпы и редиректы.
+
+## 📖 Description
+Minishell is a school 42 project that requires writing your own mini-interpreter of commands (a small bash).
+The project helps to better understand processes, file descriptors, signal operation, pipes and redirects.
+---
+
+## ✅ Разрешённые функции и библиотеки
+## ✅ Allowed functions and libraries
+
+### readline
+- `readline`, `rl_clear_history`, `rl_on_new_line`,  
+  `rl_replace_line`, `rl_redisplay`, `add_history`
+
+### stdio.h
+- `printf`
+
+### stdlib.h
+- `malloc`, `free`, `exit`
+
+### unistd.h
+- `write`, `access`, `read`, `close`, `fork`, `chdir`,  
+  `dup`, `dup2`, `pipe`
+
+### fcntl.h
+- `open`, `unlink`
+
+### sys/wait.h
+- `wait`, `waitpid`, `wait3`, `wait4`
+
+### signal.h
+- `signal`, `sigaction`, `sigemptyset`, `sigaddset`, `kill`
+
+### sys/stat.h
+- `stat`, `lstat`, `fstat`
+
+### dirent.h
+- `opendir`, `readdir`, `closedir`
+
+### string.h
+- `strerror`
+
+### stdio.h
+- `perror`
+
+### termios.h
+- `isatty`, `ttyname`, `ttyslot`, `ioctl`,  
+  `tcsetattr`, `tcgetattr`
+
+### termcap (terminfo)
+- `tgetent`, `tgetflag`, `tgetnum`, `tgetstr`, `tgoto`, `tputs`
+
+---
+
+## ⚙️ Builtins
+- `echo` (с опцией / with option `-n`)
+- `cd` (только путь / only way)
+- `pwd`
+- `export`
+- `unset`
+- `env`
+- `exit`
 
 ## Project Structure
 
