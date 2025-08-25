@@ -50,4 +50,56 @@
 - Чтобы история сохранялась между сессиями, можно использовать `write_history() / read_history()`, но для проекта 42 это обычно не требуется
 
 ---
-[Ссылка на материал по `readline()`]((https://linux.die.net/man/3/readline)(s))
+[Ссылка на материал по `readline()`](https://linux.die.net/man/3/readline)
+
+## English version
+
+**The readline() function** is part of the GNU Readline library, which provides a convenient way to read lines from an interactive terminal.
+It is used in `minishell` to allow the user to enter commands just as they would in a normal shell.
+
+---
+Key features:
+
+1. **Reading a line**
+- `readline("prompt> ")` displays the prompt **(prompt)** and waits for input.
+- Returns a pointer to the entered line (dynamically allocated).
+
+2. **Editing input**
+
+- The user can move the cursor, delete characters, edit the line directly in the terminal.
+
+3. **Command history**
+
+- Using the `add_history()` function, entered lines are saved to the history.
+- Access to the history is carried out by the ↑ and ↓ arrows.
+
+4. **Autocompletion**
+- Readline supports autocompletion (for example, by pressing the `Tab` key).
+
+---
+The `readline()` command is part of the `GNU Readline` library, which provides functions for reading lines from an interactive terminal. It is widely used in various software projects to create command interfaces and handle user input.
+
+The `readline()` function reads a line from the standard input stream by default and returns a pointer to that line. It uses buffering to get the line from the stream, and then returns a pointer to that line after user input.
+
+In addition, the `readline()` function allows the line to be used in autocompletion, command history, and other interactive features. It allows the user to edit and restart the entered text, as well as automatically complete commands by pressing the `Tab` key.
+
+---
+**How ​​to include readline in a project?**
+
+1. Include headers:
+``` c
+#include <readline/readline.h>
+#include <readline/history.h>
+```
+2. Link the library when compiling:
+``` bash
+cc main.c -lreadline -o minishell
+```
+
+**Helpful tips**
+- Don't forget to `free()` for each line returned by `readline()`
+- If you want to disable history (e.g. on empty input), just don't call `add_history()`
+- To keep history between sessions, you can use `write_history()` / read_history()`, but for project 42 this is usually not needed
+
+---
+[Link to material on `readline()`](https://linux.die.net/man/3/readline)
