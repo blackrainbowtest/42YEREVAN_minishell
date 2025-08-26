@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 13:23:38 by aramarak          #+#    #+#             */
-/*   Updated: 2025/08/26 19:56:20 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/08/26 21:56:06 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,11 @@
 # include <unistd.h>
 # include <signal.h>
 # include <string.h>
-# include <fcntl.h>
+# include <errno.h>
+# include <sys/types.h>
+# include <sys/stat.h>
 # include <sys/wait.h>
-
+# include <fcntl.h>
 
 // GNU Readline
 # include <readline/readline.h>
@@ -39,6 +41,7 @@ size_t	ms_env_count(char **envp);
 char	**ms_env_dup(char **envp);
 void	ms_env_free(char **env);
 void	ms_env_print(char **env);
+char   *ms_getenv(char **env, const char *name);
 
 // ===== signals =====
 void	setup_signals(void);
