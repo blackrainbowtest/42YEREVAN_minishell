@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 13:23:38 by aramarak          #+#    #+#             */
-/*   Updated: 2025/08/26 21:56:06 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/08/26 21:56:39 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,9 @@ char	*read_prompt(void);
 // Простая версия: разбивка по пробелам/табам (без кавычек пока)
 char	**parse_input(const char *line);
 void	free_argv(char **argv);
+
+/* path resolver */
+char	*find_in_path(const char *cmd, char **env);
 
 // ===== executor (пока заглушка) =====
 int		execute_command(char **argv, t_shell *sh);
