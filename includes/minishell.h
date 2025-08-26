@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 13:23:38 by aramarak          #+#    #+#             */
-/*   Updated: 2025/08/24 15:35:06 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/08/26 19:56:20 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,9 @@
 # include <unistd.h>
 # include <signal.h>
 # include <string.h>
+# include <fcntl.h>
+# include <sys/wait.h>
+
 
 // GNU Readline
 # include <readline/readline.h>
