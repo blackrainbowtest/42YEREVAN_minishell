@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 13:23:31 by aramarak          #+#    #+#             */
-/*   Updated: 2025/08/24 15:39:34 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/08/26 19:58:04 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,15 +35,13 @@ static int	handle_builtins_or_exec(t_shell *sh, char **argv)
 		return (0);
 	if (strcmp(argv[0], "exit") == 0)
 	{
-		printf("exit\n");
-		return (1); // сигнал выйти из REPL
+		return (1);
 	}
 	if (strcmp(argv[0], "env") == 0)
 	{
 		ms_env_print(sh->env);
 		return (0);
 	}
-	// временно — заглушка исполнителя:
 	sh->last_status = execute_command(argv, sh);
 	return (0);
 }
