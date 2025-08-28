@@ -20,9 +20,9 @@
 - [wait](#wait)
 - [waitpid](#waitpid)
 - ⚠ [wait3](#wait3)
-- [wait4](#wait4)
-- signal
-- sigaction
+- ⚠ [wait4](#wait4)
+- ♻ [signal](#signal)
+- [sigaction](#sigaction)
 - sigemptyset
 - sigaddset
 - kill
@@ -383,3 +383,28 @@ Below are the breakdowns of each function: its purpose, arguments and usage exam
 	- Это как [waitpid](#waitpid) + `rusage`.
 	- Используется редко, но может быть полезно для сбора статистики.
 	- В `minishell` обычно не нужен, но он в списке разрешённых.
+---
+### **signal**
+- **Назначение:** устанавливает обработчик для определённого сигнала (например, `SIGINT`, `SIGQUIT`).ресурсов.
+- Прототип:
+	``` c
+	void (*signal(int signum, void (*handler)(int)))(int);
+	```
+- Аргументы:
+	- `signum` — номер сигнала (например, `SIGINT = Ctrl+C`).
+	- `handler` — функция-обработчик (`void handler(int)`), или спец. константы:
+		- `SIG_DFL` — стандартное поведение,
+		- `SIG_IGN` — игнорировать сигнал.
+- Возвращает:
+	- Предыдущий обработчик,
+	- `SIG_ERR` при ошибке.
+- Нюансы:
+	- Более простой интерфейс, чем [sigaction](#sigaction), но с ограничениями.
+	- В `minishell` часто применяют [sigaction](#sigaction) вместо [signal](#signal), так как он надёжнее.
+---
+### **sigaction**
+- **Назначение:** устанавливает обработчик для определённого сигнала (например, `SIGINT`, `SIGQUIT`).ресурсов.
+- Прототип:
+	``` c
+	void (*signal(int signum, void (*handler)(int)))(int);
+	```
