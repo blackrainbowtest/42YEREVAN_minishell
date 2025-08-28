@@ -403,8 +403,22 @@ Below are the breakdowns of each function: its purpose, arguments and usage exam
 	- В `minishell` часто применяют [sigaction](#sigaction) вместо [signal](#signal), так как он надёжнее.
 ---
 ### **sigaction**
-- **Назначение:** устанавливает обработчик для определённого сигнала (например, `SIGINT`, `SIGQUIT`).ресурсов.
+- **Назначение:** устанавливает обработчик сигнала (надёжнее и гибче, чем [signal](#signal)).
 - Прототип:
 	``` c
-	void (*signal(int signum, void (*handler)(int)))(int);
+	int sigaction(int signum, const struct sigaction *act, struct sigaction *oldact);
 	```
+- Аргументы:
+	- `signum` — номер сигнала (например, `SIGINT`).
+	- `act` — новая структура с обработчиком.
+	- `oldact` — (можно `NULL`) сохраняет старый обработчик.
+- Возвращает:
+	- `0` при успехе,
+	- `-1` при ошибке.
+- Нюансы:
+	- `struct sigaction` содержит:
+		- `sa_handler` или `sa_sigaction` — обработчик,
+		- `sa_mask` — набор сигналов, которые блокируются во время выполнения обработчика,
+		- `sa_flags` — флаги (например, `SA_RESTART`).
+	- В `minishell` обычно используют именно [sigaction](#sigaction), чтобы корректно ловить `Ctrl+C` и `Ctrl+\`.
+---
