@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 22:12:22 by aramarak          #+#    #+#             */
-/*   Updated: 2025/08/26 22:14:21 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/09/02 22:10:17 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static char	*precheck_cmd(const char *cmd, char **env, char **path, char **p)
 	if (!cmd || !*cmd)
 		return (NULL);
 	if (strchr(cmd, '/'))  // LIBFT
-		return (ft_strdup(cmd));
+		return (strdup(cmd));
 	if (!*path || !**path)
 		return (NULL);
 	*p = *path;
@@ -73,7 +73,6 @@ char	*find_in_path(const char *cmd, char **env)
 	char	*path;
 	char	*p;
 	char	*next;
-	size_t	len;
 	char	*full;
 	char	*check;
 
@@ -85,14 +84,12 @@ char	*find_in_path(const char *cmd, char **env)
 		next = strchr(p, ':'); // LIBFT
 		if (!next)
 			next = p + strlen(p); // LIBFT
-		len = (size_t)(next - p);
-		full = try_path_segment(p, len, cmd);
+		full = try_path_segment(p, (size_t)(next - p), cmd);
 		if (full)
 			return (full);
 		p = next;
 		if (*next)
 			p = next + 1;
-		// p = (*next ? next + 1 : next);
 	}
 	return (NULL);
 }
