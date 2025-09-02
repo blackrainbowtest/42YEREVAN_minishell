@@ -30,13 +30,68 @@ static char	*join_dir_cmd(const char *dir, const char *cmd)
 	return (full);
 }
 
+static char	*try_path_segment(const char *seg, size_t len, const char *cmd)
+{
+	char	*dir;
+	char	*full;
+
+	if (len > 0)
+	{
+		dir = (char *)malloc(len + 1);
+		if (!dir)
+			return (NULL);
+		memcpy(dir, seg, len); // LIBFT
+		dir[len] = '\0';
+		full = join_dir_cmd(dir, cmd);
+		free(dir);
+	}
+	else
+		full = join_dir_cmd(".", cmd);
+	if (!full)
+		return (NULL);
+	if (access(full, X_OK) == 0)
+		return (full);
+	free(full);
+	return (NULL);
+}
+
+static char	*precheck_cmd(const char *cmd, char **env, char **path, char **p)
+{
+	*path = ms_getenv(env, "PATH");
+	if (!cmd || !*cmd)
+		return (NULL);
+	if (strchr(cmd, '/'))  // LIBFT
+		return (ft_strdup(cmd));
+	if (!*path || !**path)
+		return (NULL);
+	*p = *path;
+	return ((char *)1);
+}
+
 char	*find_in_path(const char *cmd, char **env)
 {
-	char *path;
-	char *p, *next;
-	size_t len;
+	char	*path;
+	char	*p;
+	char	*next;
+	size_t	len;
+	char	*full;
+	char	*check;
 
-	if (!cmd || !*cmd)
-		return NULL;
-	path = ms_getenv(env, "PATH");
+	check = precheck_cmd(cmd, env, &path, &p);
+	if (!check || check != (char *)1)
+		return (check);
+	while (*p)
+	{
+		next = strchr(p, ':'); // LIBFT
+		if (!next)
+			next = p + strlen(p); // LIBFT
+		len = (size_t)(next - p);
+		full = try_path_segment(p, len, cmd);
+		if (full)
+			return (full);
+		p = next;
+		if (*next)
+			p = next + 1;
+	}
+	return (NULL);
 }
