@@ -92,6 +92,7 @@ char	*find_in_path(const char *cmd, char **env)
 		p = next;
 		if (*next)
 			p = next + 1;
+		// p = (*next ? next + 1 : next);
 	}
 	return (NULL);
 }
