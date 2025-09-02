@@ -32,5 +32,11 @@ static char	*join_dir_cmd(const char *dir, const char *cmd)
 
 char	*find_in_path(const char *cmd, char **env)
 {
+	char *path;
+	char *p, *next;
+	size_t len;
 
+	if (!cmd || !*cmd)
+		return NULL;
+	path = ms_getenv(env, "PATH");
 }
