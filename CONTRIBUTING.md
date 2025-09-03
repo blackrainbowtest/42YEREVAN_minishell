@@ -54,6 +54,32 @@ git push origin feat/<feature-name>
 git pull origin main
 ```
 
+### Function templates
+
+Generic Doxygen template for functions in minishell. 
+
+``` c
+/**
+ * @brief Short description of the function (1 sentence).
+ *
+ * More detailed explanation if needed. Describe what the function does,
+ * how it works, and when it should be used. Mention side effects if any
+ * (e.g., modifies global state, writes to stdout).
+ *
+ * @param param1 Description of the first parameter.
+ * @param param2 Description of the second parameter.
+ *        (continue for all parameters)
+ *
+ * @return Description of the return value. If the function always
+ *         returns the same value (e.g., 0), state that clearly.
+ *
+ * @note (optional) Additional notes about usage or constraints.
+ * @warning (optional) Mention if function has limitations or risks.
+ * @bug (optional) Known bugs, if any.
+ * @todo (optional) Things planned to improve this function.
+ */
+```
+
 ---
 ### Following these rules will keep the project clean, consistent, and easy to maintain.
 ---
