@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 15:38:18 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/02 22:00:14 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/09/03 19:38:46 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ int	execute_command(char **argv, t_shell *sh)
 
 	if (!argv || !argv[0])
 		return (0);
-
+	if (strcmp(argv[0], "echo") == 0)
+		return (builtin_echo(argv));
 	path = find_in_path(argv[0], sh->env);
 	if (!path)
 	{

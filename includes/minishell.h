@@ -60,4 +60,7 @@ char	*find_in_path(const char *cmd, char **env);
 // ===== executor (пока заглушка) =====
 int		execute_command(char **argv, t_shell *sh);
 
+// ===== builtilns =====
+int		builtin_echo(char **args);
+
 #endif // MINISHELL_H
