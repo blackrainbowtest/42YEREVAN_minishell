@@ -48,7 +48,8 @@ int	execute_command(char **argv, t_shell *sh)
 
 	if (!argv || !argv[0])
 		return (0);
-
+	if (strcmp(args[0], "echo") == 0)
+		return (builtin_echo(args));
 	path = find_in_path(argv[0], sh->env);
 	if (!path)
 	{
