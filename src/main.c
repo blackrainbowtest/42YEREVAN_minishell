@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "minishell.h"
+#include "env.h"
 
 static int	is_blank(const char *s)
 {
@@ -48,18 +48,23 @@ static int	handle_builtins_or_exec(t_shell *sh, char **argv)
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_shell	sh;
+	t_shell	sh;	// need delete soon and change with t_env
 	char	*line;
 	char	**args;
 	int		should_exit;
+	t_env   *env;
 
 	(void)argc;
 	(void)argv;
-	sh.env = ms_env_dup(envp);
-	sh.last_status = 0;
-
+	sh.env = ms_env_dup(envp); // need delete soon and change with t_env
+	sh.last_status = 0; // need delete soon and change with t_env
+	env = init_env(envp);
+	if (!env)
+    {
+        perror("minishell: failed to init env");
+        return (1);
+    }
 	setup_signals();
-
 	while (1)
 	{
 		line = read_prompt();
@@ -72,12 +77,13 @@ int	main(int argc, char **argv, char **envp)
 		}
 		args = parse_input(line);
 		free(line);
-		should_exit = handle_builtins_or_exec(&sh, args);
+		should_exit = handle_builtins_or_exec(&sh, args); // need change with t_env
 		free_argv(args);
 		if (should_exit)
 			break ;
 	}
 	printf("exit\n");
 	ms_env_free(sh.env);
+	free_env(env);
 	return (0);
 }
