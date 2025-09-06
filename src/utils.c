@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 15:33:48 by aramarak          #+#    #+#             */
-/*   Updated: 2025/08/26 21:55:28 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/09/06 13:19:53 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,11 +87,11 @@ char	*ms_getenv(char **env, const char *name)
 
 	if (!env || !name)
 		return (NULL);
-	nlen = strlen(name); // LIBFT
+	nlen = ft_strlen(name);
 	i = -1;
 	while (env[++i])
 	{
-		if (strncmp(env[i], name, nlen) == 0 && env[i][nlen] == '=') // LIBFT
+		if (ft_strncmp(env[i], name, nlen) == 0 && env[i][nlen] == '=')
 			return (env[i] + nlen + 1);
 	}
 	return (NULL);

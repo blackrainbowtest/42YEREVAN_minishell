@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 13:23:31 by aramarak          #+#    #+#             */
-/*   Updated: 2025/08/26 19:58:04 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/09/06 13:55:56 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,47 +29,27 @@ static int	is_blank(const char *s)
 	return (1);
 }
 
-static int	handle_builtins_or_exec(t_shell *sh, char **argv)
-{
-	if (!argv || !argv[0])
-		return (0);
-	if (strcmp(argv[0], "exit") == 0)
-	{
-		return (1);
-	}
-	if (strcmp(argv[0], "env") == 0)
-	{
-		ms_env_print(sh->env);
-		return (0);
-	}
-	sh->last_status = execute_command(argv, sh);
-	return (0);
-}
-
 int	main(int argc, char **argv, char **envp)
 {
-	t_shell	sh;	// need delete soon and change with t_env
 	char	*line;
 	char	**args;
 	int		should_exit;
-	t_env   *env;
+	t_env	*env;
 
 	(void)argc;
 	(void)argv;
-	sh.env = ms_env_dup(envp); // need delete soon and change with t_env
-	sh.last_status = 0; // need delete soon and change with t_env
 	env = init_env(envp);
 	if (!env)
-    {
-        perror("minishell: failed to init env");
-        return (1);
-    }
+	{
+		perror("minishell: failed to init env");
+		return (1);
+	}
 	setup_signals();
 	while (1)
 	{
 		line = read_prompt();
 		if (!line)
-			break ; // EOF (Ctrl+D)
+			break ;
 		if (is_blank(line))
 		{
 			free(line);
@@ -77,13 +57,9 @@ int	main(int argc, char **argv, char **envp)
 		}
 		args = parse_input(line);
 		free(line);
-		should_exit = handle_builtins_or_exec(&sh, args); // need change with t_env
 		free_argv(args);
-		if (should_exit)
-			break ;
 	}
 	printf("exit\n");
-	ms_env_free(sh.env);
 	free_env(env);
 	return (0);
 }

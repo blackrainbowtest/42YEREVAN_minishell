@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 22:12:22 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/02 22:10:17 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/09/06 13:20:44 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static char	*try_path_segment(const char *seg, size_t len, const char *cmd)
 		dir = (char *)malloc(len + 1);
 		if (!dir)
 			return (NULL);
-		memcpy(dir, seg, len); // LIBFT
+		ft_memcpy(dir, seg, len);
 		dir[len] = '\0';
 		full = join_dir_cmd(dir, cmd);
 		free(dir);
@@ -60,7 +60,7 @@ static char	*precheck_cmd(const char *cmd, char **env, char **path, char **p)
 	*path = ms_getenv(env, "PATH");
 	if (!cmd || !*cmd)
 		return (NULL);
-	if (strchr(cmd, '/'))  // LIBFT
+	if (ft_strchr(cmd, '/'))
 		return (strdup(cmd));
 	if (!*path || !**path)
 		return (NULL);
@@ -81,9 +81,9 @@ char	*find_in_path(const char *cmd, char **env)
 		return (check);
 	while (*p)
 	{
-		next = strchr(p, ':'); // LIBFT
+		next = ft_strchr(p, ':');
 		if (!next)
-			next = p + strlen(p); // LIBFT
+			next = p + ft_strlen(p);
 		full = try_path_segment(p, (size_t)(next - p), cmd);
 		if (full)
 			return (full);
