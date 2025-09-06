@@ -1,5 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/06 13:19:23 by aramarak          #+#    #+#             */
+/*   Updated: 2025/09/06 13:19:23 by aramarak         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
-#include "env.h"
 
 /**
  * @brief Frees the entire environment linked list.
@@ -56,15 +67,15 @@ static t_env	*create_env_node(char *entry)
 	new = malloc(sizeof(t_env));
 	if (!new)
 		return (NULL);
-	eq = strchr(entry, "="); // LIBFT
+	eq = ft_strchr(entry, '=');
 	if (eq)
 	{
-		new->key = substr(entry, 0, eq - entry); // LIBFT
-		new->value = strdup(eq + 1); // LIBFT
+		new->key = ft_substr(entry, 0, eq - entry);
+		new->value = ft_strdup(eq + 1);
 	}
 	else
 	{
-		new->key = strdup(entry); // LIBFT
+		new->key = ft_strdup(entry);
 		new->value = NULL;
 	}
 	new->next = NULL;

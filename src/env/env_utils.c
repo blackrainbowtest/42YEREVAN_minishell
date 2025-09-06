@@ -11,13 +11,12 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "env.h"
 
 char	*ft_getenv(t_env *env, const char *key)
 {
 	while (env)
 	{
-		if (ft_strcmp(env->key, key) == 0)
+		if (ft_strncmp(env->key, key, ft_strlen(key) + 1) == 0)
 			return (env->value);
 		env = env->next;
 	}
@@ -32,12 +31,12 @@ int	ft_setenv(t_env **env, const char *key, const char *value, int overwrite)
 	tmp = *env;
 	while (tmp)
 	{
-		if (strcmp(tmp->key, key) == 0) // LIBFT
+		if (ft_strncmp(tmp->key, key, ft_strlen(key) + 1) == 0)
 		{
 			if (overwrite || !tmp->value)
 			{
 				free(tmp->value);
-				tmp->value = strdup(value); // LIBFT
+				tmp->value = ft_strdup(value);
 			}
 			return (0);
 		}
@@ -46,14 +45,14 @@ int	ft_setenv(t_env **env, const char *key, const char *value, int overwrite)
 	new_env = malloc(sizeof(t_env));
 	if (NULL == new_env)
 		return (1);
-	new_env->key = strdup(key); // LIBFT
-	new_env->value = strdup(value); // LIBFT
+	new_env->key = ft_strdup(key);
+	new_env->value = ft_strdup(value);
 	new_env->next = *env;
-	env = new_env;
+	*env = new_env;
 	return (0);
 }
 
-int ft_unsetenv(t_env **env, const char *key)
+int	ft_unsetenv(t_env **env, const char *key)
 {
 	t_env	*cur;
 	t_env	*prev;
@@ -62,7 +61,7 @@ int ft_unsetenv(t_env **env, const char *key)
 	prev = NULL;
 	while (cur)
 	{
-		if (strcmp(cur-key, key) == 0) // LIBFT
+		if (ft_strncmp(cur->key, key, ft_strlen(key) + 1) == 0)
 		{
 			if (prev)
 				prev->next = cur->next;
