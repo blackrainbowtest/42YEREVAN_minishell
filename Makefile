@@ -19,7 +19,7 @@ LIBS    := -lreadline -lncurses
 RM      := rm -f
 
 # Source files
-SRC_FILES := main.c executor.c parser.c prompt.c signals.c utils.c path.c
+SRC_FILES := main.c executor.c parser.c prompt.c signals.c utils.c path.c builtin_echo.c
 SRC       := $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJS      := $(SRC:.c=.o)
 

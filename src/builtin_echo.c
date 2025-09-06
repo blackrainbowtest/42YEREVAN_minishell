@@ -47,6 +47,6 @@ int	builtin_echo(char **args)
 		i++;
 	}
 	if (newline)
-		write(1, "\n", 1);
+		printf("\n");
 	return (0);
 }
