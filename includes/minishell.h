@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 13:23:38 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/02 22:01:32 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/09/06 13:17:53 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,9 @@
 // GNU Readline
 # include <readline/readline.h>
 # include <readline/history.h>
+
+# include "env.h"
+# include "libft.h"
 
 // ====== types ======
 typedef struct s_shell
