@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 13:23:38 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/06 13:17:53 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/09/07 03:54:03 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,10 @@ char	**parse_input(const char *line);
 void	free_argv(char **argv);
 
 /* path resolver */
-char	*find_in_path(const char *cmd, char **env);
+char	*find_in_path(const char *cmd, t_env *env);
 
 // ===== executor (пока заглушка) =====
-int		execute_command(char **argv, t_shell *sh);
+int		execute_command(char **argv, t_env *env);
 
 // ===== builtilns =====
 int		builtin_echo(char **args);
