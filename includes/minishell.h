@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 13:23:38 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/07 03:54:03 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/09/07 13:44:22 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,5 +65,7 @@ int		execute_command(char **argv, t_env *env);
 
 // ===== builtilns =====
 int		builtin_echo(char **args);
+
+int		builtin_cd(char **args, t_env **env);
 
 #endif // MINISHELL_H

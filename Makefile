@@ -23,7 +23,7 @@ RM      := rm -f
 
 # Source files
 SRC_FILES := main.c executor.c parser.c prompt.c signals.c utils.c path.c \
-				builtins/builtin_echo.c \
+				builtins/builtin_echo.c builtins/builtin_cd.c\
 				env/env.c env/env_utils.c
 SRC       := $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJS      := $(SRC:.c=.o)
