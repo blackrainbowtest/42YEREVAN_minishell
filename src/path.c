@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 22:12:22 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/06 13:20:44 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/09/07 04:04:14 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,30 +55,23 @@ static char	*try_path_segment(const char *seg, size_t len, const char *cmd)
 	return (NULL);
 }
 
-static char	*precheck_cmd(const char *cmd, char **env, char **path, char **p)
+char	*find_in_path(const char *cmd, t_env *env)
 {
-	*path = ms_getenv(env, "PATH");
-	if (!cmd || !*cmd)
-		return (NULL);
-	if (ft_strchr(cmd, '/'))
-		return (strdup(cmd));
-	if (!*path || !**path)
-		return (NULL);
-	*p = *path;
-	return ((char *)1);
-}
-
-char	*find_in_path(const char *cmd, char **env)
-{
-	char	*path;
+	char	*path_var;
 	char	*p;
 	char	*next;
 	char	*full;
-	char	*check;
 
-	check = precheck_cmd(cmd, env, &path, &p);
-	if (!check || check != (char *)1)
-		return (check);
+	if (ft_strchr(cmd, '/'))
+	{
+		if (access(cmd, X_OK) == 0)
+			return (ft_strdup(cmd));
+		return (NULL);
+	}
+	path_var = ft_getenv(env, "PATH");
+	if (!path_var)
+		return (NULL);
+	p = path_var;
 	while (*p)
 	{
 		next = ft_strchr(p, ':');
