@@ -16,6 +16,7 @@ static int	export_no_arguments(char **argv, t_env **env)
 {
 	t_env	*cur;
 
+	(void)argv;
 	cur = *env;
 	while (cur)
 	{
@@ -28,7 +29,7 @@ static int	export_no_arguments(char **argv, t_env **env)
 	return (0);
 }
 
-static void	export_update_env(char *arg, char *eq, int *status)
+static void	export_update_env(char *arg, t_env **env, char *eq, int *status)
 {
 	char	*key;
 	char	*value;
@@ -61,7 +62,7 @@ static int	export_with_arguments(char **argv, t_env **env)
 	{
 		eq = ft_strchr(argv[i], '=');
 		if (eq)
-			export_update_env(argv, eq, &status);
+			export_update_env(argv[i], env, eq, &status);
 		else
 		{
 			if (ft_setenv(env, argv[i], "", 0) != 0)
