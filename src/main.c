@@ -39,8 +39,8 @@ static int	handle_builtin_or_exec(char **argv, t_env **env)
 		return (builtin_pwd(*env));
 	if (strcmp(argv[0], "env") == 0)
 		return (builtin_env(*env));
-	// if (strcmp(argv[0], "export") == 0)
-	// 	return (builtin_export(argv, env));
+	if (strcmp(argv[0], "export") == 0)
+		return (builtin_export(argv, env));
 	// if (strcmp(argv[0], "unset") == 0)
 	// 	return (builtin_unset(argv, env));
 	// if (strcmp(argv[0], "exit") == 0)
