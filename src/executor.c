@@ -91,9 +91,6 @@ int	execute_command(char **argv, t_env *env)
 
 	if (!argv || !argv[0])
 		return (0);
-	if (strcmp(argv[0], "echo") == 0)
-		return (builtin_echo(argv));
-	// TODO: cd, pwd, env, export, unset, exit
 	path = find_in_path(argv[0], env);
 	if (!path)
 	{
