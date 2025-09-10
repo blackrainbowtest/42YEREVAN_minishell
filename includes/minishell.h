@@ -29,9 +29,10 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
-# include "env.h"
 # include "libft.h"
 # include "defs.h"
+# include "env.h"
+# include "builtins.h"
 
 // ===== env utils =====
 size_t	ms_env_count(char **envp);
@@ -56,16 +57,5 @@ char	*find_in_path(const char *cmd, t_env *env);
 
 // ===== executor (пока заглушка) =====
 int		execute_command(char **argv, t_env *env);
-
-// ===== builtilns =====
-int		builtin_echo(char **args);
-
-int		builtin_cd(char **args, t_env **env);
-
-int		builtin_pwd(t_env *env);
-
-int		builtin_env(t_env *env);
-
-int		builtin_export(char **argv, t_env **env);
 
 #endif // MINISHELL_H
