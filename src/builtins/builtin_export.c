@@ -12,21 +12,91 @@
 
 #include "minishell.h"
 
+static int env_size(t_env *env)
+{
+	int count;
+
+	count = 0;
+	if (NULL == env)
+		return (count);
+	while (env)
+	{
+		count++;
+		env = env->next;
+	}
+	return (count);
+}
+
+static char	**env_to_keys(t_env *env)
+{
+	int		count;
+	char	**keys;
+	int		i;
+
+	count = env_size(env);
+	keys = malloc(sizeof(char *) * (count + 1));
+	if (!keys)
+		return (NULL);
+	i = 0;
+	while (env)
+	{
+		keys[i] = ft_strdup(env->key);
+		if (!keys[i])
+		{
+			while (i > 0)
+				free(keys[--i]);
+			free(keys);
+		}
+		i++;
+		env = env->next;
+	}
+	keys[i] = NULL;
+	return (keys);
+}
+
+static void	sort_env_keys(char **keys)
+{
+	int		i;
+	int		j;
+	char	*tmp;
+
+	if (!keys)
+		return ;
+	i = 0;
+	while (keys[i])
+	{
+		j = i + 1;
+		while (keys[j])
+		{
+			if (ft_strcmp(keys[i], keys[j]) > 0)
+			{
+				tmp = keys[i];
+				keys[i] = keys[j];
+				keys[j] = tmp;
+			}
+			++j;
+		}
+		++i;
+	}
+}
+
 static int	export_no_arguments(char **argv, t_env **env)
 {
-	t_env	*cur;
+	char	**keys;
+	int		i;
 
-	(void)argv;
-	cur = *env;
-	while (cur)
+	void(argv);
+	keys = env_to_keys(*env);
+	if (!keys)
+		return (EXIT_FAILURE);
+	sort_env_keys(keys);
+	i = 0;
+	while (keys[i])
 	{
-		if (cur->value)
-			printf("declare -x %s=\"%s\"\n", cur->key, cur->value);
-		else
-			printf("declare -x %s\n", cur->key);
-		cur = cur->next;
+
 	}
-	return (0);
+	free(keys);
+	return (EXIT_SUCCESS);
 }
 
 static void	export_update_env(char *arg, t_env **env, char *eq, int *status)
