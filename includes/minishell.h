@@ -33,13 +33,6 @@
 # include "libft.h"
 # include "defs.h"
 
-// ====== types ======
-typedef struct s_shell
-{
-	char	**env;
-	int		last_status;
-}	t_shell;
-
 // ===== env utils =====
 size_t	ms_env_count(char **envp);
 char	**ms_env_dup(char **envp);
