@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 13:23:31 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/12 00:55:55 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/09/12 01:23:47 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ static int	handle_builtin_or_exec(char **argv, t_env **env)
 		return (builtin_export(argv, env));
 	if (strcmp(argv[0], "unset") == 0)
 		return (builtin_unset(argv, env));
-	// if (strcmp(argv[0], "exit") == 0)
-	// 	return (builtin_exit(argv));
+	if (strcmp(argv[0], "exit") == 0)
+		return (builtin_exit(argv));
 	return (execute_command(argv, *env));
 }
 
