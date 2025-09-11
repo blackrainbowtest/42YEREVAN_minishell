@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 15:38:18 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/11 19:18:32 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/09/11 19:49:21 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,25 @@ char **env_to_envp(t_env *env)
 	return (envp);
 }
 
+static int	execute_child(char *path, char **argv, char **envp)
+{
+	pid_t	pid;
+
+	pid = fork();
+	if (pid < 0)
+	{
+		perror("fork");
+		return (-1);
+	}
+	if (pid == 0)
+	{
+		execve(path, argv, envp);
+		perror("execve");
+		_exit(126);
+	}
+	return (pid);
+}
+
 static int	spawn_and_wait(char *path, char **argv, t_env *env)
 {
 	pid_t	pid;
@@ -59,18 +78,7 @@ static int	spawn_and_wait(char *path, char **argv, t_env *env)
 	envp = env_to_envp(env);
 	if (!env)
 		return (1);
-	pid = fork();
-	if (pid < 0)
-	{
-		perror("fork");
-		return (1);
-	}
-	if (pid == 0)
-	{
-		execve(path, argv, envp);
-		perror("execve");
-		_exit (126);
-	}
+	pid = execute_child(path, argv, envp);
 	free_argv(envp);
 	if (waitpid(pid, &status, 0) < 0)
 	{
