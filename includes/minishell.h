@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 13:23:38 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/11 18:58:34 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/09/11 19:54:38 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,5 +50,6 @@ char	*find_in_path(const char *cmd, t_env *env);
 
 // ===== executor (пока заглушка) =====
 int		execute_command(char **argv, t_env *env);
+char	**env_to_envp(t_env *env);
 
 #endif // MINISHELL_H
