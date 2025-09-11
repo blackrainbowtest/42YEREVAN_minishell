@@ -17,7 +17,7 @@ void	ft_free_split(char **split)
 	size_t	i;
 
 	if (!split)
-		return (NULL);
+		return ;
 	i = 0;
 	while (split[i])
 	{
@@ -25,5 +25,4 @@ void	ft_free_split(char **split)
 		i++;
 	}
 	free(split);
-	return (NULL);
 }

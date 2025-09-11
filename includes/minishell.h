@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 13:23:38 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/08 22:00:46 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/09/11 18:58:34 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,6 @@
 # include "defs.h"
 # include "env.h"
 # include "builtins.h"
-
-// ===== env utils =====
-size_t	ms_env_count(char **envp);
-char	**ms_env_dup(char **envp);
-void	ms_env_free(char **env);
-void	ms_env_print(char **env);
-char   *ms_getenv(char **env, const char *name);
 
 // ===== signals =====
 void	setup_signals(void);

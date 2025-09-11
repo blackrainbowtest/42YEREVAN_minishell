@@ -12,12 +12,10 @@
 
 #include "minishell.h"
 
-static int	export_no_arguments(char **argv, t_env **env)
+static int	export_no_arguments(t_env **env)
 {
 	char	**keys;
-	int		i;
 
-	void(argv);
 	keys = env_to_keys(*env);
 	if (!keys)
 		return (EXIT_FAILURE);
@@ -56,6 +54,6 @@ static int	export_with_arguments(char **argv, t_env **env)
 int	builtin_export(char **argv, t_env **env)
 {
 	if (!argv[1])
-		return (export_no_arguments(argv, env));
+		return (export_no_arguments(env));
 	return (export_with_arguments(argv, env));
 }

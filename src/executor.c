@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 15:38:18 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/07 03:48:15 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/09/11 19:18:32 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ char **env_to_envp(t_env *env)
 		ft_strlcpy(pair, tmp->key, len + 1);
 		ft_strlcat(pair, "=", len + 1);
 		if (tmp->value)
-			strlcat(pair, tmp->value, len + 1);
+			ft_strlcat(pair, tmp->value, len + 1);
 		envp[i++] = pair;
 		tmp = tmp->next;
 	}

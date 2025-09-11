@@ -48,7 +48,7 @@ int	builtin_unset(char **argv, t_env **env)
 			ft_putendl_fd("': not a valid identifier", 2);
 			status = 1;
 		}
-		else if (remove_env(env, argv[i]) != 0)
+		else if (ft_unsetenv(env, argv[i]) != 0)
 			status = 1;
 		i++;
 	}
