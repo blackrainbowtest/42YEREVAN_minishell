@@ -22,12 +22,8 @@ static int	export_no_arguments(char **argv, t_env **env)
 	if (!keys)
 		return (EXIT_FAILURE);
 	sort_env_keys(keys);
-	i = 0;
-	while (keys[i])
-	{
-
-	}
-	free(keys);
+	print_sorted_env(*env, keys);
+	ft_free_split(keys);
 	return (EXIT_SUCCESS);
 }
 
