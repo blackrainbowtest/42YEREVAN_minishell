@@ -24,6 +24,8 @@ int		builtin_env(t_env *env);
 
 int		builtin_export(char **argv, t_env **env);
 
+int		builtin_unset(char **argv, t_env **env);
+
 // ===== builtiln utils =====
 void	export_update_env(char *arg, t_env **env, char *eq, int *status);
 int 	env_size(t_env *env);
