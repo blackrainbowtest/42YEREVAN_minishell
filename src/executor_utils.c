@@ -6,20 +6,16 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 19:52:48 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/11 20:00:54 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/09/12 00:51:49 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char **env_to_envp(t_env *env)
+static int	count_env(t_env *env)
 {
 	int		count;
 	t_env	*tmp;
-	char	**envp;
-	char	*pair;
-	int		i;
-	size_t	len;
 
 	count = 0;
 	tmp = env;
@@ -28,22 +24,47 @@ char **env_to_envp(t_env *env)
 		count++;
 		tmp = tmp->next;
 	}
-	envp = malloc(sizeof(char *) * (count + 1));
+	return (count);
+}
+
+static char	*make_env_pair(t_env *node)
+{
+	size_t	len;
+	char	*pair;
+
+	len = ft_strlen(node->key) + 1;
+	if (node->value)
+		len += ft_strlen(node->value);
+	pair = malloc(len + 1);
+	if (!pair)
+		return (NULL);
+	ft_strlcpy(pair, node->key, len + 1);
+	ft_strlcat(pair, "=", len + 1);
+	if (node->value)
+		ft_strlcat(pair, node->value, len + 1);
+	return (pair);
+}
+
+char	**env_to_envp(t_env *env)
+{
+	char	**envp;
+	t_env	*tmp;
+	int		i;
+
+	envp = malloc(sizeof(char *) * (count_env(env) + 1));
 	if (!envp)
 		return (NULL);
 	tmp = env;
 	i = 0;
 	while (tmp)
 	{
-		len = ft_strlen(tmp->key) + 1 + (tmp->value ? strlen(tmp->value) : 0);
-		pair = malloc(len + 1);
-		if (!pair)
+		envp[i] = make_env_pair(tmp);
+		if (!envp[i])
+		{
+			free_argv(envp);
 			return (NULL);
-		ft_strlcpy(pair, tmp->key, len + 1);
-		ft_strlcat(pair, "=", len + 1);
-		if (tmp->value)
-			ft_strlcat(pair, tmp->value, len + 1);
-		envp[i++] = pair;
+		}
+		i++;
 		tmp = tmp->next;
 	}
 	envp[i] = NULL;
