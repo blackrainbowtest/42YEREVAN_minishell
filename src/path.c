@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 22:12:22 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/07 04:04:14 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/09/11 20:21:21 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,13 @@ static char	*try_path_segment(const char *seg, size_t len, const char *cmd)
 	return (NULL);
 }
 
+static char	*try_access(const char *path)
+{
+	if (access(path, X_OK) == 0)
+		return (ft_strdup(path));
+	return (NULL);
+}
+
 char	*find_in_path(const char *cmd, t_env *env)
 {
 	char	*path_var;
@@ -63,11 +70,7 @@ char	*find_in_path(const char *cmd, t_env *env)
 	char	*full;
 
 	if (ft_strchr(cmd, '/'))
-	{
-		if (access(cmd, X_OK) == 0)
-			return (ft_strdup(cmd));
-		return (NULL);
-	}
+		return (try_access(cmd));
 	path_var = ft_getenv(env, "PATH");
 	if (!path_var)
 		return (NULL);
