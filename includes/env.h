@@ -30,11 +30,4 @@ int		ft_setenv(t_env **env, const char *key,
 			const char *value, int overwrite);
 int		ft_unsetenv(t_env **env, const char *key);
 
-// ===== env utils =====
-size_t	ms_env_count(char **envp);
-char	**ms_env_dup(char **envp);
-void	ms_env_free(char **env);
-void	ms_env_print(char **env);
-char	*ms_getenv(char **env, const char *name);
-
 #endif
