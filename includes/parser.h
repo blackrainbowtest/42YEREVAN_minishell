@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 23:07:48 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/13 14:32:44 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/09/14 00:20:49 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,13 @@ typedef struct s_cmd
 	struct s_cmd	*next;
 }				t_cmd;
 
-// ===== parser =====
+// ===== parser_pipe =====
 // Простая версия: разбивка по пробелам/табам (без кавычек пока)
+void	free_cmds(t_cmd *cmds);
+t_cmd	*parse_pipeline(const char *line);
+void	print_cmds(t_cmd *cmds);
+
+// ===== parser.c =====
 char	**parse_input(const char *line);
 void	free_argv(char **argv);
 

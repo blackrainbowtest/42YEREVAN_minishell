@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 13:23:31 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/12 01:23:47 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/09/14 00:30:50 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,9 @@ static int	handle_builtin_or_exec(char **argv, t_env **env)
 static void	run_shell(t_env **env)
 {
 	char	*line;
-	char	**args;
+	t_cmd	*cmds;
 
+	(void)env;
 	while (1)
 	{
 		line = read_prompt();
@@ -63,14 +64,43 @@ static void	run_shell(t_env **env)
 			free(line);
 			continue ;
 		}
-		args = parse_input(line);
-		free(line);
-		if (!args)
-			continue ;
-		handle_builtin_or_exec(args, env);
-		free_argv(args);
+		cmds = NULL;
+        cmds = parse_pipeline(line);
+        free(line);
+        if (!cmds)
+            continue;
+		if (cmds->next == NULL)
+			handle_builtin_or_exec(cmds->argv, env);
+		else
+			print_cmds(cmds);
+		free_cmds(cmds);
 	}
 }
+
+// static void	run_shell(t_env **env)
+// {
+// 	char	*line;
+// 	char	**args;
+
+// 	while (1)
+// 	{
+// 		line = read_prompt();
+// 		if (!line)
+// 			break ;
+// 		if (is_blank(line))
+// 		{
+// 			free(line);
+// 			continue ;
+// 		}
+// 		args = parse_input(line);
+// 		free(line);
+// 		if (!args)
+// 			continue ;
+// 		run_shell(env);
+// 		// handle_builtin_or_exec(args, env);
+// 		free_argv(args);
+// 	}
+// }
 
 int	main(int argc, char **argv, char **envp)
 {
