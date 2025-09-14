@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 15:38:18 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/11 19:53:05 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/09/14 16:59:12 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static int	spawn_and_wait(char *path, char **argv, t_env *env)
 	char	**envp;
 
 	envp = env_to_envp(env);
-	if (!env)
+	if (!envp)
 		return (1);
 	pid = execute_child(path, argv, envp);
 	free_argv(envp);

@@ -6,25 +6,41 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/14 12:40:33 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/14 16:21:44 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/09/14 16:59:06 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	child_process(t_cmd *cur, int in_fd, int out_fd, t_env **env)
+static void	child_process(t_cmd *cmd, int in_fd, int out_fd, t_env **env)
 {
-	(void)cur;
-	(void)env;
+	char	**envp;
+	char	*path;
+
 	if (in_fd != 0)
 	{
-		dup2(in_fd, 0);
+		dup2(in_fd, STDIN_FILENO);
 		close(in_fd);
 	}
 	if (out_fd != 1)
-	{ 
-		
+	{
+		dup2(out_fd, STDOUT_FILENO);
+		close(out_fd);
 	}
+	path = find_in_path(cmd->argv[0], *env);
+	if (!path)
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(cmd->argv[0], 2);
+		ft_putstr_fd(": command not found\n", 2);
+		_exit(127);
+	}
+	envp = env_to_envp(*env);
+	execve(path, cmd->argv, envp);
+	perror("execve");
+	free_argv(envp);
+	free(path);
+	_exit(126);
 }
 
 int	execute_pipeline(t_cmd *cmds, t_env **env)
