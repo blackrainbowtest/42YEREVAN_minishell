@@ -6,12 +6,11 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 13:23:31 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/14 13:34:58 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/09/14 20:19:08 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "env.h"
 
 static int	is_blank(const char *s)
 {
@@ -65,10 +64,10 @@ static void	run_shell(t_env **env)
 			continue ;
 		}
 		cmds = NULL;
-        cmds = parse_pipeline(line);
-        free(line);
-        if (!cmds)
-            continue;
+		cmds = parse_pipeline(line);
+		free(line);
+		if (!cmds)
+			continue;
 		if (cmds->next == NULL)
 			handle_builtin_or_exec(cmds->argv, env);
 		else
@@ -76,31 +75,6 @@ static void	run_shell(t_env **env)
 		free_cmds(cmds);
 	}
 }
-
-// static void	run_shell(t_env **env)
-// {
-// 	char	*line;
-// 	char	**args;
-
-// 	while (1)
-// 	{
-// 		line = read_prompt();
-// 		if (!line)
-// 			break ;
-// 		if (is_blank(line))
-// 		{
-// 			free(line);
-// 			continue ;
-// 		}
-// 		args = parse_input(line);
-// 		free(line);
-// 		if (!args)
-// 			continue ;
-// 		run_shell(env);
-// 		// handle_builtin_or_exec(args, env);
-// 		free_argv(args);
-// 	}
-// }
 
 int	main(int argc, char **argv, char **envp)
 {
