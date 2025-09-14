@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 13:23:31 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/14 00:30:50 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/09/14 13:34:58 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ static void	run_shell(t_env **env)
 		if (cmds->next == NULL)
 			handle_builtin_or_exec(cmds->argv, env);
 		else
-			print_cmds(cmds);
+			execute_pipeline(cmds, env);
 		free_cmds(cmds);
 	}
 }
