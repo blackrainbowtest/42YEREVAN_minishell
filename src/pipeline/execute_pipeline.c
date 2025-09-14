@@ -6,11 +6,26 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/14 12:40:33 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/14 14:16:04 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/09/14 16:21:44 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	child_process(t_cmd *cur, int in_fd, int out_fd, t_env **env)
+{
+	(void)cur;
+	(void)env;
+	if (in_fd != 0)
+	{
+		dup2(in_fd, 0);
+		close(in_fd);
+	}
+	if (out_fd != 1)
+	{ 
+		
+	}
+}
 
 int	execute_pipeline(t_cmd *cmds, t_env **env)
 {
