@@ -35,6 +35,7 @@
 # include "builtins.h"
 # include "parser.h"
 # include "pipeline.h"
+# include "redirections.h"
 
 // ===== signals =====
 void	setup_signals(void);
