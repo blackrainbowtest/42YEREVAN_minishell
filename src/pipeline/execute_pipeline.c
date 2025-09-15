@@ -27,6 +27,11 @@ static void	child_process(t_cmd *cmd, int in_fd, int out_fd, t_env **env)
 		dup2(out_fd, STDOUT_FILENO);
 		close(out_fd);
 	}
+	if (cmd->infile || cmd->outfile)
+	{
+		if (apply_redirections(cmd) != 0)
+			_exit(1);
+	}
 	if (is_builtin(cmd->argv[0]))
 	{
 		run_builtin(cmd, env); 
