@@ -1,31 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   redirections.h                                     :+:      :+:    :+:   */
+/*   open_files.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/14 12:49:26 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/14 12:49:43 by aramarak         ###   ########.fr       */
+/*   Created: 2025/09/14 12:40:33 by aramarak          #+#    #+#             */
+/*   Updated: 2025/09/14 16:59:06 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef REDIRECTIONS_H
-# define REDIRECTIONS_H
+#include "minishell.h"
 
-# include "minishell.h"
+int	open_trunc(char *file)
+{
 
-// ===== apply_redirections.c =====
-int		apply_redirections(t_cmd *cmd);
+}
 
-// ===== open_files.c =====
-int		open_trunc(char *file);
-int		open_append(char *file);
-int		open_read(char *file);
-int		open_heredoc(char *limiter);
+int	open_append(char *file)
+{
 
-// ===== utils_redir.c =====
-int		is_input_redir(t_redir *r);
-int		is_output_redir(t_redir *r);
+}
 
-#endif
+int	open_read(char *file)
+{
+
+}
+
+int	open_heredoc(char *limiter)
+{
+
+}
