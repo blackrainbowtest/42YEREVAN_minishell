@@ -30,22 +30,24 @@ SRC_BUILTINS := builtin_echo.c builtin_cd.c builtin_pwd.c \
                 builtin_env.c builtin_export.c builtin_export_utils.c \
                 builtin_unset.c builtin_exit.c
 
+# Files parser
 SRC_PARSER := parser.c parser_utils.c parser_pipe.c
 
 # Files env
 SRC_ENV := env.c env_utils.c
 
-SRC_EXEC := pipeline.c
-
+# Files pipeline
 SRC_PIPELINE := execute_pipeline.c
 
+SRC_REDIRECTION := 
+
 # Формируем полные пути
-SRC := $(addprefix $(SRC_DIR)/, $(SRC_MAIN)) \
-       $(addprefix $(SRC_DIR)/builtins/, $(SRC_BUILTINS)) \
-       $(addprefix $(SRC_DIR)/env/, $(SRC_ENV)) \
-	   $(addprefix $(SRC_DIR)/parser/, $(SRC_PARSER)) \
-	   $(addprefix $(SRC_DIR)/exec/, $(SRC_EXEC)) \
-	   $(addprefix $(SRC_DIR)/pipeline/, $(SRC_PIPELINE))
+SRC :=  $(addprefix $(SRC_DIR)/, $(SRC_MAIN)) \
+		$(addprefix $(SRC_DIR)/builtins/, $(SRC_BUILTINS)) \
+		$(addprefix $(SRC_DIR)/env/, $(SRC_ENV)) \
+		$(addprefix $(SRC_DIR)/parser/, $(SRC_PARSER)) \
+		$(addprefix $(SRC_DIR)/pipeline/, $(SRC_PIPELINE)) \
+		$(addprefix $(SRC_DIR)/redirections/, $(SRC_REDIRECTION))
 
 # Quiet build
 QUIET = $(if $(filter 0,$(VERBOSE)),@,)
