@@ -30,20 +30,10 @@ static int	is_blank(const char *s)
 
 static int	handle_builtin_or_exec(char **argv, t_env **env)
 {
-	if (strcmp(argv[0], "echo") == 0)
-		return (builtin_echo(argv));
-	if (strcmp(argv[0], "cd") == 0)
-		return (builtin_cd(argv, env));
-	if (strcmp(argv[0], "pwd") == 0)
-		return (builtin_pwd(*env));
-	if (strcmp(argv[0], "env") == 0)
-		return (builtin_env(*env));
-	if (strcmp(argv[0], "export") == 0)
-		return (builtin_export(argv, env));
-	if (strcmp(argv[0], "unset") == 0)
-		return (builtin_unset(argv, env));
-	if (strcmp(argv[0], "exit") == 0)
-		return (builtin_exit(argv));
+	if (!argv || !argv[0])
+		return (EXIT_SUCCESS);
+	if (is_builtin(argv[0]))
+		return (run_builtin(argv, env));
 	return (execute_command(argv, *env));
 }
 
@@ -51,6 +41,7 @@ static void	run_shell(t_env **env)
 {
 	char	*line;
 	t_cmd	*cmds;
+	t_cmd	*cur;
 
 	(void)env;
 	while (1)
@@ -71,7 +62,31 @@ static void	run_shell(t_env **env)
 		if (cmds->next == NULL)
 			handle_builtin_or_exec(cmds->argv, env);
 		else
-			execute_pipeline(cmds, env);
+		{
+			cur = cmds;
+			while (cur)
+			{
+				if (is_builtin(cur->argv[0])
+					&& (strcmp(cur->argv[0], "cd") != 0
+					&& strcmp(cur->argv[0], "export") != 0
+					&& strcmp(cur->argv[0], "unset") != 0
+					&& strcmp(cur->argv[0], "exit") != 0))
+				{
+					execute_pipeline(cmds, env);
+					break ;
+				}
+				else
+				{
+					if (is_builtin(cur->argv[0]))
+					{
+						ft_putstr_fd("minishell: warning: builtin cannot run in pipeline: ", 2);
+						ft_putendl_fd(cur->argv[0], 2);
+					}
+					execute_pipeline(cmds, env);
+					break ;
+				}
+			}
+		}
 		free_cmds(cmds);
 	}
 }
@@ -91,5 +106,5 @@ int	main(int argc, char **argv, char **envp)
 	setup_signals();
 	run_shell(&env);
 	free_env(env);
-	return (0);
+	return (EXIT_SUCCESS);
 }

@@ -17,15 +17,20 @@ static void	child_process(t_cmd *cmd, int in_fd, int out_fd, t_env **env)
 	char	**envp;
 	char	*path;
 
-	if (in_fd != 0)
+	if (in_fd != STDIN_FILENO)
 	{
 		dup2(in_fd, STDIN_FILENO);
 		close(in_fd);
 	}
-	if (out_fd != 1)
+	if (out_fd != STDOUT_FILENO)
 	{
 		dup2(out_fd, STDOUT_FILENO);
 		close(out_fd);
+	}
+	if (is_builtin(cmd->argv[0]))
+	{
+		run_builtin(cmd, env); 
+		_exit (0);
 	}
 	path = find_in_path(cmd->argv[0], *env);
 	if (!path)
@@ -49,23 +54,18 @@ int	execute_pipeline(t_cmd *cmds, t_env **env)
 	int		pipe_fd[2];
 	int		in_fd;
 	pid_t	pid;
+	int		status;
+	int		last_status;
 
 	cur = cmds;
-	in_fd = 0;
+	in_fd = STDIN_FILENO;
+	last_status = 0;
 	while (cur)
 	{
-		if (cur->next)
+		if (cur->next && pipe(pipe_fd) < 0)
 		{
-			if (pipe(pipe_fd) < 0)
-			{
-				perror("pipe");
-				return (1);
-			}
-		}
-		else
-		{
-			pipe_fd[1] = 1;
-			pipe_fd[0] = 0;
+			perror("pipe");
+			return (1);
 		}
 		pid = fork();
 		if (pid < 0)
@@ -76,19 +76,19 @@ int	execute_pipeline(t_cmd *cmds, t_env **env)
 		else if (pid == 0)
 		{
 			if (cur->next)
-				close(pipe_fd[0]); // child doesn't read from pipe
-			child_process(cur, in_fd, pipe_fd[1], env);
+				close(pipe_fd[0]);
+			child_process(cur, in_fd, cur->next ? pipe_fd[1] : STDOUT_FILENO, env);
 		}
-		if (in_fd != 0)
-			close(in_fd); // close if not stdin
+		if (in_fd != STDIN_FILENO)
+			close(in_fd);
 		if (cur->next)
 		{
 			close(pipe_fd[1]);
-			in_fd = pipe_fd[0]; // next process reads from here
+			in_fd = pipe_fd[0];
 		}
 		cur = cur->next;
 	}
-	while (wait(NULL) > 0)
-		; // wait for all children
-	return (0);
+	while (wait(&status) > 0)
+		last_status = WIFEXITED(status) ? WEXITSTATUS(status) : 1;
+	return (last_status);
 }
