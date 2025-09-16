@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/13 14:36:13 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/14 00:20:40 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/09/16 20:10:26 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,11 @@ static t_redir	*create_redir_node(const char *token, const char *file)
 	else if (ft_strcmp(token, ">") == 0)
 		node->type = R_OUT;
 	else if (ft_strcmp(token, ">>") == 0)
-		node->type = R_APPENDR_HEREDOC;
+		node->type = R_APPEND;
+	else if (ft_strcmp(token, "<<") == 0)
+		node->type = R_HEREDOC;
 	else
-		node->type = 3;
+		node->type = -1;
 	node->next = NULL;
 	return (node);
 }

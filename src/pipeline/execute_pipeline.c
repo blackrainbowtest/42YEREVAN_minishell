@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/14 12:40:33 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/14 16:59:06 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/09/16 19:57:52 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void	child_process(t_cmd *cmd, int in_fd, int out_fd, t_env **env)
 		dup2(out_fd, STDOUT_FILENO);
 		close(out_fd);
 	}
-	if (cmd->infile || cmd->outfile)
+	if (cmd->redir)
 	{
 		if (apply_redirections(cmd) != 0)
 			_exit(1);
