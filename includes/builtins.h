@@ -28,6 +28,10 @@ int		builtin_unset(char **argv, t_env **env);
 
 int		builtin_exit(char **argv);
 
+int		run_builtin(char **argv, t_env **env);
+int		is_parent_builtin(char *cmd);
+int		is_builtin(char *cmd);
+
 // ===== builtiln utils =====
 void	export_update_env(char *arg, t_env **env, char *eq, int *status);
 int		env_size(t_env *env);

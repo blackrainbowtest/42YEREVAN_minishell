@@ -28,7 +28,7 @@ SRC_MAIN := main.c executor.c prompt.c signals.c utils.c path.c \
 # Files builtins
 SRC_BUILTINS := builtin_echo.c builtin_cd.c builtin_pwd.c \
                 builtin_env.c builtin_export.c builtin_export_utils.c \
-                builtin_unset.c builtin_exit.c
+                builtin_unset.c builtin_exit.c run_builtin.c
 
 # Files parser
 SRC_PARSER := parser.c parser_utils.c parser_pipe.c
@@ -39,7 +39,7 @@ SRC_ENV := env.c env_utils.c
 # Files pipeline
 SRC_PIPELINE := execute_pipeline.c
 
-SRC_REDIRECTION := 
+SRC_REDIRECTION := apply_redirections.c open_files.c utils_redir.c
 
 # Формируем полные пути
 SRC :=  $(addprefix $(SRC_DIR)/, $(SRC_MAIN)) \

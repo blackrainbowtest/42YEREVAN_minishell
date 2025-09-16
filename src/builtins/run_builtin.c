@@ -12,10 +12,10 @@
 
 #include "minishell.h"
 
-int is_builtin(char *cmd)
+int	is_builtin(char *cmd)
 {
 	if (!cmd)
-		return 0;
+		return (0);
 	return (strcmp(cmd, "echo") == 0
 		|| strcmp(cmd, "cd") == 0
 		|| strcmp(cmd, "pwd") == 0
@@ -25,7 +25,7 @@ int is_builtin(char *cmd)
 		|| strcmp(cmd, "exit") == 0);
 }
 
-int is_parent_builtin(char *cmd)
+int	is_parent_builtin(char *cmd)
 {
 	if (!cmd)
 		return (0);
@@ -35,23 +35,23 @@ int is_parent_builtin(char *cmd)
 		|| strcmp(cmd, "exit") == 0);
 }
 
-int run_builtin(char **argv, t_env **env)
+int	run_builtin(char **argv, t_env **env)
 {
 	if (!argv || !argv[0])
 		return (EXIT_SUCCESS);
 	if (strcmp(argv[0], "echo") == 0)
-		return builtin_echo(argv);
+		return (builtin_echo(argv));
 	if (strcmp(argv[0], "cd") == 0)
-		return builtin_cd(argv, env);
+		return (builtin_cd(argv, env));
 	if (strcmp(argv[0], "pwd") == 0)
-		return builtin_pwd(*env);
+		return (builtin_pwd(*env));
 	if (strcmp(argv[0], "env") == 0)
-		return builtin_env(*env);
+		return (builtin_env(*env));
 	if (strcmp(argv[0], "export") == 0)
-		return builtin_export(argv, env);
+		return (builtin_export(argv, env));
 	if (strcmp(argv[0], "unset") == 0)
-		return builtin_unset(argv, env);
+		return (builtin_unset(argv, env));
 	if (strcmp(argv[0], "exit") == 0)
-		return builtin_exit(argv);
+		return (builtin_exit(argv));
 	return (EXIT_SUCCESS);
 }
