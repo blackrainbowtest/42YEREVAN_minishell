@@ -34,8 +34,8 @@ static void	child_process(t_cmd *cmd, int in_fd, int out_fd, t_env **env)
 	}
 	if (is_builtin(cmd->argv[0]))
 	{
-		run_builtin(cmd, env); 
-		_exit (0);
+		run_builtin(cmd->argv, env);
+		_exit(0);
 	}
 	path = find_in_path(cmd->argv[0], *env);
 	if (!path)

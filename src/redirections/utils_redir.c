@@ -14,10 +14,10 @@
 
 int	is_input_redir(t_redir *r)
 {
-
+	return (r->type == R_IN || r->type == R_HEREDOC);
 }
 
 int	is_output_redir(t_redir *r)
 {
-
+	return (r->type == R_OUT || r->type == R_APPEND);
 }
