@@ -23,11 +23,11 @@ static t_redir	*create_redir_node(const char *token, const char *file)
 	if (!node->file)
 		return (free(node), NULL);
 	if (ft_strcmp(token, "<") == 0)
-		node->type = 0;
+		node->type = R_IN;
 	else if (ft_strcmp(token, ">") == 0)
-		node->type = 1;
+		node->type = R_OUT;
 	else if (ft_strcmp(token, ">>") == 0)
-		node->type = 2;
+		node->type = R_APPENDR_HEREDOC;
 	else
 		node->type = 3;
 	node->next = NULL;
