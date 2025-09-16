@@ -14,17 +14,32 @@
 
 int	open_trunc(char *file)
 {
-	return open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	int	fd;
+
+	fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (fd < 0)
+		perror(file);
+	return (fd);
 }
 
 int	open_append(char *file)
 {
-	return open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	int	fd;
+
+	fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	if (fd < 0)
+		perror(file);
+	return (fd);
 }
 
 int	open_read(char *file)
 {
-	return open(file, O_RDONLY);
+	int	fd;
+
+	fd = open(file, O_RDONLY);
+	if (fd < 0)
+		perror(file);
+	return (fd);
 }
 
 /**
