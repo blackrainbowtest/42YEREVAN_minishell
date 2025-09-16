@@ -12,30 +12,74 @@
 
 #include "minishell.h"
 
-void	free_cmds(t_cmd *cmds)
+static t_redir	*create_redir_node(const char *token, const char *file)
 {
-	t_cmd	*tmp;
+	t_redir	*node;
 
-	while (cmds)
-	{
-		tmp = cmds->next;
-		if (cmds->argv)
-			free_argv(cmds->argv);
-		if (cmds->infile)
-			free(cmds->infile);
-		if (cmds->outfile)
-			free(cmds->outfile);
-		free(cmds);
-		cmds = tmp;
-	}
+	node = malloc(sizeof(t_redir));
+	if (!node)
+		return (NULL);
+	node->file = ft_strdup(file);
+	if (!node->file)
+		return (free(node), NULL);
+	if (ft_strcmp(token, "<") == 0)
+		node->type = 0;
+	else if (ft_strcmp(token, ">") == 0)
+		node->type = 1;
+	else if (ft_strcmp(token, ">>") == 0)
+		node->type = 2;
+	else
+		node->type = 3;
+	node->next = NULL;
+	return (node);
 }
 
-static char	**split_pipes(const char *line)
+static void	remove_redir_from_argv(char **argv, int i)
 {
-	char	**parts;
+	int	j;
 
-	parts = ft_split(line, '|');
-	return (parts);
+	free(argv[i]);
+	free(argv[i + 1]);
+	j = i;
+	while (argv[j + 2])
+	{
+		argv[j] = argv[j + 2];
+		j++;
+	}
+	argv[j] = NULL;
+	argv[j + 1] = NULL;
+}
+
+static t_redir	*parse_redirs(char **argv)
+{
+	t_redir	*head;
+	t_redir	*cur;
+	t_redir	*node;
+	int		i;
+
+	head = NULL;
+	cur = NULL;
+	i = 0;
+	while (argv && argv[i])
+	{
+		if (is_redirection(argv[i]))
+		{
+			if (!argv[i + 1])
+				return (free_redirs(head), NULL);
+			node = create_redir_node(argv[i], argv[i + 1]);
+			if (!node)
+				return (free_redirs(head), NULL);
+			if (!head)
+				head = node;
+			else
+				cur->next = node;
+			cur = node;
+			remove_redir_from_argv(argv, i);
+			continue ;
+		}
+		i++;
+	}
+	return (head);
 }
 
 t_cmd	*parse_pipeline(const char *line)
@@ -43,6 +87,7 @@ t_cmd	*parse_pipeline(const char *line)
 	char	**parts;
 	t_cmd	*head;
 	t_cmd	*cur;
+	t_cmd	*node;
 	int		i;
 
 	if (!line)
@@ -55,17 +100,11 @@ t_cmd	*parse_pipeline(const char *line)
 	i = 0;
 	while (parts[i])
 	{
-		t_cmd *node = malloc(sizeof(t_cmd));
+		node = malloc(sizeof(t_cmd));
 		if (!node)
-		{
-			free_cmds(head);
-			free_argv(parts);
-			return (NULL);
-		}
+			return (free_cmds(head), free_argv(parts), NULL);
 		node->argv = parse_input(parts[i]);
-		node->infile = NULL;
-		node->outfile = NULL;
-		node->append = 0;
+		node->redir = parse_redirs(node->argv);
 		node->next = NULL;
 		if (!head)
 			head = node;
@@ -80,7 +119,8 @@ t_cmd	*parse_pipeline(const char *line)
 
 void	print_cmds(t_cmd *cmds)
 {
-	int	i;
+	int		i;
+	t_redir	*r;
 
 	while (cmds)
 	{
@@ -94,10 +134,12 @@ void	print_cmds(t_cmd *cmds)
 				i++;
 			}
 		}
-		if (cmds->infile)
-			printf("infile: %s\n", cmds->infile);
-		if (cmds->outfile)
-			printf("outfile: %s (append=%d)\n", cmds->outfile, cmds->append);
+		r = cmds->redir;
+		while (r)
+		{
+			printf("redir: type=%d, file=%s\n", r->type, r->file);
+			r = r->next;
+		}
 		cmds = cmds->next;
 	}
 }

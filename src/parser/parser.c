@@ -12,6 +12,16 @@
 
 #include "minishell.h"
 
+int	is_redirection(const char *s)
+{
+	if (!s)
+		return (0);
+	return (ft_strcmp(s, "<") == 0
+		|| ft_strcmp(s, ">") == 0
+		|| ft_strcmp(s, ">>") == 0
+		|| ft_strcmp(s, "<<") == 0);
+}
+
 static int	is_space(char c)
 {
 	return (c == ' ' || c == '\t');
@@ -43,7 +53,7 @@ static char	*sub_dup(const char *s, size_t start, size_t len)
 	char	*out;
 	size_t	i;
 
-	out = (char *)malloc(len + 1);
+	out = malloc(len + 1);
 	if (!out)
 		return (NULL);
 	i = 0;
@@ -64,14 +74,14 @@ char	**parse_input(const char *line)
 	size_t	words;
 	char	**argv;
 
-	i = 0;
-	k = 0;
 	if (!line)
 		return (NULL);
 	words = count_words(line);
-	argv = (char **)malloc(sizeof(char *) * (words + 1));
+	argv = malloc(sizeof(char *) * (words + 1));
 	if (!argv)
 		return (NULL);
+	i = 0;
+	k = 0;
 	while (line[i])
 	{
 		while (line[i] && is_space(line[i]))
@@ -83,10 +93,7 @@ char	**parse_input(const char *line)
 			i++;
 		argv[k] = sub_dup(line, start, i - start);
 		if (!argv[k++])
-		{
-			free_argv(argv);
-			return (NULL);
-		}
+			return (free_argv(argv), NULL);
 	}
 	argv[k] = NULL;
 	return (argv);
