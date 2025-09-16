@@ -43,8 +43,7 @@ int	builtin_cd(char **args, t_env **env)
 			free(oldpwd);
 			return (1);
 		}
-		ft_putstr_fd(target, 1);
-		ft_putstr_fd("\n", 1);
+		ft_putendl_fd(target, 1);
 	}
 	else
 		target = args[1];

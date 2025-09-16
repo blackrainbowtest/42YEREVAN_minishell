@@ -21,15 +21,38 @@ CFLAGS  := -Wall -Wextra -Werror -I$(INC_DIR) -I$(LIBFT_DIR)
 LIBS    := -lreadline -lncurses
 RM      := rm -f
 
-# Source files
-SRC_FILES := main.c executor.c parser.c prompt.c signals.c utils.c path.c \
-				builtins/builtin_echo.c builtins/builtin_cd.c\
-				env/env.c env/env_utils.c
-SRC       := $(addprefix $(SRC_DIR)/, $(SRC_FILES))
-OBJS      := $(SRC:.c=.o)
+# Files src
+SRC_MAIN := main.c executor.c prompt.c signals.c utils.c path.c \
+            executor_utils.c
+
+# Files builtins
+SRC_BUILTINS := builtin_echo.c builtin_cd.c builtin_pwd.c \
+                builtin_env.c builtin_export.c builtin_export_utils.c \
+                builtin_unset.c builtin_exit.c run_builtin.c
+
+# Files parser
+SRC_PARSER := parser.c parser_utils.c parser_pipe.c
+
+# Files env
+SRC_ENV := env.c env_utils.c
+
+# Files pipeline
+SRC_PIPELINE := execute_pipeline.c
+
+SRC_REDIRECTION := apply_redirections.c open_files.c utils_redir.c
+
+# Формируем полные пути
+SRC :=  $(addprefix $(SRC_DIR)/, $(SRC_MAIN)) \
+		$(addprefix $(SRC_DIR)/builtins/, $(SRC_BUILTINS)) \
+		$(addprefix $(SRC_DIR)/env/, $(SRC_ENV)) \
+		$(addprefix $(SRC_DIR)/parser/, $(SRC_PARSER)) \
+		$(addprefix $(SRC_DIR)/pipeline/, $(SRC_PIPELINE)) \
+		$(addprefix $(SRC_DIR)/redirections/, $(SRC_REDIRECTION))
 
 # Quiet build
 QUIET = $(if $(filter 0,$(VERBOSE)),@,)
+
+OBJS := $(SRC:.c=.o)
 
 # Default target
 all: $(NAME)
@@ -43,7 +66,7 @@ $(LIBFT):
 	@$(MAKE) -C $(LIBFT_DIR)
 
 # Compile .c to .o
-$(SRC_DIR)/%.o: $(SRC_DIR)/%.c
+%.o: %.c
 	@printf $(Y)"[CC] $<"$(RST)
 	$(QUIET)$(CC) $(CFLAGS) -c $< -o $@
 

@@ -1,13 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   defs.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/24 15:33:48 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/11 19:56:45 by aramarak         ###   ########.fr       */
+/*   Created: 2025/09/07 22:37:27 by aramarak          #+#    #+#             */
+/*   Updated: 2025/09/12 22:23:12 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#ifndef DEFS_H
+# define DEFS_H
+
+# define DEBUG 1
+
+# define PWD_CRWD "minishell: pwd: cannot retrieve working directory\n"
+# define EXP_AERR "minishell: export: %s: allocation error\n"
+
+#endif // DEFS_H

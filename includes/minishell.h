@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 13:23:38 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/07 13:44:22 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/09/14 12:49:52 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,22 +29,13 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
-# include "env.h"
 # include "libft.h"
-
-// ====== types ======
-typedef struct s_shell
-{
-	char	**env;
-	int		last_status;
-}	t_shell;
-
-// ===== env utils =====
-size_t	ms_env_count(char **envp);
-char	**ms_env_dup(char **envp);
-void	ms_env_free(char **env);
-void	ms_env_print(char **env);
-char   *ms_getenv(char **env, const char *name);
+# include "defs.h"
+# include "env.h"
+# include "builtins.h"
+# include "parser.h"
+# include "pipeline.h"
+# include "redirections.h"
 
 // ===== signals =====
 void	setup_signals(void);
@@ -52,20 +43,11 @@ void	setup_signals(void);
 // ===== prompt =====
 char	*read_prompt(void);
 
-// ===== parser =====
-// Простая версия: разбивка по пробелам/табам (без кавычек пока)
-char	**parse_input(const char *line);
-void	free_argv(char **argv);
-
 /* path resolver */
 char	*find_in_path(const char *cmd, t_env *env);
 
 // ===== executor (пока заглушка) =====
 int		execute_command(char **argv, t_env *env);
-
-// ===== builtilns =====
-int		builtin_echo(char **args);
-
-int		builtin_cd(char **args, t_env **env);
+char	**env_to_envp(t_env *env);
 
 #endif // MINISHELL_H

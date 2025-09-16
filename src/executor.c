@@ -6,48 +6,29 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 15:38:18 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/07 03:48:15 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/09/14 16:59:12 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char **env_to_envp(t_env *env)
+static int	execute_child(char *path, char **argv, char **envp)
 {
-	int		count;
-	t_env	*tmp;
-	char	**envp;
-	char	*pair;
-	int		i;
-	size_t	len;
+	pid_t	pid;
 
-	count = 0;
-	tmp = env;
-	while (tmp)
+	pid = fork();
+	if (pid < 0)
 	{
-		count++;
-		tmp = tmp->next;
+		perror("fork");
+		return (-1);
 	}
-	envp = malloc(sizeof(char *) * (count + 1));
-	if (!envp)
-		return (NULL);
-	tmp = env;
-	i = 0;
-	while (tmp)
+	if (pid == 0)
 	{
-		len = ft_strlen(tmp->key) + 1 + (tmp->value ? strlen(tmp->value) : 0);
-		pair = malloc(len + 1);
-		if (!pair)
-			return (NULL);
-		ft_strlcpy(pair, tmp->key, len + 1);
-		ft_strlcat(pair, "=", len + 1);
-		if (tmp->value)
-			strlcat(pair, tmp->value, len + 1);
-		envp[i++] = pair;
-		tmp = tmp->next;
+		execve(path, argv, envp);
+		perror("execve");
+		_exit(126);
 	}
-	envp[i] = NULL;
-	return (envp);
+	return (pid);
 }
 
 static int	spawn_and_wait(char *path, char **argv, t_env *env)
@@ -57,20 +38,9 @@ static int	spawn_and_wait(char *path, char **argv, t_env *env)
 	char	**envp;
 
 	envp = env_to_envp(env);
-	if (!env)
+	if (!envp)
 		return (1);
-	pid = fork();
-	if (pid < 0)
-	{
-		perror("fork");
-		return (1);
-	}
-	if (pid == 0)
-	{
-		execve(path, argv, envp);
-		perror("execve");
-		_exit (126);
-	}
+	pid = execute_child(path, argv, envp);
 	free_argv(envp);
 	if (waitpid(pid, &status, 0) < 0)
 	{
@@ -91,9 +61,6 @@ int	execute_command(char **argv, t_env *env)
 
 	if (!argv || !argv[0])
 		return (0);
-	if (strcmp(argv[0], "echo") == 0)
-		return (builtin_echo(argv));
-	// TODO: cd, pwd, env, export, unset, exit
 	path = find_in_path(argv[0], env);
 	if (!path)
 	{
