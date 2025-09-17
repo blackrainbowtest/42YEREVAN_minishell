@@ -60,8 +60,15 @@ static char	*read_quoted(const char *line, size_t *i)
 		(*i)++;
 	if (!line[*i])
 		return (NULL);
-
-
+	// to get length we can subtract start from end
+	len = *i - start;
+	token = malloc(len + 1);
+	if (!token)
+		return (NULL);
+	ft_strlcpy(token, line + start, len + 1);
+	(*i)++;
+	// skip closed quote symbol
+	return (token);
 }
 
 char	**tokenize(const char *line)
