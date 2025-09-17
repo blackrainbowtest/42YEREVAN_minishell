@@ -24,6 +24,12 @@ typedef struct s_cmd
 	struct s_cmd	*next;
 }				t_cmd;
 
+typedef struct s_token
+{
+	char			*value;
+	struct s_token	*next;
+}	t_token;
+
 // ===== parser_pipe =====
 t_cmd	*parse_pipeline(const char *line);
 void	print_cmds(t_cmd *cmds);
@@ -37,5 +43,8 @@ char	**split_pipes(const char *line);
 char	**parse_input(const char *line);
 void	free_argv(char **argv);
 int		is_redirection(const char *s);
+
+// ===== tokenizer.c =====
+char	**tokenize(const char *line);
 
 #endif // PARSER_H

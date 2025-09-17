@@ -31,7 +31,7 @@ SRC_BUILTINS := builtin_echo.c builtin_cd.c builtin_pwd.c \
                 builtin_unset.c builtin_exit.c run_builtin.c
 
 # Files parser
-SRC_PARSER := parser.c parser_utils.c parser_pipe.c
+SRC_PARSER := parser.c parser_utils.c parser_pipe.c tokenizer.c
 
 # Files env
 SRC_ENV := env.c env_utils.c
