@@ -71,6 +71,19 @@ static char	*read_quoted(const char *line, size_t *i)
 	return (token);
 }
 
+void free_tokens(t_token *lst)
+{
+    t_token *tmp;
+
+    while (lst)
+    {
+        tmp = lst->next;
+        free(lst->value);
+        free(lst);
+        lst = tmp;
+    }
+}
+
 char	**tokenize(const char *line)
 {
 	t_token	*head;
@@ -81,17 +94,26 @@ char	**tokenize(const char *line)
 	i = 0;
 	while (line[i])
 	{
-		// we skip spaces and tabs after command
 		while (line[i] == ' ' || line[i] == '\t')
 			i++;
-		// ☢ if no more symbols left exit loot here
-		if (line[i])
+		if (!line[i])
 			break ;
-		start = i;
-		while (line[i] && line[i] != ' ' && line[i] != '\t')
-			i++;
-		// create and add new token using start and end position
-		token_add_back(&head, new_token(&line[start], i - start));
+		if (line[i] == '\'' || line[i] == '"')
+		{
+			char *q = read_quoted(line, &i);
+			if (!q)
+				return (free_tokens(head), NULL);
+			token_add_back(&head, new_token(q, ft_strlen(q)));
+			free(q);
+		}
+		else
+		{
+			start = i;
+			while (line[i] && line[i] != ' ' && line[i] != '\t'
+				&& line[i] != '\'' && line[i] != '"')
+				i++;
+			token_add_back(&head, new_token(&line[start], i - start));
+		}
 	}
 	return (head);
 }

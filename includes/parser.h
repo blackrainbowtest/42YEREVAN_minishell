@@ -46,5 +46,6 @@ int		is_redirection(const char *s);
 
 // ===== tokenizer.c =====
 char	**tokenize(const char *line);
+void 	free_tokens(t_token *lst);
 
 #endif // PARSER_H
