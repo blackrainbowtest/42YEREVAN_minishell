@@ -13,7 +13,7 @@
 #ifndef DEBUG_H
 # define DEBUG_H
 
-# define DEBUGING 1
+# define DEBUGING 0
 
 typedef struct s_cmd	t_cmd;
 typedef struct s_token	t_token;
