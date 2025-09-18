@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BUILTINS_H
-# define BUILTINS_H
+#ifndef DEBUG_H
+# define DEBUG_H
 
 # define DEBUGING 1
 

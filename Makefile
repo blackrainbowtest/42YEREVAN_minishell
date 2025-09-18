@@ -22,8 +22,7 @@ LIBS    := -lreadline -lncurses
 RM      := rm -f
 
 # Files src
-SRC_MAIN := main.c executor.c prompt.c signals.c utils.c path.c \
-            executor_utils.c
+SRC_MAIN := main.c prompt.c signals.c utils.c path.c \
 
 # Files builtins
 SRC_BUILTINS := echo.c cd.c pwd.c env.c export.c export_utils.c \
@@ -36,17 +35,20 @@ SRC_PARSER := parser_tokens.c tokenizer.c parser_line.c
 SRC_ENV := env.c env_utils.c
 
 # Files pipeline
-SRC_PIPELINE := execute_pipeline.c
+SRC_EXECUTION := execute_pipeline.c executor.c executor_utils.c
 
 SRC_REDIRECTION := apply_redirections.c open_files.c utils_redir.c
+
+SRC_DEBUG := debug_parser.c
 
 # Формируем полные пути
 SRC :=  $(addprefix $(SRC_DIR)/, $(SRC_MAIN)) \
 		$(addprefix $(SRC_DIR)/builtins/, $(SRC_BUILTINS)) \
 		$(addprefix $(SRC_DIR)/env/, $(SRC_ENV)) \
 		$(addprefix $(SRC_DIR)/parser/, $(SRC_PARSER)) \
-		$(addprefix $(SRC_DIR)/pipeline/, $(SRC_PIPELINE)) \
-		$(addprefix $(SRC_DIR)/redirections/, $(SRC_REDIRECTION))
+		$(addprefix $(SRC_DIR)/executors/, $(SRC_EXECUTION)) \
+		$(addprefix $(SRC_DIR)/redirections/, $(SRC_REDIRECTION)) \
+		$(addprefix $(SRC_DIR)/debug/, $(SRC_DEBUG))
 
 # Quiet build
 QUIET = $(if $(filter 0,$(VERBOSE)),@,)

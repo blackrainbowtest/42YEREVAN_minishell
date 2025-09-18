@@ -13,38 +13,6 @@
 #include "minishell.h"
 
 /**
- * @brief Frees a linked list of tokens.
- *
- * Iterates through a linked list of `t_token` structures, freeing the memory
- * allocated for each token's `value` string and the token itself. After this
- * function is called, the entire list is deallocated and no longer accessible.
- *
- * @param tokens Pointer to the first token in the linked list. Can be NULL,
- *        in which case the function does nothing.
- *
- * @return This function does not return a value.
- *
- * @note After calling this function, all pointers to tokens or their values
- *       become invalid.
- * @warning Do not call this function on a list that has already been freed,
- *          as it will cause undefined behavior.
- * @bug None known.
- * @todo None.
- */
-static void	free_tokens(t_token *tokens)
-{
-	t_token	*tmp;
-
-	while (tokens)
-	{
-		tmp = tokens->next;
-		free(tokens->value);
-		free(tokens);
-		tokens = tmp;
-	}
-}
-
-/**
  * @brief Parses a command line string into a list of command structures.
  *
  * This function takes a raw input line, tokenizes it into a linked list of
@@ -78,5 +46,5 @@ t_cmd	*parse_line(const char *line)
 	if (DEBUGING)
 		debug_print_cmds(cmds);
 	free_tokens(tokens);
-	return cmds;
+	return (cmds);
 }
