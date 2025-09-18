@@ -16,7 +16,9 @@
 # define DEBUGING 1
 
 typedef struct s_cmd	t_cmd;
+typedef struct s_token	t_token;
 
 void	debug_print_cmds(t_cmd *cmds);
+void	print_tokens(t_token *tokens);
 
 #endif
