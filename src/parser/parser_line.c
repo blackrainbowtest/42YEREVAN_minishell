@@ -75,6 +75,8 @@ t_cmd	*parse_line(const char *line)
 	if (!tokens)
 		return (NULL);
 	cmds = parse_tokens(tokens);
+	if (DEBUGING)
+		debug_print_cmds(cmds);
 	free_tokens(tokens);
 	return cmds;
 }
