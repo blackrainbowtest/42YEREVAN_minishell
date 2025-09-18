@@ -20,7 +20,7 @@ int		builtin_cd(char **args, t_env **env);
 
 int		builtin_pwd(t_env *env);
 
-int		builtin_env(t_env *env);
+int		builtin_env(char **argv, t_env *env);
 
 int		builtin_export(char **argv, t_env **env);
 
