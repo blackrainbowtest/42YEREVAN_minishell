@@ -58,6 +58,12 @@ static void	run_single_command(t_cmd *cmd, t_env **env)
 		waitpid(pid, &status, 0);
 }
 
+/**
+ * parser_line() -> parser/parser_line.c
+ * execute_pipeline() -> pipeline/execute_pipeline.c
+ * run_single_command() -> main.c
+ * free_cmds() -> parser/parser_utils.c
+ */
 static void	run_shell_line(char *line, t_env **env)
 {
 	t_cmd	*cmds;
@@ -67,7 +73,7 @@ static void	run_shell_line(char *line, t_env **env)
 		free(line);
 		return ;
 	}
-	cmds = parse_pipeline(line);
+	cmds = parse_line(line);
 	free(line);
 	if (!cmds)
 		return ;
