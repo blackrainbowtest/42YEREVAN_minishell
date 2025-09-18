@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins.h                                         :+:      :+:    :+:   */
+/*   debuh.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,33 +10,15 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BUILTINS_H
-# define BUILTINS_H
+#ifndef DEBUG_H
+# define DEBUG_H
 
-// ===== builtilns =====
-int		builtin_echo(char **args);
+# define DEBUGING 0
 
-int		builtin_cd(char **args, t_env **env);
+typedef struct s_cmd	t_cmd;
+typedef struct s_token	t_token;
 
-int		builtin_pwd(t_env *env);
-
-int		builtin_env(char **argv, t_env *env);
-
-int		builtin_export(char **argv, t_env **env);
-
-int		builtin_unset(char **argv, t_env **env);
-
-int		builtin_exit(char **argv);
-
-int		run_builtin(char **argv, t_env **env);
-int		is_parent_builtin(char *cmd);
-int		is_builtin(char *cmd);
-
-// ===== builtiln utils =====
-void	export_update_env(char *arg, t_env **env, char *eq, int *status);
-int		env_size(t_env *env);
-char	**env_to_keys(t_env *env);
-void	sort_env_keys(char **keys);
-void	print_sorted_env(t_env *env, char **keys);
+void	debug_print_cmds(t_cmd *cmds);
+void	print_tokens(t_token *tokens);
 
 #endif

@@ -46,7 +46,7 @@ int	run_builtin(char **argv, t_env **env)
 	if (strcmp(argv[0], "pwd") == 0)
 		return (builtin_pwd(*env));
 	if (strcmp(argv[0], "env") == 0)
-		return (builtin_env(*env));
+		return (builtin_env(argv, *env));
 	if (strcmp(argv[0], "export") == 0)
 		return (builtin_export(argv, env));
 	if (strcmp(argv[0], "unset") == 0)

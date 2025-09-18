@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 13:23:31 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/17 00:13:20 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/09/18 20:44:37 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,17 @@ static void	run_single_command(t_cmd *cmd, t_env **env)
 	pid_t	pid;
 	int		status;
 
+	if (is_builtin(cmd->argv[0]))
+	{
+		if (ft_strcmp(cmd->argv[0], "exit") == 0
+			|| ft_strcmp(cmd->argv[0], "cd") == 0
+			|| ft_strcmp(cmd->argv[0], "export") == 0
+			|| ft_strcmp(cmd->argv[0], "unset") == 0)
+		{
+			run_builtin(cmd->argv, env);
+			return ;
+		}
+	}
 	pid = fork();
 	if (pid < 0)
 	{
@@ -44,15 +55,10 @@ static void	run_single_command(t_cmd *cmd, t_env **env)
 		if (cmd->redir && apply_redirections(cmd) != 0)
 			_exit(1);
 		if (is_builtin(cmd->argv[0]))
-		{
 			run_builtin(cmd->argv, env);
-			_exit(0);
-		}
 		else
-		{
 			execute_command(cmd->argv, *env);
-			_exit(0);
-		}
+		_exit(0);
 	}
 	else
 		waitpid(pid, &status, 0);
@@ -67,7 +73,7 @@ static void	run_shell_line(char *line, t_env **env)
 		free(line);
 		return ;
 	}
-	cmds = parse_pipeline(line);
+	cmds = parse_line(line);
 	free(line);
 	if (!cmds)
 		return ;

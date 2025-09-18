@@ -17,6 +17,17 @@
 
 typedef struct s_redir	t_redir;
 
+typedef enum e_toktype
+{
+    T_WORD,
+    T_PIPE,
+	T_VAR,
+    T_REDIR_IN,
+    T_REDIR_OUT,
+    T_REDIR_APPEND,
+    T_HEREDOC
+}   t_toktype;
+
 typedef struct s_cmd
 {
 	char			**argv;
@@ -24,18 +35,23 @@ typedef struct s_cmd
 	struct s_cmd	*next;
 }				t_cmd;
 
-// ===== parser_pipe =====
-t_cmd	*parse_pipeline(const char *line);
-void	print_cmds(t_cmd *cmds);
+typedef struct s_token
+{
+    char            *value;
+    t_toktype       type;
+    struct s_token  *next;
+}   t_token;
 
-// ===== parser_utils =====
+// ===== parser_line.c =====
+t_cmd 	*parse_line(const char *line);
+
+// ===== tokenizer.c =====
+t_token	*tokenize(const char *line);
+void	free_tokens(t_token *lst);
+
+// ===== parser_tokens.c =====
+t_cmd	*parse_tokens(t_token *tokens);
 void	free_cmds(t_cmd *cmds);
-void	free_redirs(t_redir *redir);
-char	**split_pipes(const char *line);
 
-// ===== parser.c =====
-char	**parse_input(const char *line);
-void	free_argv(char **argv);
-int		is_redirection(const char *s);
 
 #endif // PARSER_H

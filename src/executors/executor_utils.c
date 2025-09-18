@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 19:52:48 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/12 00:51:49 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/09/18 19:23:07 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,4 +69,16 @@ char	**env_to_envp(t_env *env)
 	}
 	envp[i] = NULL;
 	return (envp);
+}
+
+void	free_argv(char **argv)
+{
+	size_t	i;
+
+	if (!argv)
+		return;
+	i = 0;
+	while (argv[i])
+		free(argv[i++]);
+	free(argv);
 }
