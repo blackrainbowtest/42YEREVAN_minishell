@@ -26,9 +26,8 @@ SRC_MAIN := main.c executor.c prompt.c signals.c utils.c path.c \
             executor_utils.c
 
 # Files builtins
-SRC_BUILTINS := builtin_echo.c builtin_cd.c builtin_pwd.c \
-                builtin_env.c builtin_export.c builtin_export_utils.c \
-                builtin_unset.c builtin_exit.c run_builtin.c
+SRC_BUILTINS := echo.c cd.c pwd.c env.c export.c export_utils.c \
+                unset.c exit.c run_builtin.c
 
 # Files parser
 SRC_PARSER := parser_tokens.c tokenizer.c parser_line.c

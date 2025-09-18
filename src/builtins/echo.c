@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_env.c                                      :+:      :+:    :+:   */
+/*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -13,35 +13,40 @@
 #include "minishell.h"
 
 /**
- * TODO: add error when call env <arg>; "env: too many arguments" or 
- * "env: <arg>: No such file or directory"
+ * @brief Implementation of the "echo" builtin command.
+ *
+ * Prints its arguments to the standard output. If the first argument
+ * is "-n", the trailing newline is suppressed. Multiple arguments
+ * are separated by a single space.
+ *
+ * @param args A NULL-terminated array of strings.
+ *             - args[0]: the command name ("echo")
+ *             - args[1..n]: the arguments to be printed
+ *
+ * @return Always returns 0.
+ *
+ * @note This function writes directly to stdout using write().
  */
-int	builtin_env(char **argv, t_env *env)
+int	builtin_echo(char **args)
 {
-	if (argv[1])
+	int	i;
+	int	newline;
+
+	i = 1;
+	newline = 1;
+	if (args[1] && ft_strcmp(args[1], "-n") == 0)
 	{
-		if (argv[2])
-		{
-			ft_putendl_fd("env: too many arguments", 2);
-			return (1);
-		}
-		else
-		{
-			ft_putstr_fd("env: ", 2);
-			ft_putstr_fd(argv[1], 2);
-			ft_putendl_fd(": No such file or directory", 2);
-			return (127);
-		}
+		newline = 0;
+		i = 2;
 	}
-	while (env)
+	while (args[i])
 	{
-		if (env->value)
-		{
-			ft_putstr_fd(env->key, 1);
-			ft_putstr_fd("=", 1);
-			ft_putendl_fd(env->value, 1);
-		}
-		env = env->next;
+		write(1, args[i], ft_strlen(args[i]));
+		if (args[i + 1])
+			write(1, " ", 1);
+		i++;
 	}
+	if (newline)
+		write(1, "\n", 1);
 	return (0);
 }
