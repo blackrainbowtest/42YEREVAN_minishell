@@ -6,36 +6,30 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/20 12:01:26 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/20 16:42:54 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/09/20 20:55:10 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	expand_variables(t_cmd *cmds, t_env *env)
+void	expand_tokens(t_token *tokens, t_env *env)
 {
-	t_cmd	*cmd;
-	int		i;
+	t_token	*tok;
 	char	*expanded;
 
-	cmd = cmds;
-	while (cmd)
+	tok = tokens;
+	while (tok)
 	{
-		i = 0;
-		while (cmd->argv && cmd->argv[i])
+		if (tok->value && tok->value[0] == '$')
 		{
-			if (cmd->argv[i][0] == '$')
+			expanded = expand_one(tok->value, env);
+			if (expanded)
 			{
-				expanded = expand_one(cmd->argv[i], env);
-				if (expanded)
-				{
-					free(cmd->argv[i]);
-					cmd->argv[i] = expanded;
-				}
+				free(tok->value);
+				tok->value = expanded;
 			}
-			i++;
 		}
-		cmd = cmd->next;
+		tok = tok->next;
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/20 12:01:56 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/20 16:42:13 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/09/20 20:55:18 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ typedef struct s_env	t_env;
  * arguments, replacing any occurrences of environment
  * variables (e.g., $VAR) with their corresponding
  */
-void	expand_variables(t_cmd *cmds, t_env *env);
+void	expand_tokens(t_token *tokens, t_env *env);
 
 char	*expand_one(char *arg, t_env *env);
 #endif
