@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 13:23:31 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/18 20:44:37 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/09/20 12:00:46 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ static void	run_single_command(t_cmd *cmd, t_env **env)
 {
 	pid_t	pid;
 	int		status;
+	int		exit_code;
 
 	if (is_builtin(cmd->argv[0]))
 	{
@@ -62,8 +63,22 @@ static void	run_single_command(t_cmd *cmd, t_env **env)
 	}
 	else
 		waitpid(pid, &status, 0);
+	if (WIFEXITED(status))
+		exit_code = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+		exit_code = 128 + WTERMSIG(status);
+	else
+		exit_code = 1;
+	last_status(1, exit_code);
 }
 
+/**
+ * @brief Process and execute a single line of shell input.
+ * This function handles parsing the input line into commands,
+ * executing them (either as a pipeline or a single command),
+ * and cleaning up resources afterwards.
+ * 
+ */
 static void	run_shell_line(char *line, t_env **env)
 {
 	t_cmd	*cmds;
@@ -77,6 +92,7 @@ static void	run_shell_line(char *line, t_env **env)
 	free(line);
 	if (!cmds)
 		return ;
+	expand_variables(cmds, *env);
 	if (cmds->next)
 		execute_pipeline(cmds, env);
 	else
