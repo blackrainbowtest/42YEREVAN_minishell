@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 13:23:38 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/18 19:39:24 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/09/20 12:03:36 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@
 # include "pipeline.h"
 # include "redirections.h"
 # include "debug.h"
+# include "status.h"
+# include "expand.h"
 
 // ===== signals =====
 void	setup_signals(void);
