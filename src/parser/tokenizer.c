@@ -33,7 +33,7 @@
  * @warning Always check the return value for NULL to avoid dereferencing
  *          a failed allocation.
  */
-static t_token *new_token(const char *str, t_toktype type)
+static t_token	*new_token(const char *str, t_toktype type)
 {
 	t_token	*token;
 
@@ -70,7 +70,7 @@ static t_token *new_token(const char *str, t_toktype type)
  * @warning Do not pass a token that is already part of another list, as
  *          this will corrupt the linked structure.
  */
-static void token_add_back(t_token **lst, t_token *new)
+static void	token_add_back(t_token **lst, t_token *new)
 {
 	t_token	*tmp;
 
@@ -107,7 +107,7 @@ static void token_add_back(t_token **lst, t_token *new)
  * @warning Ensure that `*i` initially points to a quote character in `line`.
  * @bug None known.
  */
-static char *read_quoted(const char *line, size_t *i)
+static char	*read_quoted(const char *line, size_t *i)
 {
 	char	quote;
 	size_t	start;
@@ -151,92 +151,92 @@ static char *read_quoted(const char *line, size_t *i)
  */
 t_token	*tokenize(const char *line)
 {
-    t_token	*head;
-    size_t	i; 
+	t_token	*head;
+	size_t	i;
 	size_t	start;
-    char	*token;
+	char	*token;
 
 	head = NULL;
 	i = 0;
-    while (line[i])
-    {
-        while (line[i] == ' ' || line[i] == '\t')
-            i++;
-        if (!line[i])
-            break;
-        if (line[i] == '\'' || line[i] == '"')
-        {
-            token = read_quoted(line, &i);
-            if (!token)
-                return (free_tokens(head), NULL);
-            token_add_back(&head, new_token(token, T_WORD));
-            free(token);
-        }
-        else if (line[i] == '|')
-        {
-            token_add_back(&head, new_token("|", T_PIPE));
-            i++;
-        }
-        else if (line[i] == '<' || line[i] == '>')
-        {
-            if (line[i] == '<' && line[i + 1] == '<')
-            {
-                token_add_back(&head, new_token("<<", T_HEREDOC));
-                i += 2;
-            }
-            else if (line[i] == '>' && line[i + 1] == '>')
-            {
-                token_add_back(&head, new_token(">>", T_REDIR_APPEND));
-                i += 2;
-            }
-            else if (line[i] == '<')
-            {
-                token_add_back(&head, new_token("<", T_REDIR_IN));
-                i++;
-            }
-            else
-            {
-                token_add_back(&head, new_token(">", T_REDIR_OUT));
-                i++;
-            }
-        }
-        // variables $VAR or $?
-        else if (line[i] == '$')
-        {
-            start = i++;
-            if (line[i] == '?') // $? token
-                i++;
-            else
-            {
-                while (line[i] && ((line[i] >= 'A' && line[i] <= 'Z') ||
-                                   (line[i] >= 'a' && line[i] <= 'z') ||
-                                   (line[i] >= '0' && line[i] <= '9') ||
-                                   line[i] == '_'))
-                    i++;
-            }
-            token = malloc(i - start + 1);
-            if (!token)
-                return (free_tokens(head), NULL);
-            ft_strlcpy(token, line + start, i - start + 1);
-            token_add_back(&head, new_token(token, T_VAR));
-            free(token);
-        }
-        else
-        {
-            start = i;
-            while (line[i] && line[i] != ' ' && line[i] != '\t'
-                   && line[i] != '\'' && line[i] != '"'
-                   && line[i] != '|' && line[i] != '<' && line[i] != '>' && line[i] != '$')
-                i++;
-            token = malloc(i - start + 1);
-            if (!token)
-                return (free_tokens(head), NULL);
-            ft_strlcpy(token, line + start, i - start + 1);
-            token_add_back(&head, new_token(token, T_WORD));
-            free(token);
-        }
-    }
-    return head;
+	while (line[i])
+	{
+		while (line[i] == ' ' || line[i] == '\t')
+			i++;
+		if (!line[i])
+			break ;
+		if (line[i] == '\'' || line[i] == '"')
+		{
+			token = read_quoted(line, &i);
+			if (!token)
+				return (free_tokens(head), NULL);
+			token_add_back(&head, new_token(token, T_WORD));
+			free(token);
+		}
+		else if (line[i] == '|')
+		{
+			token_add_back(&head, new_token("|", T_PIPE));
+			i++;
+		}
+		else if (line[i] == '<' || line[i] == '>')
+		{
+			if (line[i] == '<' && line[i + 1] == '<')
+			{
+				token_add_back(&head, new_token("<<", T_HEREDOC));
+				i += 2;
+			}
+			else if (line[i] == '>' && line[i + 1] == '>')
+			{
+				token_add_back(&head, new_token(">>", T_REDIR_APPEND));
+				i += 2;
+			}
+			else if (line[i] == '<')
+			{
+				token_add_back(&head, new_token("<", T_REDIR_IN));
+				i++;
+			}
+			else
+			{
+				token_add_back(&head, new_token(">", T_REDIR_OUT));
+				i++;
+			}
+		}
+		else if (line[i] == '$')
+		{
+			start = i++;
+			if (line[i] == '?')
+				i++;
+			else
+			{
+				while (line[i] && ((line[i] >= 'A' && line[i] <= 'Z')
+						|| (line[i] >= 'a' && line[i] <= 'z')
+						|| (line[i] >= '0' && line[i] <= '9')
+						|| line[i] == '_'))
+					i++;
+			}
+			token = malloc(i - start + 1);
+			if (!token)
+				return (free_tokens(head), NULL);
+			ft_strlcpy(token, line + start, i - start + 1);
+			token_add_back(&head, new_token(token, T_VAR));
+			free(token);
+		}
+		else
+		{
+			start = i;
+			while (line[i] && line[i] != ' ' && line[i] != '\t'
+				&& line[i] != '\'' && line[i] != '"'
+				&& line[i] != '|' && line[i] != '<' && line[i] != '>'
+				&& line[i] != '$')
+				i++;
+			token = malloc(i - start + 1);
+			if (!token)
+				return (free_tokens(head), NULL);
+			ft_strlcpy(token, line + start, i - start + 1);
+			token_add_back(&head, new_token(token, T_WORD));
+			free(token);
+		}
+	}
+	return (head);
 }
 
 /**
