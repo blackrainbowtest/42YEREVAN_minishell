@@ -41,6 +41,10 @@ SRC_REDIRECTION := apply_redirections.c open_files.c utils_redir.c
 
 SRC_DEBUG := debug_parser.c
 
+SRC_STATUS := status.c
+
+SRC_VARS := expand.c
+
 # Формируем полные пути
 SRC :=  $(addprefix $(SRC_DIR)/, $(SRC_MAIN)) \
 		$(addprefix $(SRC_DIR)/builtins/, $(SRC_BUILTINS)) \
@@ -48,7 +52,9 @@ SRC :=  $(addprefix $(SRC_DIR)/, $(SRC_MAIN)) \
 		$(addprefix $(SRC_DIR)/parser/, $(SRC_PARSER)) \
 		$(addprefix $(SRC_DIR)/executors/, $(SRC_EXECUTION)) \
 		$(addprefix $(SRC_DIR)/redirections/, $(SRC_REDIRECTION)) \
-		$(addprefix $(SRC_DIR)/debug/, $(SRC_DEBUG))
+		$(addprefix $(SRC_DIR)/debug/, $(SRC_DEBUG)) \
+		$(addprefix $(SRC_DIR)/status/, $(SRC_STATUS)) \
+		$(addprefix $(SRC_DIR)/vars/, $(SRC_VARS))
 
 # Quiet build
 QUIET = $(if $(filter 0,$(VERBOSE)),@,)
