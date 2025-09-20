@@ -71,22 +71,38 @@ void	debug_print_cmds(t_cmd *cmds)
 
 		if (cmds->argv)
 		{
-			i = 0;
-			while (cmds->argv[i])
-			{
+			i = -1;
+			while (cmds->argv[++i])
 				printf("  argv[%d]: %s\n", i, cmds->argv[i]);
-				i++;
-			}
 		}
 		r = cmds->redir;
 		while (r)
 		{
 			printf("  redir: type=%s, file=%s\n",
-					redir_type_to_str(r->type), r->file);
+				redir_type_to_str(r->type), r->file);
 			r = r->next;
 		}
 		cmds = cmds->next;
 		if (cmds)
 			printf("--- PIPE ---\n");
+	}
+}
+
+void	debug_print_cmd_args(t_cmd *cmds)
+{
+	t_cmd	*cmd;
+	int		i;
+
+	cmd = cmds;
+	while (cmd)
+	{
+		printf("=== Command ===\n");
+		i = 0;
+		while (cmd->argv && cmd->argv[i])
+		{
+			printf("  argv[%d]: %s\n", i, cmd->argv[i]);
+			i++;
+		}
+		cmd = cmd->next;
 	}
 }

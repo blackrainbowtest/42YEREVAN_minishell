@@ -20,5 +20,6 @@ typedef struct s_token	t_token;
 
 void	debug_print_cmds(t_cmd *cmds);
 void	print_tokens(t_token *tokens);
+void	debug_print_cmd_args(t_cmd *cmds);
 
 #endif
