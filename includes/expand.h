@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/20 12:01:56 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/20 12:03:24 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/09/20 16:42:13 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,4 +22,6 @@ typedef struct s_env	t_env;
  * variables (e.g., $VAR) with their corresponding
  */
 void	expand_variables(t_cmd *cmds, t_env *env);
+
+char	*expand_one(char *arg, t_env *env);
 #endif

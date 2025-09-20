@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 15:38:18 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/14 16:59:12 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/09/20 16:41:03 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ static int	spawn_and_wait(char *path, char **argv, t_env *env)
 	pid_t	pid;
 	int		status;
 	char	**envp;
+	int		exit_code;
 
 	envp = env_to_envp(env);
 	if (!envp)
@@ -45,13 +46,17 @@ static int	spawn_and_wait(char *path, char **argv, t_env *env)
 	if (waitpid(pid, &status, 0) < 0)
 	{
 		perror("waitpid");
+		last_status(1, 1);
 		return (1);
 	}
 	if (WIFEXITED(status))
-		return (WEXITSTATUS(status));
-	if (WIFSIGNALED(status))
-		return (128 + WTERMSIG(status));
-	return (1);
+		exit_code = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+		exit_code = 128 + WTERMSIG(status);
+	else
+		exit_code = 1;
+	last_status(1, exit_code);
+	return (exit_code);
 }
 
 int	execute_command(char **argv, t_env *env)
