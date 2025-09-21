@@ -25,6 +25,6 @@
  * @param new_value The new status (used only if mode == 1).
  * @return The current stored status.
  */
-int last_status(int mode, int new_value);
+int  last_status(int mode, int new_value);
 
 #endif
