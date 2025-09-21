@@ -87,6 +87,30 @@ static void	token_add_back(t_token **lst, t_token *new)
 	}
 }
 
+static void	token_add_last(t_token **lst, char *str)
+{
+	t_token	*tmp;
+	char	*new_value;
+
+	if (!lst || !*lst)
+		return ;
+	tmp = *lst;
+	while (tmp->next)
+		tmp = tmp->next;
+	new_value = ft_strjoin(tmp->value, str);
+	free(tmp->value);
+	tmp->value = new_value;
+}
+
+t_token	*get_last_token(t_token *lst)
+{
+	if (!lst)
+		return (NULL);
+	while (lst->next)
+		lst = lst->next;
+	return (lst);
+}
+
 /**
  * @brief Extracts a substring enclosed in quotes from a given line.
  *
@@ -169,7 +193,12 @@ t_token	*tokenize(const char *line)
 			token = read_quoted(line, &i);
 			if (!token)
 				return (free_tokens(head), NULL);
-			token_add_back(&head, new_token(token, T_WORD));
+			if (get_last_token(head) && get_last_token(head)->type == T_WORD
+				&& line[i - ft_strlen(token) - 3] != ' '
+				&& line[i - ft_strlen(token) - 3] != '\t')
+				token_add_last(&head, token);
+			else
+				token_add_back(&head, new_token(token, T_WORD));
 			free(token);
 		}
 		else if (line[i] == '|')
