@@ -76,7 +76,7 @@ void	free_argv(char **argv)
 	size_t	i;
 
 	if (!argv)
-		return;
+		return ;
 	i = 0;
 	while (argv[i])
 		free(argv[i++]);
