@@ -25,7 +25,7 @@ static const char	*redir_type_to_str(t_redir_type type)
 	return ("UNKNOWN");
 }
 
-const char *toktype_to_str(t_toktype type)
+const	char *toktype_to_str(t_toktype type)
 {
 	if (type == T_WORD)
 		return ("T_WORD");
@@ -52,7 +52,7 @@ void	print_tokens(t_token *tokens)
 	printf("=== TOKENS ===\n");
 	while (tokens)
 	{
-		printf("[%d] type=%s, value='%s'\n", 
+		printf("[%d] type=%s, value='%s'\n",
 			i, toktype_to_str(tokens->type), tokens->value);
 		tokens = tokens->next;
 		i++;
@@ -68,7 +68,6 @@ void	debug_print_cmds(t_cmd *cmds)
 	while (cmds)
 	{
 		printf("=== Command ===\n");
-
 		if (cmds->argv)
 		{
 			i = -1;
