@@ -33,7 +33,7 @@ void	export_update_env(char *arg, t_env **env, char *eq, int *status)
 	}
 }
 
-int env_size(t_env *env)
+int	env_size(t_env *env)
 {
 	int count;
 
@@ -125,3 +125,4 @@ void	print_sorted_env(t_env *env, char **keys)
 		i++;
 	}
 }
+
