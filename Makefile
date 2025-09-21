@@ -17,6 +17,7 @@ LIBFT     := $(LIBFT_DIR)/libft.a
 
 # Compiler
 CC      := cc
+# -g3 -fsanitize=address,undefined,leak
 CFLAGS  := -Wall -Wextra -Werror -I$(INC_DIR) -I$(LIBFT_DIR)
 LIBS    := -lreadline -lncurses
 RM      := rm -f
