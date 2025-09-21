@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 /**
  * @brief Adds a new argument string to a command structure.
  *
@@ -37,7 +36,8 @@
  * @todo Improve error handling to free partially allocated arrays if `ft_strdup`
  *       fails.
  */
-static int add_arg(t_cmd *cmd, const char *value)
+
+static int	add_arg(t_cmd *cmd, const char *value)
 {
 	int		argc;
 	char	**new_argv;
@@ -66,7 +66,7 @@ static int add_arg(t_cmd *cmd, const char *value)
 }
 
 // Добавляет редирект к команде
-static int add_redir(t_cmd *cmd, t_toktype type, const char *file)
+static int	add_redir(t_cmd *cmd, t_toktype type, const char *file)
 {
 	t_redir	*new_redir;
 	t_redir	*tmp;
@@ -94,25 +94,25 @@ static int add_redir(t_cmd *cmd, t_toktype type, const char *file)
 	return (0);
 }
 
-static t_cmd *new_cmd(void)
+static t_cmd	*new_cmd(void)
 {
-    t_cmd *cmd;
+	t_cmd	*cmd;
 
-    cmd = malloc(sizeof(t_cmd));
-    if (!cmd)
-        return (NULL);
-    cmd->argv = NULL;
-    cmd->redir = NULL;
-    cmd->next = NULL;
-    return (cmd);
+	cmd = malloc(sizeof(t_cmd));
+	if (!cmd)
+		return (NULL);
+	cmd->argv = NULL;
+	cmd->redir = NULL;
+	cmd->next = NULL;
+	return (cmd);
 }
 
 // Основная функция парсинга токенов
-t_cmd *parse_tokens(t_token *tokens)
+t_cmd	*parse_tokens(t_token *tokens)
 {
-	t_cmd   *head;
-	t_cmd   *cur;
-	t_token *tok;
+	t_cmd	*head;
+	t_cmd	*cur;
+	t_token	*tok;
 
 	head = NULL;
 	cur = NULL;
@@ -133,7 +133,7 @@ t_cmd *parse_tokens(t_token *tokens)
 				return (free_cmds(head), NULL);
 		}
 		else if (tok->type == T_REDIR_IN || tok->type == T_REDIR_OUT
-				|| tok->type == T_REDIR_APPEND || tok->type == T_HEREDOC)
+			|| tok->type == T_REDIR_APPEND || tok->type == T_HEREDOC)
 		{
 			if (!tok->next || tok->next->type != T_WORD)
 			{
@@ -142,7 +142,7 @@ t_cmd *parse_tokens(t_token *tokens)
 			}
 			if (add_redir(cur, tok->type, tok->next->value) < 0)
 				return (free_cmds(head), NULL);
-			tok = tok->next; // пропускаем имя файла
+			tok = tok->next;
 		}
 		else if (tok->type == T_PIPE)
 		{
@@ -157,7 +157,7 @@ t_cmd *parse_tokens(t_token *tokens)
 }
 
 // Очистка списка команд
-void free_cmds(t_cmd *cmds)
+void	free_cmds(t_cmd *cmds)
 {
 	t_cmd	*tmp;
 	t_redir	*r;
@@ -184,3 +184,4 @@ void free_cmds(t_cmd *cmds)
 		cmds = tmp;
 	}
 }
+
