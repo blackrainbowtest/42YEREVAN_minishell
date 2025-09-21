@@ -40,7 +40,6 @@ char	*expand_one(char *arg, t_env *env)
 
 	if (ft_strcmp(arg, "$?") == 0)
 		return (ft_itoa(last_status(0, 0)));
-
 	if (arg[0] == '$' && arg[1])
 	{
 		name = arg + 1;
