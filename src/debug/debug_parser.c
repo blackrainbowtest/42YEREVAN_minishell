@@ -25,7 +25,7 @@ static const char	*redir_type_to_str(t_redir_type type)
 	return ("UNKNOWN");
 }
 
-const	char *toktype_to_str(t_toktype type)
+const char	*toktype_to_str(t_toktype type)
 {
 	if (type == T_WORD)
 		return ("T_WORD");

@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 19:39:32 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/20 11:37:43 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/09/21 17:04:34 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,16 +42,16 @@ int	is_numeric_arg(char *arg)
 	int	i;
 
 	if (!arg || !*arg)
-		return (0);
+		return (1);
 	i = 0;
 	if (arg[i] == '-' || arg[i] == '+')
 		i++;
 	if (!arg[i])
-		return (0);
+		return (1);
 	while (arg[i])
 	{
 		if (!ft_isdigit(arg[i]))
-			return (0);
+			return (1);
 		i++;
 	}
 	return (1);

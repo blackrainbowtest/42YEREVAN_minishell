@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/20 11:33:16 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/20 11:33:19 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/09/21 17:11:17 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,6 @@
  * @param new_value The new status (used only if mode == 1).
  * @return The current stored status.
  */
-int  last_status(int mode, int new_value);
+int	last_status(int mode, int new_value);
 
 #endif
