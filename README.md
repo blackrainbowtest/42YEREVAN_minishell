@@ -97,3 +97,9 @@ These files are **not** part of the final 42 project.
 git clone https://github.com/LucasKuhn/minishell_tester.git
 cd minishell_tester
 ./tester
+
+## TODOS
+- fix not updating the code inside the single quotes 
+- fix exit codes
+- fix <<-s
+- check leaks
