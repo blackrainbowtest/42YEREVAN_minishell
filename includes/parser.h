@@ -53,6 +53,4 @@ void	free_tokens(t_token *lst);
 // ===== parser_tokens.c =====
 t_cmd	*parse_tokens(t_token *tokens);
 void	free_cmds(t_cmd *cmds);
-
-
 #endif // PARSER_H
