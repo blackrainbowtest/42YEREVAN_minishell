@@ -181,8 +181,8 @@ t_token	*tokenize(const char *line)
 	size_t		start;
 	t_token		*qtoken;
 	int			quote_start;
-	char		quote;
-	t_toktype	type;
+	char		*token;
+	t_token		*last;
 
 	head = NULL;
 	i = 0;
@@ -195,12 +195,12 @@ t_token	*tokenize(const char *line)
 		if (line[i] == '\'' || line[i] == '"')
 		{
 			quote_start = i;
-			*qtoken = read_quoted(line, &i);
+			qtoken = read_quoted(line, &i);
 			if (!qtoken)
 				return (free_tokens(head), NULL);
-			if (get_last_token(head) && get_last_token(head)->type == T_WORD
-				|| get_last_token(head)->type == T_SQUOTE
-				|| get_last_token(head)->type == T_DQUOTE
+			last = get_last_token(head);
+			if (last
+				&& (last->type == T_WORD || last->type == T_DQUOTE)
 				&& line[quote_start - 1] != ' '
 				&& line[quote_start - 1] != '\t')
 			{
