@@ -36,6 +36,7 @@ typedef struct s_redir
 {
 	char			*file;
 	int				type;
+    int             expand;
 	struct s_redir	*next;
 }				t_redir;
 

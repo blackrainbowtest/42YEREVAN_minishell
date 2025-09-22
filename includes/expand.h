@@ -23,5 +23,5 @@ typedef struct s_env	t_env;
  */
 void	expand_tokens(t_token *tokens, t_env *env);
 
-char	*expand_one(char *arg, t_env *env);
+char	*expand_string(const char *str, t_env *env);
 #endif

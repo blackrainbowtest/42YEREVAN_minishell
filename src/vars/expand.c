@@ -12,41 +12,68 @@
 
 #include "minishell.h"
 
-void	expand_tokens(t_token *tokens, t_env *env)
+void expand_tokens(t_token *tokens, t_env *env)
 {
-	t_token	*tok;
-	char	*expanded;
+    t_token *tok;
+    char    *expanded;
 
-	tok = tokens;
-	while (tok)
-	{
-		if (tok->value && tok->value[0] == '$')
-		{
-			expanded = expand_one(tok->value, env);
-			if (expanded)
-			{
-				free(tok->value);
-				tok->value = expanded;
-			}
-		}
-		tok = tok->next;
-	}
+    tok = tokens;
+    while (tok)
+    {
+        if (tok->type == T_SQUOTE)
+        {
+        }
+        else if (tok->type == T_DQUOTE || tok->type == T_WORD || tok->type == T_VAR)
+        {
+            expanded = expand_string(tok->value, env);
+            if (expanded)
+            {
+                free(tok->value);
+                tok->value = expanded;
+            }
+        }
+        tok = tok->next;
+    }
 }
 
-char	*expand_one(char *arg, t_env *env)
+char *expand_string(const char *str, t_env *env)
 {
-	char	*name;
-	char	*value;
+    size_t  i = 0;
+    char    *result = ft_strdup("");
+    char    *tmp;
 
-	if (ft_strcmp(arg, "$?") == 0)
-		return (ft_itoa(last_status(0, 0)));
-	if (arg[0] == '$' && arg[1])
-	{
-		name = arg + 1;
-		value = ft_getenv(env, name);
-		if (value)
-			return (ft_strdup(value));
-		return (ft_strdup(""));
-	}
-	return (ft_strdup(arg));
+    while (str[i])
+    {
+        if (str[i] == '$')
+        {
+            size_t start = ++i;
+            if (str[i] == '?')
+            {
+                tmp = ft_itoa(last_status(0, 0));
+                i++;
+            }
+            else
+            {
+                while (str[i] && (ft_isalnum(str[i]) || str[i] == '_'))
+                    i++;
+                char *name = ft_substr(str, start, i - start);
+                char *val = ft_getenv(env, name);
+                free(name);
+                tmp = val ? ft_strdup(val) : ft_strdup("");
+            }
+            char *joined = ft_strjoin(result, tmp);
+            free(result);
+            free(tmp);
+            result = joined;
+        }
+        else
+        {
+            char buf[2] = {str[i], 0};
+            char *joined = ft_strjoin(result, buf);
+            free(result);
+            result = joined;
+            i++;
+        }
+    }
+    return (result);
 }

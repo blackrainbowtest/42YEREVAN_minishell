@@ -131,27 +131,28 @@ t_token	*get_last_token(t_token *lst)
  * @warning Ensure that `*i` initially points to a quote character in `line`.
  * @bug None known.
  */
-static char	*read_quoted(const char *line, size_t *i)
+static t_token *read_quoted(const char *line, size_t *i)
 {
-	char	quote;
-	size_t	start;
-	size_t	len;
-	char	*token;
+	char		quote;
+	size_t		start;
+	t_toktype	type;
+	char		*substr;
 
 	quote = line[*i];
+	if (quote == '\'') 
+		type = T_SQUOTE;
+	else
+		type = T_DQUOTE;
 	start = ++(*i);
-	len = 0;
 	while (line[*i] && line[*i] != quote)
 		(*i)++;
 	if (!line[*i])
 		return (NULL);
-	len = *i - start;
-	token = malloc(len + 1);
-	if (!token)
-		return (NULL);
-	ft_strlcpy(token, line + start, len + 1);
+	substr = ft_substr(line, start, *i - start);
 	(*i)++;
-	return (token);
+	if (!substr)
+		return (NULL);
+	return (new_token(substr, type));
 }
 
 /**
@@ -175,10 +176,13 @@ static char	*read_quoted(const char *line, size_t *i)
  */
 t_token	*tokenize(const char *line)
 {
-	t_token	*head;
-	size_t	i;
-	size_t	start;
-	char	*token;
+	t_token		*head;
+	size_t		i;
+	size_t		start;
+	t_token		*qtoken;
+	int			quote_start;
+	char		quote;
+	t_toktype	type;
 
 	head = NULL;
 	i = 0;
@@ -190,16 +194,22 @@ t_token	*tokenize(const char *line)
 			break ;
 		if (line[i] == '\'' || line[i] == '"')
 		{
-			token = read_quoted(line, &i);
-			if (!token)
+			quote_start = i;
+			*qtoken = read_quoted(line, &i);
+			if (!qtoken)
 				return (free_tokens(head), NULL);
 			if (get_last_token(head) && get_last_token(head)->type == T_WORD
-				&& line[i - ft_strlen(token) - 3] != ' '
-				&& line[i - ft_strlen(token) - 3] != '\t')
-				token_add_last(&head, token);
+				|| get_last_token(head)->type == T_SQUOTE
+				|| get_last_token(head)->type == T_DQUOTE
+				&& line[quote_start - 1] != ' '
+				&& line[quote_start - 1] != '\t')
+			{
+				token_add_last(&head, qtoken->value);
+				free(qtoken->value);
+				free(qtoken);
+			}
 			else
-				token_add_back(&head, new_token(token, T_WORD));
-			free(token);
+				token_add_back(&head, qtoken);
 		}
 		else if (line[i] == '|')
 		{

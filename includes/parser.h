@@ -23,6 +23,8 @@ typedef enum e_toktype
 	T_WORD,
 	T_PIPE,
 	T_VAR,
+	T_SQUOTE,
+	T_DQUOTE,
 	T_REDIR_IN,
 	T_REDIR_OUT,
 	T_REDIR_APPEND,
