@@ -125,5 +125,3 @@ void	print_sorted_env(t_env *env, char **keys)
 		i++;
 	}
 }
-
-
