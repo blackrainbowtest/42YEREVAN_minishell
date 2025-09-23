@@ -67,7 +67,7 @@ void	debug_print_cmds(t_cmd *cmds)
 
 	while (cmds)
 	{
-		printf("=== Command ===\n");
+		printf("\033[32m=== Command ===\033[0m\n");
 		if (cmds->argv)
 		{
 			i = -1;
@@ -84,6 +84,7 @@ void	debug_print_cmds(t_cmd *cmds)
 		cmds = cmds->next;
 		if (cmds)
 			printf("--- PIPE ---\n");
+		printf("\033[32m=== END Command ===\033[0m\n");
 	}
 }
 
