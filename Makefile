@@ -11,7 +11,7 @@ Y   = \033[33m
 NAME    := minishell
 SRC_DIR := src
 INC_DIR := includes
-DEBUGING := 1
+DEBUGING := 0
 
 LIBFT_DIR := libft
 LIBFT     := $(LIBFT_DIR)/libft.a

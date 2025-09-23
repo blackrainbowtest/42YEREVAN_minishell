@@ -127,7 +127,7 @@ t_cmd	*parse_tokens(t_token *tokens)
 			if (!head)
 				head = cur;
 		}
-		if (tok->type == T_WORD || tok->type == T_VAR)
+		if (tok->type == T_WORD || tok->type == T_VAR || tok->type == T_DQUOTE || tok->type == T_SQUOTE)
 		{
 			if (add_arg(cur, tok->value) < 0)
 				return (free_cmds(head), NULL);
