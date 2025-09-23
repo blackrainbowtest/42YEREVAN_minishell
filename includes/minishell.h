@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 13:23:38 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/23 19:52:33 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/09/24 00:12:53 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@
 # include "redirections.h"
 # include "debug.h"
 # include "status.h"
-# include "expand.h"
 # include "token.h"
 
 // ===== signals =====

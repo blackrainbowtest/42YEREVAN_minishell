@@ -13,7 +13,9 @@
 #ifndef DEBUG_H
 # define DEBUG_H
 
-# define DEBUGING 0
+# ifndef DEBUGING
+#  define DEBUGING 0
+# endif
 
 typedef struct s_cmd	t_cmd;
 typedef struct s_token	t_token;
@@ -21,5 +23,6 @@ typedef struct s_token	t_token;
 void	debug_print_cmds(t_cmd *cmds);
 void	print_tokens(t_token *tokens);
 void	debug_print_cmd_args(t_cmd *cmds);
+void	debug_print_tokens(t_token *tokens);
 
 #endif

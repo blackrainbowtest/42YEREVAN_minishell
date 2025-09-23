@@ -11,6 +11,7 @@ Y   = \033[33m
 NAME    := minishell
 SRC_DIR := src
 INC_DIR := includes
+DEBUGING := 1
 
 LIBFT_DIR := libft
 LIBFT     := $(LIBFT_DIR)/libft.a
@@ -18,7 +19,7 @@ LIBFT     := $(LIBFT_DIR)/libft.a
 # Compiler
 CC      := cc
 # -g3 -fsanitize=address,undefined,leak
-CFLAGS  := -Wall -Wextra -Werror -I$(INC_DIR) -I$(LIBFT_DIR)
+CFLAGS  := -Wall -Wextra -Werror -I$(INC_DIR) -I$(LIBFT_DIR) -DDEBUGING=$(DEBUGING)
 LIBS    := -lreadline -lncurses
 RM      := rm -f
 
@@ -36,7 +37,7 @@ SRC_BUILTINS := echo.c cd.c pwd.c env.c export.c export_utils.c \
 SRC_PARSER := parser_tokens.c parser_line.c \
 				tokenizer.c token_free.c token_helper.c \
 				token_quote.c token_list.c \
-				expand.c
+				expand_tokens.c expand_utils.c
 
 # Files env
 SRC_ENV := env.c env_utils.c
@@ -46,7 +47,7 @@ SRC_EXECUTION := execute_pipeline.c executor.c executor_utils.c
 
 SRC_REDIRECTION := apply_redirections.c open_files.c utils_redir.c
 
-SRC_DEBUG := debug_parser.c
+SRC_DEBUG := debug_parser.c debug_tokens.c
 
 SRC_STATUS := status.c
 
@@ -68,6 +69,12 @@ OBJS := $(addprefix $(OBJ_DIR)/,$(SRC:.c=.o))
 
 # Default target
 all: $(NAME)
+
+# Valgrind check
+val: CFLAGS += -g3
+val: all
+	@printf "$(G)[VALGRIND] Running Valgrind on $(NAME)..."$(RST)"\n"
+	valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all ./$(NAME)
 
 # Create binary
 $(NAME): $(OBJS) $(LIBFT)
