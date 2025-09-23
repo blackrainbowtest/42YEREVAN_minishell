@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 23:07:48 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/20 20:51:47 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/09/23 19:52:08 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 
 typedef struct s_redir	t_redir;
 typedef struct s_env	t_env;
+typedef struct s_token	t_token;
 
 typedef struct s_cmd
 {
@@ -24,13 +25,6 @@ typedef struct s_cmd
 	t_redir			*redir;
 	struct s_cmd	*next;
 }				t_cmd;
-
-typedef struct s_token
-{
-	char			*value;
-	t_toktype		type;
-	struct s_token	*next;
-}				t_token;
 
 // ===== parser_line.c =====
 t_cmd	*parse_line(const char *line, t_env *env);

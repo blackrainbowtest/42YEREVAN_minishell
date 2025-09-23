@@ -15,9 +15,6 @@
 
 # include <stddef.h>
 
-typedef struct s_token	t_token;
-typedef struct e_toktype	t_toktype;
-
 typedef enum e_toktype
 {
 	T_WORD,
@@ -30,6 +27,13 @@ typedef enum e_toktype
 	T_REDIR_APPEND,
 	T_HEREDOC
 }			t_toktype;
+
+typedef struct s_token
+{
+	char			*value;
+	t_toktype		type;
+	struct s_token	*next;
+}				t_token;
 
 // ===== token_free.c =====
 void		free_tokens(t_token *lst);
@@ -51,7 +55,7 @@ t_token		*get_last_token(t_token *lst);
 t_toktype	get_quote_type(char quote);
 size_t		get_quoted_length(const char *line, size_t start, char quote);
 t_token		*handle_unclosed_quote(char quote);
-t_token 	*read_quoted(const char *line, size_t *i);
+t_token		*read_quoted(const char *line, size_t *i);
 
 // ===== tokenizer.c =====
 t_token		*tokenize(const char *line);
