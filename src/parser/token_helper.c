@@ -40,7 +40,7 @@ void	add_operator_token(t_token **head, const char *line, size_t *i)
 		token_add_back(head, new_token(">", T_REDIR_OUT)), (*i)++;
 }
 
-void add_var_token(t_token **head, const char *line, size_t *i)
+void	add_var_token(t_token **head, const char *line, size_t *i)
 {
 	size_t	start;
 	char	*token;
@@ -56,7 +56,7 @@ void add_var_token(t_token **head, const char *line, size_t *i)
 	free(token);
 }
 
-void add_word_token(t_token **head, const char *line, size_t *i)
+void	add_word_token(t_token **head, const char *line, size_t *i)
 {
 	size_t	start;
 	char	*token;

@@ -18,19 +18,6 @@
 typedef struct s_redir	t_redir;
 typedef struct s_env	t_env;
 
-typedef enum e_toktype
-{
-	T_WORD,
-	T_PIPE,
-	T_VAR,
-	T_SQUOTE,
-	T_DQUOTE,
-	T_REDIR_IN,
-	T_REDIR_OUT,
-	T_REDIR_APPEND,
-	T_HEREDOC
-}			t_toktype;
-
 typedef struct s_cmd
 {
 	char			**argv;
@@ -47,10 +34,6 @@ typedef struct s_token
 
 // ===== parser_line.c =====
 t_cmd	*parse_line(const char *line, t_env *env);
-
-// ===== tokenizer.c =====
-t_token	*tokenize(const char *line);
-void	free_tokens(t_token *lst);
 
 // ===== parser_tokens.c =====
 t_cmd	*parse_tokens(t_token *tokens);
