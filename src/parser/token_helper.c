@@ -20,7 +20,9 @@ void	skip_whitespace(const char *line, size_t *i)
 
 void	add_quoted_token(t_token **head, const char *line, size_t *i)
 {
-	t_token *qtoken = read_quoted(line, i);
+	t_token	*qtoken;
+
+	qtoken = read_quoted(line, i);
 	if (!qtoken)
 		return ;
 	token_add_back(head, qtoken);
@@ -29,15 +31,30 @@ void	add_quoted_token(t_token **head, const char *line, size_t *i)
 void	add_operator_token(t_token **head, const char *line, size_t *i)
 {
 	if (line[*i] == '|' )
-		token_add_back(head, new_token("|", T_PIPE)), (*i)++;
+	{
+		token_add_back(head, new_token("|", T_PIPE));
+		(*i)++;
+	}
 	else if (line[*i] == '<' && line[*i + 1] == '<')
-		token_add_back(head, new_token("<<", T_HEREDOC)), (*i)+=2;
+	{
+		token_add_back(head, new_token("<<", T_HEREDOC));
+		(*i) += 2;
+	}
 	else if (line[*i] == '<')
-		token_add_back(head, new_token("<", T_REDIR_IN)), (*i)++;
+	{
+		token_add_back(head, new_token("<", T_REDIR_IN));
+		(*i)++;
+	}
 	else if (line[*i] == '>' && line[*i + 1] == '>')
-		token_add_back(head, new_token(">>", T_REDIR_APPEND)), (*i)+=2;
+	{
+		token_add_back(head, new_token(">>", T_REDIR_APPEND));
+		(*i) += 2;
+	}
 	else if (line[*i] == '>')
-		token_add_back(head, new_token(">", T_REDIR_OUT)), (*i)++;
+	{
+		token_add_back(head, new_token(">", T_REDIR_OUT));
+		(*i)++;
+	}
 }
 
 void	add_var_token(t_token **head, const char *line, size_t *i)
