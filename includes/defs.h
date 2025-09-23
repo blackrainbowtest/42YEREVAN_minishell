@@ -18,4 +18,6 @@
 # define PWD_CRWD "minishell: pwd: cannot retrieve working directory\n"
 # define EXP_AERR "minishell: export: %s: allocation error\n"
 
+# define ERR_SYN_EOF "minishell: syntax error: unexpected EOF while looking for matching `%c`\n"
+
 #endif // DEFS_H

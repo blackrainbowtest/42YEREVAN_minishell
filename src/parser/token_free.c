@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenizer.c                                        :+:      :+:    :+:   */
+/*   token_free.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,27 +12,16 @@
 
 #include "minishell.h"
 
-t_token	*tokenize(const char *line)
+void	free_tokens(t_token *lst)
 {
-	t_token	*head;
-	size_t	i;
+	t_token	*tmp;
 
-	head = NULL;
-	i = 0;
-	while (line[i])
+	while (lst)
 	{
-		skip_whitespace(line, &i);
-		if (!line[i])
-			break;
-
-		if (line[i] == '\'' || line[i] == '"')
-			add_quoted_token(&head, line, &i);
-		else if (line[i] == '|' || line[i] == '<' || line[i] == '>')
-			add_operator_token(&head, line, &i);
-		else if (line[i] == '$')
-			add_var_token(&head, line, &i);
-		else
-			add_word_token(&head, line, &i);
+		tmp = lst->next;
+		free(lst->value);
+		lst->value = NULL;
+		free(lst);
+		lst = tmp;
 	}
-	return head;
 }
