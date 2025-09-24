@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 00:02:38 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/24 00:53:54 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/09/24 20:07:26 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,9 @@ void	debug_print_tokens(t_token *tokens)
 	i = 0;
 	while (tok)
 	{
-		printf("[%02d] type=\033[33m%s\033[0m, space_before=%d,
-			value=\033[32m'%s'\033[0m\n", i, toktype_to_str(tok->type),
-			tok->space_before, tok->value);
+		printf("[%02d] type=\033[33m%s\033[0m, space_before=%d, \
+			value=\033[32m'%s'\033[0m\n",
+			i, toktype_to_str(tok->type), tok->space_before, tok->value);
 		tok = tok->next;
 		i++;
 	}
