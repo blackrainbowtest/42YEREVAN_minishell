@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 13:23:31 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/24 23:40:23 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/09/25 02:03:15 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ static void	run_single_command(t_cmd *cmd, t_env **env)
  * and cleaning up resources afterwards.
  * 
  */
-static void	run_shell_line(char *line, t_env **env)
+static void	run_shell_line(char *line, t_env **env, t_env **locals)
 {
 	t_cmd	*cmds;
 
@@ -88,7 +88,7 @@ static void	run_shell_line(char *line, t_env **env)
 		free(line);
 		return ;
 	}
-	cmds = parse_line(line, *env);
+	cmds = parse_line(line, *env, *locals);
 	free(line);
 	if (!cmds)
 		return ;
@@ -99,7 +99,7 @@ static void	run_shell_line(char *line, t_env **env)
 	free_cmds(cmds);
 }
 
-static void	run_shell_loop(t_env **env)
+static void	run_shell_loop(t_env **env, t_env **locals)
 {
 	char	*line;
 
@@ -108,7 +108,7 @@ static void	run_shell_loop(t_env **env)
 		line = read_prompt();
 		if (!line)
 			break ;
-		run_shell_line(line, env);
+		run_shell_line(line, env, locals);
 	}
 }
 
@@ -119,7 +119,6 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	(void)argv;
-	(void)locals;
 	env = init_env(envp);
 	locals = NULL;
 	last_status(1, 0);
@@ -129,7 +128,8 @@ int	main(int argc, char **argv, char **envp)
 		return (1);
 	}
 	setup_signals();
-	run_shell_loop(&env);
+	run_shell_loop(&env, &locals);
 	free_env(env);
+	free_locals(locals);
 	return (EXIT_SUCCESS);
 }

@@ -34,7 +34,7 @@ SRC_BUILTINS := echo.c cd.c pwd.c env.c export.c export_utils.c \
                 unset.c exit.c run_builtin.c
 
 # Files parser
-SRC_PARSER := parser_tokens.c parser_line.c \
+SRC_PARSER := parse_tokens.c parse_utils.c parser_line.c \
 				tokenizer.c token_free.c token_helper.c \
 				token_quote.c token_list.c \
 				expand_tokens.c expand_utils.c
