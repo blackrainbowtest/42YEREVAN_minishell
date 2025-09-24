@@ -12,10 +12,17 @@
 
 #include "minishell.h"
 
-void	skip_whitespace(const char *line, size_t *i)
+int	skip_whitespace(const char *line, size_t *i)
 {
+	int	skipped;
+
+	skipped = 0;
 	while (line[*i] == ' ' || line[*i] == '\t')
+	{
+		skipped = 1;
 		(*i)++;
+	}
+	return (skipped);
 }
 
 void	add_quoted_token(t_token **head, const char *line, size_t *i)

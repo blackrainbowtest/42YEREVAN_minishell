@@ -32,6 +32,7 @@ typedef struct s_token
 {
 	char			*value;
 	t_toktype		type;
+	int				space_before;
 	struct s_token	*next;
 }				t_token;
 
@@ -39,7 +40,7 @@ typedef struct s_token
 void		free_tokens(t_token *lst);
 
 // ===== token_helper.c =====
-void		skip_whitespace(const char *line, size_t *i);
+int		skip_whitespace(const char *line, size_t *i);
 void		add_quoted_token(t_token **head, const char *line, size_t *i);
 void		add_operator_token(t_token **head, const char *line, size_t *i);
 void		add_var_token(t_token **head, const char *line, size_t *i);
