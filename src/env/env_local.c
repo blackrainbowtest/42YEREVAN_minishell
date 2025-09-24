@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 22:30:12 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/25 00:20:07 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/09/25 01:31:01 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,4 +91,24 @@ void	free_locals(t_env *locals)
 		free(locals);
 		locals = tmp;
 	}
+}
+
+int	handle_assignment(t_env **locals, const char *token)
+{
+	char	*eq;
+	char	*key;
+	char	*value;
+	int		res;
+
+	eq = ft_strchr(token, '=');
+	if (!eq)
+		return (1);
+	key = ft_substr(token, 0, eq - token);
+	value = ft_strdup(eq + 1);
+
+	res = ft_setlocal(locals, key, value, 1);
+	free(key);
+	free(value);
+
+	return (res);
 }
