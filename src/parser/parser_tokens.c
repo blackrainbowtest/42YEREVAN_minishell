@@ -11,31 +11,6 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-/**
- * @brief Adds a new argument string to a command structure.
- *
- * This function appends a new argument (`value`) to the `argv` array of the
- * given `t_cmd` structure. It reallocates the argument vector with enough
- * space for the new string and a NULL terminator. The old `argv` is freed,
- * and the updated pointer is stored back in the command structure.
- *
- * @param cmd Pointer to the command structure (`t_cmd`) whose argument list
- *        will be extended. Must not be NULL.
- * @param value The string to add as a new argument. Must not be NULL.
- *
- * @return Returns 0 on success. Returns -1 if memory allocation fails
- *         either when allocating the new array or when duplicating `value`.
- *
- * @note The function uses `ft_strdup` to copy `value`. The caller may safely
- *       free or modify the original `value` after calling.
- * @warning On allocation failure, the old `argv` remains unchanged, but the
- *          new array is freed to avoid memory leaks. However, if `ft_strdup`
- *          fails, previously copied pointers remain in the old array.
- * @bug Currently does not free already-copied arguments if `ft_strdup` fails,
- *      which may lead to a memory leak.
- * @todo Improve error handling to free partially allocated arrays if `ft_strdup`
- *       fails.
- */
 
 static int	add_arg(t_cmd *cmd, const char *value)
 {
@@ -65,7 +40,6 @@ static int	add_arg(t_cmd *cmd, const char *value)
 	return (0);
 }
 
-// Добавляет редирект к команде
 static int	add_redir(t_cmd *cmd, t_toktype type, const char *file)
 {
 	t_redir	*new_redir;
@@ -107,7 +81,6 @@ static t_cmd	*new_cmd(void)
 	return (cmd);
 }
 
-// Основная функция парсинга токенов
 t_cmd	*parse_tokens(t_token *tokens)
 {
 	t_cmd	*head;
@@ -156,7 +129,6 @@ t_cmd	*parse_tokens(t_token *tokens)
 	return (head);
 }
 
-// Очистка списка команд
 void	free_cmds(t_cmd *cmds)
 {
 	t_cmd	*tmp;
@@ -184,4 +156,3 @@ void	free_cmds(t_cmd *cmds)
 		cmds = tmp;
 	}
 }
-
