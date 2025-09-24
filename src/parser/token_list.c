@@ -26,6 +26,7 @@ t_token	*new_token(const char *str, t_toktype type)
 		return (NULL);
 	}
 	token->type = type;
+	token->space_before = 0;
 	token->next = NULL;
 	return (token);
 }
