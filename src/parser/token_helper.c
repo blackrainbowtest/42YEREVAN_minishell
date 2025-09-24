@@ -25,49 +25,59 @@ int	skip_whitespace(const char *line, size_t *i)
 	return (skipped);
 }
 
-void	add_quoted_token(t_token **head, const char *line, size_t *i)
+void	add_quoted_token(t_token **head, const char *line, size_t *i, int had_space)
 {
 	t_token	*qtoken;
 
 	qtoken = read_quoted(line, i);
 	if (!qtoken)
 		return ;
+	qtoken->space_before = had_space;
 	token_add_back(head, qtoken);
 }
 
-void	add_operator_token(t_token **head, const char *line, size_t *i)
+void	add_operator_token(t_token **head, const char *line, size_t *i, int had_space)
 {
+	t_token	*t;
+
+	t = NULL;
 	if (line[*i] == '|' )
 	{
-		token_add_back(head, new_token("|", T_PIPE));
+		t = new_token("|", T_PIPE);
 		(*i)++;
 	}
 	else if (line[*i] == '<' && line[*i + 1] == '<')
 	{
-		token_add_back(head, new_token("<<", T_HEREDOC));
+		t = new_token("<<", T_HEREDOC);
 		(*i) += 2;
 	}
 	else if (line[*i] == '<')
 	{
-		token_add_back(head, new_token("<", T_REDIR_IN));
+		t = new_token("<", T_REDIR_IN);
 		(*i)++;
 	}
 	else if (line[*i] == '>' && line[*i + 1] == '>')
 	{
-		token_add_back(head, new_token(">>", T_REDIR_APPEND));
+		t = new_token(">>", T_REDIR_APPEND);
 		(*i) += 2;
 	}
 	else if (line[*i] == '>')
 	{
-		token_add_back(head, new_token(">", T_REDIR_OUT));
+		t = new_token(">", T_REDIR_OUT);
 		(*i)++;
+	}
+	if (t)
+	{
+		t->space_before = had_space;
+		token_add_back(head, t);
 	}
 }
 
-void	add_var_token(t_token **head, const char *line, size_t *i)
+void	add_var_token(t_token **head, const char *line, size_t *i, int had_space)
 {
 	size_t	start;
 	char	*token;
+	t_token	*t;
 
 	start = (*i)++;
 	if (line[*i] == '?')
@@ -76,14 +86,20 @@ void	add_var_token(t_token **head, const char *line, size_t *i)
 		while (line[*i] && (ft_isalnum(line[*i]) || line[*i] == '_'))
 			(*i)++;
 	token = ft_substr(line, start, *i - start);
-	token_add_back(head, new_token(token, T_VAR));
+	if (!token)
+		return ;
+	t = new_token(token, T_VAR);
+	if (t)
+		t->space_before = had_space;
+	token_add_back(head, t);
 	free(token);
 }
 
-void	add_word_token(t_token **head, const char *line, size_t *i)
+void	add_word_token(t_token **head, const char *line, size_t *i, int had_space)
 {
 	size_t	start;
 	char	*token;
+	t_token	*t;
 
 	start = *i;
 	while (line[*i] && line[*i] != ' ' && line[*i] != '\t'
@@ -93,6 +109,11 @@ void	add_word_token(t_token **head, const char *line, size_t *i)
 		(*i)++;
 
 	token = ft_substr(line, start, *i - start);
-	token_add_back(head, new_token(token, T_WORD));
+	if (!token)
+		return ;
+	t = new_token(token, T_WORD);
+	if (t)
+		t->space_before = had_space;
+	token_add_back(head, t);
 	free(token);
 }

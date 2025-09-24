@@ -44,8 +44,9 @@ void	debug_print_tokens(t_token *tokens)
 	i = 0;
 	while (tok)
 	{
-		printf("[%02d] type=\033[33m%s\033[0m, value=\033[32m'%s'\033[0m\n",
-			i, toktype_to_str(tok->type), tok->value);
+		printf("[%02d] type=\033[33m%s\033[0m, space_before=%d,
+			value=\033[32m'%s'\033[0m\n", i, toktype_to_str(tok->type),
+			tok->space_before, tok->value);
 		tok = tok->next;
 		i++;
 	}
