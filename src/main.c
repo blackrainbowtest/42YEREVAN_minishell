@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 13:23:31 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/21 17:08:33 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/09/24 23:40:23 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,10 +115,13 @@ static void	run_shell_loop(t_env **env)
 int	main(int argc, char **argv, char **envp)
 {
 	t_env	*env;
+	t_env	*locals;
 
 	(void)argc;
 	(void)argv;
+	(void)locals;
 	env = init_env(envp);
+	locals = NULL;
 	last_status(1, 0);
 	if (!env)
 	{
