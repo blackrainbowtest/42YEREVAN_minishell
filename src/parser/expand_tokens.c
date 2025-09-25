@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/20 12:01:26 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/25 20:19:11 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/09/25 20:34:46 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,10 @@ static char	*expand_dollar(const char *str,
 		return (ft_strdup("$"));
 	if (str[*i] == '?')
 		return (expand_status(i));
+	else if (!ft_isalnum(str[*i]) && str[*i] != '_')
+	{
+		return (ft_strdup("$"));
+	}
 	else
 	{
 		while (str[*i] && (ft_isalnum(str[*i]) || str[*i] == '_'))

@@ -130,9 +130,12 @@ t_cmd	*parse_tokens(t_token *tokens, t_env **locals)
 		{
 			if (is_assignment_token(tok->value))
 			{
-				handle_assignment(locals, tok->value);
-				tok = tok->next;
-				continue ;
+				if (!cur->argv || ft_strcmp(cur->argv[0], "export") != 0)
+				{
+					handle_assignment(locals, tok->value);
+					tok = tok->next;
+					continue ;
+				}
 			}
 			if (tok->space_before == 0 && cur->argv && arg_index >= 0)
 			{
