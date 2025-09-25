@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 13:23:31 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/25 21:11:17 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/09/25 21:15:40 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,5 +133,6 @@ int	main(int argc, char **argv, char **envp)
 	run_shell_loop(&env, &locals);
 	free_env(env);
 	free_locals(locals);
+	clear_history();
 	return (EXIT_SUCCESS);
 }
