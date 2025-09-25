@@ -88,7 +88,7 @@ static void	run_shell_line(char *line, t_env **env, t_env **locals)
 		free(line);
 		return ;
 	}
-	cmds = parse_line(line, *env, *locals);
+	cmds = parse_line(line, *env, locals);
 	free(line);
 	if (!cmds)
 		return ;
@@ -120,7 +120,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	env = init_env(envp);
-	locals = NULL;
+	locals = init_locals();
 	last_status(1, 0);
 	if (!env)
 	{

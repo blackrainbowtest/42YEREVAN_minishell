@@ -34,7 +34,7 @@
  * @bug None known.
  * @todo Implement more advanced error handling for malformed input.
  */
-t_cmd	*parse_line(const char *line, t_env *env, t_env *locals)
+t_cmd	*parse_line(const char *line, t_env *env, t_env **locals)
 {
 	t_token	*tokens;
 	t_cmd	*cmds;

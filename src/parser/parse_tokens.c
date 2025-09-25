@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-t_cmd *parse_tokens(t_token *tokens, t_env *locals)
+t_cmd *parse_tokens(t_token *tokens, t_env **locals)
 {
     t_cmd *head = NULL;
     t_cmd *cur = NULL;
@@ -34,7 +34,7 @@ t_cmd *parse_tokens(t_token *tokens, t_env *locals)
         {
 			if (is_assignment_token(tok->value))
 			{
-				handle_assignment(&locals, tok->value);
+				handle_assignment(locals, tok->value);
 				tok = tok->next;
 				continue;
 			}

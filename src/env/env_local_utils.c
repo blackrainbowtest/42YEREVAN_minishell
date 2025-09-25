@@ -93,3 +93,8 @@ int	is_assignment_token(const char *str)
 		return (1);
 	return (0);
 }
+
+t_env	*init_locals(void)
+{
+	return (NULL);
+}

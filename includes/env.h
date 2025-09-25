@@ -35,6 +35,7 @@ t_env		*create_local_node(const char *key, const char *value);
 char		*ft_getvar(t_env *locals, t_env *env, const char *key);
 int			is_assignment_token(const char *str);
 int			move_local_to_env(t_env **locals, t_env **env, const char *key);
+t_env		*init_locals(void);
 
 /* ===== env_local.c ===== */
 char		*ft_getlocal(t_env *locals, const char *key);

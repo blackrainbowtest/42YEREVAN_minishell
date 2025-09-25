@@ -28,7 +28,7 @@ typedef struct s_cmd
 }				t_cmd;
 
 // ===== parser_line.c =====
-t_cmd	*parse_line(const char *line, t_env *env, t_env *locals);
+t_cmd	*parse_line(const char *line, t_env *env, t_env **locals);
 
 // ===== expand_tokens.c =====
 void	expand_tokens(t_token *tokens, t_env *env);
@@ -48,6 +48,6 @@ int		merge_token(t_cmd *cmd, t_token *tok, int *arg_index);
 
 
 void	free_cmds(t_cmd *cmds);
-t_cmd	*parse_tokens(t_token *tokens, t_env *locals);
+t_cmd	*parse_tokens(t_token *tokens, t_env **locals);
 
 #endif // PARSER_H
