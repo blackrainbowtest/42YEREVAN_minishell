@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 01:46:57 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/25 01:55:06 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/09/25 19:34:56 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 int merge_token(t_cmd *cmd, t_token *tok, int *arg_index)
 {
+	return 0;
 	if (!cmd->argv)
 	{
 		cmd->argv = malloc(sizeof(char *) * 2);
@@ -57,39 +58,43 @@ int merge_token(t_cmd *cmd, t_token *tok, int *arg_index)
 	return (0);
 }
 
-t_cmd *new_cmd(void)
+int	add_redir(t_cmd *cmd, t_toktype type, const char *file)
 {
-	t_cmd *cmd = malloc(sizeof(t_cmd));
-	if (!cmd)
-		return NULL;
-	cmd->argv = NULL;
-	cmd->redir = NULL;
-	cmd->next = NULL;
-	return cmd;
-}
+	t_redir	*new_redir;
+	t_redir	*tmp;
 
-int add_redir(t_cmd *cmd, t_toktype type, const char *file)
-{
-	t_redir *new_redir = malloc(sizeof(t_redir));
+	new_redir = malloc(sizeof(t_redir));
 	if (!new_redir)
 		return (-1);
 	new_redir->type = type;
 	new_redir->file = ft_strdup(file);
+	new_redir->next = NULL;
 	if (!new_redir->file)
 	{
 		free(new_redir);
 		return (-1);
 	}
-	new_redir->next = NULL;
-
 	if (!cmd->redir)
 		cmd->redir = new_redir;
 	else
 	{
-		t_redir *tmp = cmd->redir;
+		tmp = cmd->redir;
 		while (tmp->next)
 			tmp = tmp->next;
 		tmp->next = new_redir;
 	}
-	return 0;
+	return (0);
+}
+
+t_cmd	*new_cmd(void)
+{
+	t_cmd	*cmd;
+
+	cmd = malloc(sizeof(t_cmd));
+	if (!cmd)
+		return (NULL);
+	cmd->argv = NULL;
+	cmd->redir = NULL;
+	cmd->next = NULL;
+	return (cmd);
 }

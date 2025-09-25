@@ -6,16 +6,16 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/20 12:01:26 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/24 00:35:57 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/09/25 19:57:08 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	expand_tokens(t_token *tokens, t_env *env)
+void	expand_tokens(t_token *tokens, t_env *env, t_env *locals)
 {
 	t_token	*tok;
-
+(void)locals;
 	if (DEBUGING)
 	{
 		printf("Before expansion:\n");

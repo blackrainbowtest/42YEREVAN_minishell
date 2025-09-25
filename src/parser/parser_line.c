@@ -42,7 +42,7 @@ t_cmd	*parse_line(const char *line, t_env *env, t_env **locals)
 	tokens = tokenize(line);
 	if (!tokens)
 		return (NULL);
-	expand_tokens(tokens, env);
+	expand_tokens(tokens, env, *locals);
 	cmds = parse_tokens(tokens, locals);
 	if (DEBUGING)
 		debug_print_cmds(cmds);

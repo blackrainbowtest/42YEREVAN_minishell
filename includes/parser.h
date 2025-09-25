@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 23:07:48 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/25 02:12:47 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/09/25 19:56:33 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ typedef struct s_cmd
 t_cmd	*parse_line(const char *line, t_env *env, t_env **locals);
 
 // ===== expand_tokens.c =====
-void	expand_tokens(t_token *tokens, t_env *env);
+void	expand_tokens(t_token *tokens, t_env *env, t_env *locals);
 char	*expand_string(const char *str, t_env *env);
 
 // ===== expand_utils.c =====

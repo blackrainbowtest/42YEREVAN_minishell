@@ -74,7 +74,13 @@ all: $(NAME)
 val: CFLAGS += -g3
 val: all
 	@printf "$(G)[VALGRIND] Running Valgrind on $(NAME)..."$(RST)"\n"
-	valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all ./$(NAME)
+	valgrind --leak-check=full --show-leak-kinds=definite ./$(NAME)
+
+# Valgrind check
+val2: CFLAGS += -g3
+val2: all
+	@printf "$(G)[VALGRIND] Running Valgrind on $(NAME)..."$(RST)"\n"
+	valgrind --leak-check=full --track-origins=yes ./$(NAME)
 
 # Create binary
 $(NAME): $(OBJS) $(LIBFT)
