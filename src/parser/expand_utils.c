@@ -6,35 +6,35 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 00:10:15 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/24 00:39:48 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/09/25 20:20:12 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	expand_var_token(t_token *tok, t_env *env)
+void	expand_var_token(t_token *tok, t_env *env, t_env *locals)
 {
 	char	*expanded;
 
-	expanded = expand_string(tok->value, env);
+	expanded = expand_string(tok->value, env, locals);
 	free(tok->value);
 	tok->value = expanded;
 }
 
-void	expand_word_token(t_token *tok, t_env *env)
+void	expand_word_token(t_token *tok, t_env *env, t_env *locals)
 {
 	char	*expanded;
 
-	expanded = expand_string(tok->value, env);
+	expanded = expand_string(tok->value, env, locals);
 	free(tok->value);
 	tok->value = expanded;
 }
 
-void	expand_dquote_token(t_token *tok, t_env *env)
+void	expand_dquote_token(t_token *tok, t_env *env, t_env *locals)
 {
 	char	*expanded;
 
-	expanded = expand_string(tok->value, env);
+	expanded = expand_string(tok->value, env, locals);
 	free(tok->value);
 	tok->value = expanded;
 }
