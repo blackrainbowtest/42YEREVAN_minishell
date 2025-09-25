@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 15:38:18 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/20 16:41:03 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/09/25 21:08:34 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ static int	execute_child(char *path, char **argv, char **envp)
 	}
 	if (pid == 0)
 	{
+		if (path == NULL || path[0] == '\0')
+			_exit(126);
 		execve(path, argv, envp);
 		perror("execve");
 		_exit(126);
