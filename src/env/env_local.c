@@ -105,10 +105,8 @@ int	handle_assignment(t_env **locals, const char *token)
 		return (1);
 	key = ft_substr(token, 0, eq - token);
 	value = ft_strdup(eq + 1);
-
 	res = ft_setlocal(locals, key, value, 1);
 	free(key);
 	free(value);
-
 	return (res);
 }
