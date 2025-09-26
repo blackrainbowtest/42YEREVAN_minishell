@@ -42,13 +42,13 @@ void		free_tokens(t_token *lst);
 // ===== token_helper.c =====
 int			skip_whitespace(const char *line, size_t *i);
 void		add_quoted_token(t_token **head, const char *line,
-			size_t *i, int had_space);
+				size_t *i, int had_space);
 void		add_operator_token(t_token **head, const char *line, size_t *i,
-			int had_space);
+				int had_space);
 void		add_var_token(t_token **head, const char *line, size_t *i,
-			int had_space);
+				int had_space);
 void		add_word_token(t_token **head, const char *line, size_t *i,
-			int had_space);
+				int had_space);
 
 // ===== token_list.c =====
 t_token		*new_token(const char *str, t_toktype type);
@@ -64,5 +64,6 @@ t_token		*read_quoted(const char *line, size_t *i);
 
 // ===== tokenizer.c =====
 t_token		*tokenize(const char *line);
+
 
 #endif // TOKEN_H
