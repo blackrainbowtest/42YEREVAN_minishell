@@ -73,10 +73,8 @@ static char	*expand_local_env_var(const char *str,
 	name = ft_substr(str, start, end - start);
 	if (!name)
 		return (NULL);
-
 	val = ft_getlocal(locals, name);
 	free(name);
-
 	if (val)
 		return (ft_strdup(val));
 	return (NULL);
