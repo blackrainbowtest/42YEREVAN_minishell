@@ -46,7 +46,6 @@ int		add_redir(t_cmd *cmd, t_toktype type, const char *file);
 t_cmd	*new_cmd(void);
 int		merge_token(t_cmd *cmd, t_token *tok, int *arg_index);
 
-
 void	free_cmds(t_cmd *cmds);
 t_cmd	*parse_tokens(t_token *tokens, t_env **locals);
 
