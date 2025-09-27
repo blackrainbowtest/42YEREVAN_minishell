@@ -6,9 +6,10 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 11:32:04 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/07 15:35:19 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/09/27 19:00:10 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "minishell.h"
 
 static int	check_cd_args(char **args)
@@ -21,8 +22,10 @@ static int	check_cd_args(char **args)
 	if (count > 2)
 	{
 		ft_putstr_fd("minishell: cd: too many arguments\n", 2);
+		last_status(1, 1);
 		return (1);
 	}
+	last_status(1, 0);
 	return (0);
 }
 

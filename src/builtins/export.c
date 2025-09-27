@@ -35,6 +35,13 @@ static int	export_with_arguments(char **argv, t_env **env)
 	i = 1;
 	while (argv[i])
 	{
+		if (!is_valid_identifier(argv[i]))
+		{
+			fprintf(stderr, EXP_INV, argv[i]);
+			status = 1;
+			i++;
+			continue ;
+		}
 		eq = ft_strchr(argv[i], '=');
 		if (eq)
 			export_update_env(argv[i], env, eq, &status);
@@ -48,6 +55,7 @@ static int	export_with_arguments(char **argv, t_env **env)
 		}
 		i++;
 	}
+	last_status(1, status);
 	return (status);
 }
 

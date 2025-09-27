@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 19:54:39 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/07 22:39:03 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/09/27 18:54:17 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,12 @@ int	builtin_pwd(t_env *env)
 		{
 			ft_putstr_fd(pwd, 1);
 			ft_putstr_fd("\n", 1);
+			last_status(1, 0);
 		}
 		else
 		{
 			ft_putstr_fd(PWD_CRWD, 2);
-			return (1);
+			last_status(1, 1);
 		}
 	}
 	return (0);
