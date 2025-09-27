@@ -12,6 +12,22 @@
 
 #include "minishell.h"
 
+int	is_valid_identifier(const char *s)
+{
+	int	i;
+
+	if (!s || (!ft_isalpha(s[0]) && s[0] != '_'))
+		return (0);
+	i = 1;
+	while (s[i] && s[i] != '=')
+	{
+		if (!ft_isalnum(s[i]) && s[i] != '_')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 void	export_update_env(char *arg, t_env **env, char *eq, int *status)
 {
 	char	*key;
@@ -23,9 +39,7 @@ void	export_update_env(char *arg, t_env **env, char *eq, int *status)
 		value = ft_strdup(eq + 1);
 		if (!key || !value || ft_setenv(env, key, value, 1) != 0)
 		{
-			ft_putstr_fd("minishell: export: ", 2);
-			ft_putstr_fd(arg, 2);
-			ft_putendl_fd(": allocation error", 2);
+			print_minishell_error("export", arg, ERR_ALLOC, 1);
 			*status = 1;
 		}
 		free(key);
@@ -33,9 +47,9 @@ void	export_update_env(char *arg, t_env **env, char *eq, int *status)
 	}
 }
 
-int env_size(t_env *env)
+int	env_size(t_env *env)
 {
-	int count;
+	int	count;
 
 	count = 0;
 	if (NULL == env)

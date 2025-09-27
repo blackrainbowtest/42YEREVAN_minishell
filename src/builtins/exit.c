@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 19:39:32 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/14 15:53:20 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/09/28 00:28:53 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,13 +77,13 @@ int	builtin_exit(char **argv)
 		ft_putstr_fd("minishell: exit: ", 2);
 		ft_putstr_fd(argv[1], 2);
 		ft_putendl_fd(": numeric argument required", 2);
-		exit(255);
+		exit(last_status(1, 2));
 	}
 	if (argv[2])
 	{
 		ft_putendl_fd("minishell: exit: too many arguments", 2);
-		return (1);
+		return (last_status(1, 1));
 	}
 	status = get_exit_status(argv[1]);
-	exit(status);
+	exit(last_status(1, status));
 }

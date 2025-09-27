@@ -1,28 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   debuh.h                                            :+:      :+:    :+:   */
+/*   token_free.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/07 22:37:27 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/07 22:38:16 by aramarak         ###   ########.fr       */
+/*   Created: 2025/08/24 13:27:13 by aramarak          #+#    #+#             */
+/*   Updated: 2025/09/11 20:27:26 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef DEBUG_H
-# define DEBUG_H
+#include "minishell.h"
 
-# ifndef DEBUGING
-#  define DEBUGING 0
-# endif
+void	free_tokens(t_token *lst)
+{
+	t_token	*tmp;
 
-typedef struct s_cmd	t_cmd;
-typedef struct s_token	t_token;
-
-void	debug_print_cmds(t_cmd *cmds);
-void	print_tokens(t_token *tokens);
-void	debug_print_cmd_args(t_cmd *cmds);
-void	debug_print_tokens(t_token *tokens);
-
-#endif
+	while (lst)
+	{
+		tmp = lst->next;
+		free(lst->value);
+		lst->value = NULL;
+		free(lst);
+		lst = tmp;
+	}
+}
