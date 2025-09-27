@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 19:39:32 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/28 00:28:53 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/09/28 00:35:26 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,31 +59,16 @@ int	is_numeric_arg(char *arg)
 
 static int	get_exit_status(const char *str)
 {
-	long long	status;
-
-	status = ft_atoll(str);
-	return ((unsigned char)status);
+	return ((unsigned char)ft_atoll(str));
 }
 
 int	builtin_exit(char **argv)
 {
-	int	status;
-
-	ft_putendl_fd("exit", 1);
 	if (!argv[1])
 		exit(0);
 	if (!is_numeric_arg(argv[1]))
-	{
-		ft_putstr_fd("minishell: exit: ", 2);
-		ft_putstr_fd(argv[1], 2);
-		ft_putendl_fd(": numeric argument required", 2);
-		exit(last_status(1, 2));
-	}
+		exit(print_minishell_error("exit", argv[1], ERR_NUMERIC, 2));
 	if (argv[2])
-	{
-		ft_putendl_fd("minishell: exit: too many arguments", 2);
-		return (last_status(1, 1));
-	}
-	status = get_exit_status(argv[1]);
-	exit(last_status(1, status));
+		return (print_minishell_error("exit", NULL, ERR_TOO_MNY_ARGS, 1));
+	exit(last_status(1, get_exit_status(argv[1])));
 }
