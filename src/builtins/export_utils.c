@@ -39,9 +39,7 @@ void	export_update_env(char *arg, t_env **env, char *eq, int *status)
 		value = ft_strdup(eq + 1);
 		if (!key || !value || ft_setenv(env, key, value, 1) != 0)
 		{
-			ft_putstr_fd("minishell: export: ", 2);
-			ft_putstr_fd(arg, 2);
-			ft_putendl_fd(": allocation error", 2);
+			print_minishell_error("export", arg, ERR_ALLOC, 1);
 			*status = 1;
 		}
 		free(key);

@@ -18,11 +18,11 @@ static int	export_no_arguments(t_env **env)
 
 	keys = env_to_keys(*env);
 	if (!keys)
-		return (EXIT_FAILURE);
+		return (print_minishell_error("export", NULL, ERR_MEM_ALLOC, 1));
 	sort_env_keys(keys);
 	print_sorted_env(*env, keys);
 	ft_free_split(keys);
-	return (EXIT_SUCCESS);
+	return (last_status(1, 0));
 }
 
 static int	export_with_arguments(char **argv, t_env **env)
@@ -37,7 +37,7 @@ static int	export_with_arguments(char **argv, t_env **env)
 	{
 		if (!is_valid_identifier(argv[i]))
 		{
-			fprintf(stderr, EXP_INV, argv[i]);
+			print_minishell_error("export", argv[i], ERR_NT_VAL_INP, 1);
 			status = 1;
 			i++;
 			continue ;
@@ -49,7 +49,7 @@ static int	export_with_arguments(char **argv, t_env **env)
 		{
 			if (ft_setenv(env, argv[i], "", 0) != 0)
 			{
-				fprintf(stderr, EXP_AERR, argv[i]);
+				print_minishell_error("export", argv[i], ERR_CT_ALLOC_MEM, 1);
 				status = 1;
 			}
 		}

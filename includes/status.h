@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/20 11:33:16 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/21 17:11:17 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/09/28 00:20:01 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,5 +26,6 @@
  * @return The current stored status.
  */
 int	last_status(int mode, int new_value);
-
+int	print_minishell_error(char *cmd, char *arg,
+		char *msg, int status);
 #endif
