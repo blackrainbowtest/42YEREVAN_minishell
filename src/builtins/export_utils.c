@@ -114,28 +114,3 @@ void	sort_env_keys(char **keys)
 		++i;
 	}
 }
-
-void	print_sorted_env(t_env *env, char **keys)
-{
-	int		i;
-	t_env	*cur;
-
-	i = 0;
-	while (keys[i])
-	{
-		cur = env;
-		while (cur)
-		{
-			if (ft_strcmp(cur->key, keys[i]) == 0)
-			{
-				if (cur->value)
-					printf("declare -x %s=\"%s\"\n", cur->key, cur->value);
-				else
-					printf("declare -x %s\n", cur->key);
-				break ;
-			}
-			cur = cur->next;
-		}
-		i++;
-	}
-}

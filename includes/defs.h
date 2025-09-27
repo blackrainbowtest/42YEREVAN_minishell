@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 22:37:27 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/28 00:34:25 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/09/28 00:38:36 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ looking for matching `%c`\n"
 /* ===== export ===== */
 # define ERR_MEM_ALLOC "Memory allocation error"
 # define ERR_NT_VAL_INP "not a valid identifier"
-# define ERR_CT_ALLOC_MEM "cannot allocate memory"
+# define ERR_MEM_AL "cannot allocate memory"
 # define ERR_ALLOC "allocation error"
 
 /* ===== cd =====*/
