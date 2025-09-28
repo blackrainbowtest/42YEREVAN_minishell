@@ -12,70 +12,6 @@
 
 #include "minishell.h"
 
-// t_cmd   *parse_tokens(t_token *tokens, t_env **locals)
-// {
-// 	t_cmd *head = NULL;
-// 	t_cmd *cur = NULL;
-// 	t_token *tok = tokens;
-// 	int arg_index = -1;
-
-// 	while (tok)
-// 	{
-// 		if (!cur)
-// 		{
-// 			cur = new_cmd();
-// 			if (!cur)
-// 				return (free_cmds(head), NULL);
-// 			if (!head)
-// 				head = cur;
-// 		}
-
-// 		if (tok->type == T_WORD || tok->type == T_VAR
-// 			|| tok->type == T_DQUOTE || tok->type == T_SQUOTE)
-// 		{
-// 			if (is_assignment_token(tok->value))
-// 			{
-// 				handle_assignment(locals, tok->value);
-// 				tok = tok->next;
-// 				continue ;
-// 			}
-// 			if (merge_token(cur, tok, &arg_index) < 0)
-// 			{
-// 				free_cmds(head);
-// 				return (NULL);
-// 			}
-// 		}
-// 		else if (tok->type == T_REDIR_IN || tok->type == T_REDIR_OUT
-// 			|| tok->type == T_REDIR_APPEND || tok->type == T_HEREDOC)
-// 		{
-// 			arg_index = -1;
-// 			if (!tok->next || tok->next->type != T_WORD)
-// 			{
-// 				fprintf(stderr, "minishell: syntax error near redirection\n");
-// 				return free_cmds(head), NULL;
-// 			}
-// 			if (add_redir(cur, tok->type, tok->next->value) < 0)
-// 				return free_cmds(head), NULL;
-// 			tok = tok->next;
-// 		}
-// 		else if (tok->type == T_PIPE)
-// 		{
-// 			arg_index = -1;
-// 			cur->next = new_cmd();
-// 			if (!cur->next)
-// 				return free_cmds(head), NULL;
-// 			cur = cur->next;
-// 		}
-// 		else
-// 		{
-// 			arg_index = -1;
-// 		}
-
-// 		tok = tok->next;
-// 	}
-// 	return (head);
-// }
-
 static int	add_arg(t_cmd *cmd, const char *value)
 {
 	int		argc;
@@ -104,36 +40,37 @@ static int	add_arg(t_cmd *cmd, const char *value)
 	return (0);
 }
 
-static int ensure_current_cmd(t_cmd **cur, t_cmd **head)
+static int	ensure_current_cmd(t_cmd **cur, t_cmd **head)
 {
-    if (!*cur)
-    {
-        *cur = new_cmd();
-        if (!*cur)
-            return (-1);
-        if (!*head)
-            *head = *cur;
-    }
-    return (0);
+	if (!*cur)
+	{
+		*cur = new_cmd();
+		if (!*cur)
+			return (-1);
+		if (!*head)
+			*head = *cur;
+	}
+	return (0);
 }
 
-static int	handle_word_token(t_cmd *cur, t_token *tok, t_env **locals, int *arg_index)
+/** TODO: fix segfault here if after $ nothing */
+static int	handle_word_token(t_cmd *cur, t_token *tok,
+	t_env **locals, int *arg_index)
 {
+	char	*old;
+
 	if (!tok->value)
 		return (0);
 
 	if (is_assignment_token(tok->value))
 	{
 		if (!cur->argv || ft_strcmp(cur->argv[0], "export") != 0)
-		{
-			handle_assignment(locals, tok->value);
-			return (1);
-		}
+			return (handle_assignment(locals, tok->value), 1);
 	}
 
 	if (tok->space_before == 0 && cur->argv && *arg_index >= 0)
 	{
-		char *old = cur->argv[*arg_index];
+		old = cur->argv[*arg_index];
 		cur->argv[*arg_index] = ft_strjoin(old, tok->value);
 		free(old);
 	}
