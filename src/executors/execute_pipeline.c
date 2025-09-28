@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/14 12:40:33 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/27 19:00:45 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/09/28 14:04:14 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ static void	child_process(t_cmd *cmd, int in_fd, int out_fd, t_env **env)
 	char	**envp;
 	char	*path;
 
+	if (!cmd->argv || !cmd->argv[0] || cmd->argv[0][0] == '\0')
+		_exit(0);
 	if (in_fd != STDIN_FILENO)
 	{
 		dup2(in_fd, STDIN_FILENO);
@@ -27,16 +29,12 @@ static void	child_process(t_cmd *cmd, int in_fd, int out_fd, t_env **env)
 		dup2(out_fd, STDOUT_FILENO);
 		close(out_fd);
 	}
-	if (cmd->redir)
-	{
-		if (apply_redirections(cmd) != 0)
-			_exit(1);
-	}
+	if (cmd->redir && apply_redirections(cmd) != 0)
+		_exit(1);
+
 	if (is_builtin(cmd->argv[0]))
-	{
-		last_status(1, run_builtin(cmd->argv, env));
-		_exit(0);
-	}
+		_exit(run_builtin(cmd->argv, env));
+
 	path = find_in_path(cmd->argv[0], *env);
 	if (!path)
 	{
@@ -45,10 +43,10 @@ static void	child_process(t_cmd *cmd, int in_fd, int out_fd, t_env **env)
 		ft_putstr_fd(": command not found\n", 2);
 		_exit(127);
 	}
+
 	envp = env_to_envp(*env);
-	if (cmd->argv[0] == NULL || cmd->argv[0][0] == '\0')
-		return ;
 	execve(path, cmd->argv, envp);
+
 	perror("execve");
 	free_argv(envp);
 	free(path);
