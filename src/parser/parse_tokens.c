@@ -13,7 +13,7 @@
 #include "minishell.h"
 
 static int	process_token(t_cmd **cur, t_cmd **head,
-		t_token **tok, t_env **locals, int *arg_index)
+			t_token **tok, t_env **locals, int *arg_index)
 {
 	int	res;
 
@@ -37,7 +37,10 @@ static int	process_token(t_cmd **cur, t_cmd **head,
 		if (res < 0)
 			return (-1);
 		if (res == 1)
+		{
 			*tok = (*tok)->next;
+			return (1);
+		}
 		return (0);
 	}
 	if ((*tok)->type == T_PIPE)
@@ -75,18 +78,6 @@ t_cmd	*parse_tokens(t_token *tokens, t_env **locals)
 		tok = tok->next;
 	}
 	return (head);
-}
-
-static void	free_argv(char **argv)
-{
-	int	i;
-
-	if (!argv)
-		return ;
-	i = 0;
-	while (argv[i])
-		free(argv[i++]);
-	free(argv);
 }
 
 static void	free_redirs(t_redir *redir)
