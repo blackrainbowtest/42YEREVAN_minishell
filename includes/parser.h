@@ -34,6 +34,14 @@ t_cmd	*parse_line(const char *line, t_env *env, t_env **locals);
 void	expand_tokens(t_token *tokens, t_env *env, t_env *locals);
 char	*expand_string(const char *str, t_env *env, t_env *locals);
 
+// ===== expand_tokens_utils.c =====
+int	add_arg(t_cmd *cmd, const char *value);
+int	ensure_current_cmd(t_cmd **cur, t_cmd **head);
+int	handle_word_token(t_cmd *cur, t_token *tok,
+	t_env **locals, int *arg_index);
+int	handle_redir_token(t_cmd *cur, t_token *tok, t_cmd *head);
+int	handle_pipe_token(t_cmd **cur, t_cmd *head);
+
 // ===== expand_utils.c =====
 void	expand_var_token(t_token *tok, t_env *env, t_env *locals);
 void	expand_word_token(t_token *tok, t_env *env, t_env *locals);
