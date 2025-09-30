@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/14 12:40:33 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/29 20:21:38 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/10/01 00:51:39 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ static void	child_process(t_cmd *cmd, int in_fd, int out_fd, t_env **env)
 	}
 
 	envp = env_to_envp(*env);
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 	execve(path, cmd->argv, envp);
 
 	perror("execve");
@@ -80,6 +82,8 @@ int	execute_pipeline(t_cmd *cmds, t_env **env)
 		}
 		else if (pid == 0)
 		{
+			signal(SIGINT, SIG_DFL);
+			signal(SIGQUIT, SIG_DFL);
 			if (cur->next)
 				close(pipe_fd[0]);
 			child_process(cur, in_fd, cur->next ? pipe_fd[1] : STDOUT_FILENO, env);

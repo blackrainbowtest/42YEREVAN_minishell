@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 13:23:31 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/29 22:59:00 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/10/01 01:10:30 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,8 @@ static void	run_shell_loop(t_env **env, t_env **locals)
 		line = read_prompt();
 		if (!line)
 			break ;
+		if (*line)
+			add_history(line);
 		run_shell_line(line, env, locals);
 	}
 }
@@ -121,6 +123,7 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	(void)argv;
+	setup_signals();
 	env = init_env(envp);
 	locals = init_locals();
 	last_status(1, 0);
@@ -129,7 +132,6 @@ int	main(int argc, char **argv, char **envp)
 		perror("minishell: failed to init env");
 		return (1);
 	}
-	setup_signals();
 	run_shell_loop(&env, &locals);
 	free_env(env);
 	free_locals(locals);
