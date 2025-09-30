@@ -39,8 +39,7 @@ int	apply_redirections(t_cmd *cmd)
 
 		if (fd < 0)
 		{
-			ft_putstr_fd("minishell: redirection error: ", 2);
-			ft_putendl_fd(r->file, 2);
+			ft_putstr_fd(" No such file or directory\n", 2);
 			return (-1);
 		}
 
