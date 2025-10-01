@@ -99,11 +99,9 @@ $(OBJ_DIR)/%.o: %.c
 
 # Cleaning
 clean:
-	@echo $(BLUE)"Cleaning..."$(RST)
+	@echo $(BLUE)"Cleaned!"$(RST)
 	@$(RM) -r $(OBJ_DIR)
 	@$(MAKE) -s -C $(LIBFT_DIR) clean
-	@echo $(BLUE)"Cleaned!"$(RST)
-
 
 fclean: clean
 	@echo $(RED)"Fully cleaned!"$(RST)
