@@ -3,9 +3,11 @@
 # **************************************************************************** #
 
 # Colors
-RST = \033[0m
-G   = \033[32m
-Y   = \033[33m
+RST 	 = "\033[0m"
+GREEN    = "\033[32m"
+YELLOW   = "\033[33m"
+RED 	 = "\033[31m"
+BLUE	 = "\033[34m"
 
 # Project
 NAME    := minishell
@@ -37,7 +39,7 @@ SRC_BUILTINS := echo.c cd.c pwd.c env.c export.c export_utils.c \
 SRC_PARSER := parse_tokens.c parse_utils.c parser_line.c \
 				tokenizer.c token_free.c token_helper.c \
 				token_quote.c token_list.c \
-				expand_tokens.c expand_utils.c parse_tokens_utils.c
+				expand_tokens.c expand_utils.c
 
 # Files env
 SRC_ENV := env.c env_utils.c env_local.c env_local_utils.c
@@ -73,39 +75,40 @@ all: $(NAME)
 # Valgrind check
 val: CFLAGS += -g3
 val: all
-	@printf "$(G)[VALGRIND] Running Valgrind on $(NAME)..."$(RST)"\n"
+	@echo "$(GREEN)[VALGRIND] Running Valgrind on $(NAME)..."$(RST)"\n"
 	valgrind --leak-check=full --show-leak-kinds=definite ./$(NAME)
 
 # Valgrind check
 val2: CFLAGS += -g3
 val2: all
-	@printf "$(G)[VALGRIND] Running Valgrind on $(NAME)..."$(RST)"\n"
+	@echo "$(GREEN)[VALGRIND] Running Valgrind on $(NAME)..."$(RST)"\n"
 	valgrind --leak-check=full --track-origins=yes ./$(NAME)
 
 # Create binary
 $(NAME): $(OBJS) $(LIBFT)
-	@printf $(G)"[INFO] Compiling $(NAME)..."$(RST)"\n"
-	$(QUIET)$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LIBFT) $(LIBS)
-
+	@echo $(GREEN)"Compiling $(NAME)..."$(RST)
+	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LIBFT) $(LIBS)
+	@echo $(GREEN)"Finished Compiling!" $(RST)
 $(LIBFT):
-	@$(MAKE) -C $(LIBFT_DIR)
+	@$(MAKE) --no-print-directory -C $(LIBFT_DIR)
 
 # Compile .c to .o
 $(OBJ_DIR)/%.o: %.c
 	@mkdir -p $(dir $@)
-	@printf $(Y)"[CC] $<"$(RST)"\n"
-	$(QUIET)$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) -c $< -o $@
 
 # Cleaning
 clean:
-	@printf $(Y)"[CLEAN]"$(RST)"\n"
-	$(QUIET)$(RM) -r $(OBJ_DIR)
-	@$(MAKE) -C $(LIBFT_DIR) clean
+	@echo $(BLUE)"Cleaning..."$(RST)
+	@$(RM) -r $(OBJ_DIR)
+	@$(MAKE) -s -C $(LIBFT_DIR) clean
+	@echo $(BLUE)"Cleaned!"$(RST)
+
 
 fclean: clean
-	@printf $(Y)"[FCLEAN]"$(RST)"\n"
-	$(QUIET)$(RM) $(NAME)
-	@$(MAKE) -C $(LIBFT_DIR) fclean
+	@echo $(RED)"Fully cleaned!"$(RST)
+	@$(RM) $(NAME)
+	@$(MAKE) -s -C $(LIBFT_DIR) fclean
 
 re: fclean all
 
