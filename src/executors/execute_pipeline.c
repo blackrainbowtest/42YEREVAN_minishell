@@ -74,6 +74,7 @@ int	execute_pipeline(t_cmd *cmds, t_env **env)
 			perror("pipe");
 			return (1);
 		}
+		in_child_process(1, 1);
 		pid = fork();
 		if (pid < 0)
 		{
@@ -82,8 +83,7 @@ int	execute_pipeline(t_cmd *cmds, t_env **env)
 		}
 		else if (pid == 0)
 		{
-			signal(SIGINT, SIG_DFL);
-			signal(SIGQUIT, SIG_DFL);
+			signal_default();
 			if (cur->next)
 				close(pipe_fd[0]);
 			child_process(cur, in_fd, cur->next ? pipe_fd[1] : STDOUT_FILENO, env);
@@ -99,5 +99,6 @@ int	execute_pipeline(t_cmd *cmds, t_env **env)
 	}
 	while (wait(&status) > 0)
 		last_status = WIFEXITED(status) ? WEXITSTATUS(status) : 1;
+	in_child_process(1, 0);
 	return (last_status);
 }

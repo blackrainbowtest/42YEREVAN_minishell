@@ -47,6 +47,7 @@ static void	run_single_command(t_cmd *cmd, t_env **env)
 			return ;
 		}
 	}
+	in_child_process(1, 1);
 	pid = fork();
 	if (pid < 0)
 	{
@@ -55,6 +56,7 @@ static void	run_single_command(t_cmd *cmd, t_env **env)
 	}
 	else if (pid == 0)
 	{
+		signal_default();
 		if (cmd->redir && apply_redirections(cmd) != 0)
 			_exit(1);
 		if (is_builtin(cmd->argv[0]))
@@ -71,6 +73,7 @@ static void	run_single_command(t_cmd *cmd, t_env **env)
 		exit_code = 128 + WTERMSIG(status);
 	else
 		exit_code = 1;
+	in_child_process(1, 0);
 	last_status(1, exit_code);
 }
 
@@ -127,6 +130,7 @@ int	main(int argc, char **argv, char **envp)
 	env = init_env(envp);
 	locals = init_locals();
 	last_status(1, 0);
+	in_child_process(1, 0);
 	if (!env)
 	{
 		perror("minishell: failed to init env");

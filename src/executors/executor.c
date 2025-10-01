@@ -16,6 +16,7 @@ static int	execute_child(char *path, char **argv, char **envp)
 {
 	pid_t	pid;
 
+	in_child_process(1, 1);
 	pid = fork();
 	if (pid < 0)
 	{
@@ -24,8 +25,7 @@ static int	execute_child(char *path, char **argv, char **envp)
 	}
 	if (pid == 0)
 	{
-		signal(SIGINT, SIG_DFL);
-		signal(SIGQUIT, SIG_DFL);
+		signal_default();
 		if (path == NULL || path[0] == '\0')
 			_exit(126);
 		execve(path, argv, envp);
@@ -47,6 +47,7 @@ static int	spawn_and_wait(char *path, char **argv, t_env *env)
 		return (1);
 	pid = execute_child(path, argv, envp);
 	free_argv(envp);
+	in_child_process(1, 0);
 	if (waitpid(pid, &status, 0) < 0)
 	{
 		perror("waitpid");

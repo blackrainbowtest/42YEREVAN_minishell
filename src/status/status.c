@@ -41,3 +41,12 @@ int	last_status(int mode, int new_value)
 		status = new_value;
 	return (status);
 }
+
+int	in_child_process(int mode, int value)
+{
+	static int	in_child;
+
+	if (mode == 1)
+		in_child = value;
+	return in_child;
+}

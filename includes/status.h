@@ -28,4 +28,5 @@
 int	last_status(int mode, int new_value);
 int	print_minishell_error(char *cmd, char *arg,
 		char *msg, int status);
+int	in_child_process(int mode, int value);
 #endif

@@ -102,7 +102,8 @@ static char	*expand_dollar(const char *str,
 		val = expand_local_env_var(str, start, *i, locals);
 		if (val)
 			return (val);
-		return (expand_env_var(str, start, *i, env));
+		return (ft_strdup(""));
+		// return (expand_env_var(str, start, *i, env)); // TODO
 	}
 }
 
