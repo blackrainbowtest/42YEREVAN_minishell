@@ -40,18 +40,7 @@ int	add_arg(t_cmd *cmd, const char *value)
 	return (0);
 }
 
-int	ensure_current_cmd(t_cmd **cur, t_cmd **head)
-{
-	if (!*cur)
-	{
-		*cur = new_cmd();
-		if (!*cur)
-			return (-1);
-		if (!*head)
-			*head = *cur;
-	}
-	return (0);
-}
+
 
 /** TODO: fix segfault here if after $ nothing */
 int	handle_word_token(t_cmd *cur, t_token *tok,

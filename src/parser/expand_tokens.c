@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/20 12:01:26 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/25 20:34:46 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/10/01 23:50:33 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,20 +49,20 @@ static char	*expand_status(size_t *i)
 	return (tmp);
 }
 
-static char	*expand_env_var(const char *str, size_t start, size_t end,
-	t_env *env)
-{
-	char	*name;
-	char	*val;
+// static char	*expand_env_var(const char *str, size_t start, size_t end,
+// 	t_env *env)
+// {
+// 	char	*name;
+// 	char	*val;
 
-	name = ft_substr(str, start, end - start);
-	val = ft_getenv(env, name);
-	free(name);
-	if (val)
-		return (ft_strdup(val));
-	else
-		return (ft_strdup(""));
-}
+// 	name = ft_substr(str, start, end - start);
+// 	val = ft_getenv(env, name);
+// 	free(name);
+// 	if (val)
+// 		return (ft_strdup(val));
+// 	else
+// 		return (ft_strdup(""));
+// }
 
 static char	*expand_local_env_var(const char *str,
 	size_t start, size_t end, t_env *locals)
@@ -105,6 +105,7 @@ static char	*expand_dollar(const char *str,
 		return (ft_strdup(""));
 		// return (expand_env_var(str, start, *i, env)); // TODO
 	}
+	(void)env;
 }
 
 char	*expand_string(const char *str, t_env *env, t_env *locals)

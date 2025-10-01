@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 13:23:38 by aramarak          #+#    #+#             */
-/*   Updated: 2025/10/01 01:08:56 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/10/01 23:49:54 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@
 // ===== signals =====
 void	setup_signals(void);
 void	signal_ctlc_heredoc(int sig);
+void	signal_default(void);
 
 // ===== prompt =====
 char	*read_prompt(void);

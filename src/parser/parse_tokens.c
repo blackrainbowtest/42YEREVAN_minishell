@@ -51,6 +51,19 @@ static int	process_token(t_cmd **cur, t_cmd **head,
 	return (0);
 }
 
+int	ensure_current_cmd(t_cmd **cur, t_cmd **head)
+{
+	if (!*cur)
+	{
+		*cur = new_cmd();
+		if (!*cur)
+			return (-1);
+		if (!*head)
+			*head = *cur;
+	}
+	return (0);
+}
+
 t_cmd	*parse_tokens(t_token *tokens, t_env **locals)
 {
 	t_cmd	*head = NULL;
