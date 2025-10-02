@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/14 12:40:33 by aramarak          #+#    #+#             */
-/*   Updated: 2025/10/02 19:35:32 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/10/02 20:14:33 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,11 @@ int	execute_pipeline(t_cmd *cmds, t_env **env)
 	int		in_fd;
 	pid_t	pid;
 	int		status;
-	int		last_status;
+	int		exit_code;
 
 	cur = cmds;
 	in_fd = STDIN_FILENO;
-	last_status = 0;
+	exit_code = 0;
 	while (cur)
 	{
 		if (cur->next && pipe(pipe_fd) < 0)
@@ -98,7 +98,13 @@ int	execute_pipeline(t_cmd *cmds, t_env **env)
 		cur = cur->next;
 	}
 	while (wait(&status) > 0)
-		last_status = WIFEXITED(status) ? WEXITSTATUS(status) : 1;
+	{
+		if (WIFEXITED(status))
+			exit_code = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status))
+			exit_code = 128 + WTERMSIG(status);
+	}
 	in_child_process(1, 0);
-	return (last_status);
+	last_status(1, exit_code);
+	return (exit_code);
 }
