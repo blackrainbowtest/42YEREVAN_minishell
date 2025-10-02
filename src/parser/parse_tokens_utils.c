@@ -41,12 +41,24 @@ int	add_arg(t_cmd *cmd, const char *value)
 }
 
 
+static int	ft_arrlen(char **arr)
+{
+	int	i = 0;
+
+	if (!arr)
+		return (0);
+	while (arr[i])
+		i++;
+	return (i);
+}
 
 /** TODO: fix segfault here if after $ nothing */
+/** TODO: need to fix art_index and maybe delete this */
 int	handle_word_token(t_cmd *cur, t_token *tok,
-	t_env **locals, int *arg_index)
+	t_env **locals)
 {
 	char	*old;
+	int		last_idx;
 
 	if (!tok->value)
 		return (0);
@@ -57,18 +69,19 @@ int	handle_word_token(t_cmd *cur, t_token *tok,
 			return (handle_assignment(locals, tok->value), 1);
 	}
 
-	if (tok->space_before == 0 && cur->argv && *arg_index >= 0)
+	last_idx = ft_arrlen(cur->argv) - 1;
+	if (tok->space_before == 0 && last_idx >= 0)
 	{
-		old = cur->argv[*arg_index];
-		cur->argv[*arg_index] = ft_strjoin(old, tok->value);
+		old = cur->argv[last_idx];
+		cur->argv[last_idx] = ft_strjoin(old, tok->value);
 		free(old);
 	}
 	else
 	{
 		if (add_arg(cur, tok->value) < 0)
 			return (-1);
-		(*arg_index)++;
 	}
+
 	return (0);
 }
 

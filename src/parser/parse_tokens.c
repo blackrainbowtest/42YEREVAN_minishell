@@ -13,14 +13,14 @@
 #include "minishell.h"
 
 static int	process_token(t_cmd **cur, t_cmd **head,
-			t_token **tok, t_env **locals, int *arg_index)
+			t_token **tok, t_env **locals)
 {
 	int	res;
 
 	if ((*tok)->type == T_WORD || (*tok)->type == T_VAR
 		|| (*tok)->type == T_DQUOTE || (*tok)->type == T_SQUOTE)
 	{
-		res = handle_word_token(*cur, *tok, locals, arg_index);
+		res = handle_word_token(*cur, *tok, locals);
 		if (res < 0)
 			return (-1);
 		if (res == 1)
@@ -69,7 +69,6 @@ t_cmd	*parse_tokens(t_token *tokens, t_env **locals)
 	t_cmd	*head = NULL;
 	t_cmd	*cur = NULL;
 	t_token	*tok = tokens;
-	int		arg_index = -1;
 	int		res;
 
 	while (tok)
@@ -79,7 +78,7 @@ t_cmd	*parse_tokens(t_token *tokens, t_env **locals)
 			print_minishell_error("syntax error", NULL, "unexpected token", 2);
 			return (NULL);
 		}
-		res = process_token(&cur, &head, &tok, locals, &arg_index);
+		res = process_token(&cur, &head, &tok, locals);
 		if (res < 0)
 		{
 			print_minishell_error("syntax error", NULL, "unexpected token", 2);
