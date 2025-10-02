@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 15:38:18 by aramarak          #+#    #+#             */
-/*   Updated: 2025/10/01 00:41:07 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/10/02 21:21:57 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int	execute_command(char **argv, t_env *env)
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(argv[0], 2);
 		ft_putstr_fd(": command not found\n", 2);
-		return (127);
+		return (last_status(1, 127));
 	}
 	code = spawn_and_wait(path, argv, env);
 	free(path);

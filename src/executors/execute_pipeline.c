@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/14 12:40:33 by aramarak          #+#    #+#             */
-/*   Updated: 2025/10/02 20:14:33 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/10/02 21:22:44 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ static void	child_process(t_cmd *cmd, int in_fd, int out_fd, t_env **env)
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(cmd->argv[0], 2);
 		ft_putstr_fd(": command not found\n", 2);
+		last_status(1, 127);
 		_exit(127);
 	}
 

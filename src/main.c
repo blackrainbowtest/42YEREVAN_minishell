@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 13:23:31 by aramarak          #+#    #+#             */
-/*   Updated: 2025/10/02 19:18:42 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/10/02 21:19:44 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,10 @@ static void	run_single_command(t_cmd *cmd, t_env **env)
 		if (cmd->redir && apply_redirections(cmd) != 0)
 			_exit(1);
 		if (is_builtin(cmd->argv[0]))
-			run_builtin(cmd->argv, env);
+			exit_code = run_builtin(cmd->argv, env);
 		else
-			execute_command(cmd->argv, *env);
-		_exit(0);
+			exit_code = execute_command(cmd->argv, *env);
+		_exit(exit_code);
 	}
 	else
 		waitpid(pid, &status, 0);
