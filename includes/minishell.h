@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 13:23:38 by aramarak          #+#    #+#             */
-/*   Updated: 2025/10/01 23:49:54 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/10/04 10:07:34 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,14 @@ void	signal_default(void);
 // ===== prompt =====
 char	*read_prompt(void);
 
-/* path resolver */
+// ===== path =====
 char	*find_in_path(const char *cmd, t_env *env);
 
-// ===== executor (пока заглушка) =====
+// ===== executor =====
 int		execute_command(char **argv, t_env *env);
 char	**env_to_envp(t_env *env);
+
+// ===== utils =====
+int		check_exec_path(char *path);
 
 #endif // MINISHELL_H

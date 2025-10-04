@@ -28,7 +28,7 @@ int	add_arg(t_cmd *cmd, const char *value)
 		return (-1);
 	for (int i = 0; i < argc; i++)
 		new_argv[i] = cmd->argv[i];
-	new_argv[argc] = ft_strdup(value);
+	new_argv[argc] = ft_strdup(value ? value : "");
 	if (!new_argv[argc])
 	{
 		free(new_argv);
@@ -61,14 +61,12 @@ int	handle_word_token(t_cmd *cur, t_token *tok,
 	int		last_idx;
 
 	if (!tok->value)
-		return (0);
-
+		tok->value = ft_strdup("");
 	if (is_assignment_token(tok->value))
 	{
 		if (!cur->argv || ft_strcmp(cur->argv[0], "export") != 0)
 			return (handle_assignment(locals, tok->value), 1);
 	}
-
 	last_idx = ft_arrlen(cur->argv) - 1;
 	if (tok->space_before == 0 && last_idx >= 0)
 	{
@@ -78,10 +76,17 @@ int	handle_word_token(t_cmd *cur, t_token *tok,
 	}
 	else
 	{
-		if (add_arg(cur, tok->value) < 0)
-			return (-1);
+		if (tok->value)
+		{
+			if (add_arg(cur, tok->value) < 0)
+				return (-1);
+		}
+		else
+		{
+			if (add_arg(cur, "") < 0)
+				return (-1);
+		}
 	}
-
 	return (0);
 }
 

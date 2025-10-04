@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 13:23:31 by aramarak          #+#    #+#             */
-/*   Updated: 2025/10/02 21:19:44 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/10/04 12:00:52 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,20 +33,34 @@ static void	run_single_command(t_cmd *cmd, t_env **env)
 	pid_t	pid;
 	int		status;
 	int		exit_code;
+	int		i = 0;
 
-	if (!cmd || !cmd->argv || !cmd->argv[0] || cmd->argv[0][0] == '\0')
+	if (!cmd || !cmd->argv)
 		return ;
-	if (is_builtin(cmd->argv[0]))
+
+	// ищем первый непустой элемент
+	while (cmd->argv[i] && cmd->argv[i][0] == '\0')
+		i++;
+
+	// если весь массив пустой
+	if (!cmd->argv[i])
+		return ;
+
+	// cmd->argv[i] теперь первый непустой аргумент
+	// все остальные аргументы остаются как есть, т.е. argv = ["", "", "echo", "hi"]
+	// далее уже проверка встроенных команд
+	if (is_builtin(cmd->argv[i]))
 	{
-		if (ft_strcmp(cmd->argv[0], "exit") == 0
-			|| ft_strcmp(cmd->argv[0], "cd") == 0
-			|| ft_strcmp(cmd->argv[0], "export") == 0
-			|| ft_strcmp(cmd->argv[0], "unset") == 0)
+		if (ft_strcmp(cmd->argv[i], "exit") == 0
+			|| ft_strcmp(cmd->argv[i], "cd") == 0
+			|| ft_strcmp(cmd->argv[i], "export") == 0
+			|| ft_strcmp(cmd->argv[i], "unset") == 0)
 		{
-			run_builtin(cmd->argv, env);
+			run_builtin(&cmd->argv[i], env);
 			return ;
 		}
 	}
+
 	in_child_process(1, 1);
 	pid = fork();
 	if (pid < 0)
@@ -59,14 +73,15 @@ static void	run_single_command(t_cmd *cmd, t_env **env)
 		signal_default();
 		if (cmd->redir && apply_redirections(cmd) != 0)
 			_exit(1);
-		if (is_builtin(cmd->argv[0]))
-			exit_code = run_builtin(cmd->argv, env);
+		if (is_builtin(cmd->argv[i]))
+			exit_code = run_builtin(&cmd->argv[i], env);
 		else
-			exit_code = execute_command(cmd->argv, *env);
+			exit_code = execute_command(&cmd->argv[i], *env);
 		_exit(exit_code);
 	}
 	else
 		waitpid(pid, &status, 0);
+
 	if (WIFEXITED(status))
 		exit_code = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))

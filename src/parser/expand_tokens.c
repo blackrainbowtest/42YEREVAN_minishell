@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/20 12:01:26 by aramarak          #+#    #+#             */
-/*   Updated: 2025/10/02 00:55:53 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/10/04 10:33:07 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,10 +100,11 @@ static char	*expand_dollar(const char *str,
 		while (str[*i] && (ft_isalnum(str[*i]) || str[*i] == '_'))
 			(*i)++;
 		val = expand_local_env_var(str, start, *i, locals);
-		if (val)
-			return (val);
-		// return (ft_strdup(""));
-		return (expand_env_var(str, start, *i, env)); // TODO
+		if (!val)
+			val = expand_env_var(str, start, *i, env);
+		if (!val)
+			return (ft_strdup(""));
+		return (val);
 	}
 	(void)env;
 }

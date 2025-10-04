@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/14 12:40:33 by aramarak          #+#    #+#             */
-/*   Updated: 2025/10/02 21:22:44 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/10/04 10:18:12 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static void	child_process(t_cmd *cmd, int in_fd, int out_fd, t_env **env)
 {
 	char	**envp;
 	char	*path;
+	int		exit_code;
 
 	if (!cmd->argv || !cmd->argv[0] || cmd->argv[0][0] == '\0')
 		_exit(0);
@@ -35,7 +36,21 @@ static void	child_process(t_cmd *cmd, int in_fd, int out_fd, t_env **env)
 	if (is_builtin(cmd->argv[0]))
 		_exit(run_builtin(cmd->argv, env));
 
-	path = find_in_path(cmd->argv[0], *env);
+	path = NULL;
+	if (ft_strchr(cmd->argv[0], '/'))
+	{
+		path = ft_strdup(cmd->argv[0]);
+		if (access(path, F_OK) != 0)
+		{
+			ft_putstr_fd("minishell: ", 2);
+			ft_putstr_fd(cmd->argv[0], 2);
+			ft_putstr_fd(": No such file or directory\n", 2);
+			last_status(1, 127);
+			_exit(127);
+		}
+	}
+	else
+		path = find_in_path(cmd->argv[0], *env);
 	if (!path)
 	{
 		ft_putstr_fd("minishell: ", 2);
@@ -45,11 +60,16 @@ static void	child_process(t_cmd *cmd, int in_fd, int out_fd, t_env **env)
 		_exit(127);
 	}
 
+	exit_code = check_exec_path(path);
+	if (exit_code != 0)
+	{
+		free(path);
+		_exit(last_status(1, exit_code));
+	}
 	envp = env_to_envp(*env);
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 	execve(path, cmd->argv, envp);
-
 	perror("execve");
 	free_argv(envp);
 	free(path);
@@ -106,6 +126,5 @@ int	execute_pipeline(t_cmd *cmds, t_env **env)
 			exit_code = 128 + WTERMSIG(status);
 	}
 	in_child_process(1, 0);
-	last_status(1, exit_code);
-	return (exit_code);
+	return (last_status(1, exit_code));
 }
