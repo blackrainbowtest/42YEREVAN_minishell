@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 13:23:31 by aramarak          #+#    #+#             */
-/*   Updated: 2025/10/04 12:00:52 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/10/05 18:53:35 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,18 +37,10 @@ static void	run_single_command(t_cmd *cmd, t_env **env)
 
 	if (!cmd || !cmd->argv)
 		return ;
-
-	// ищем первый непустой элемент
 	while (cmd->argv[i] && cmd->argv[i][0] == '\0')
 		i++;
-
-	// если весь массив пустой
 	if (!cmd->argv[i])
 		return ;
-
-	// cmd->argv[i] теперь первый непустой аргумент
-	// все остальные аргументы остаются как есть, т.е. argv = ["", "", "echo", "hi"]
-	// далее уже проверка встроенных команд
 	if (is_builtin(cmd->argv[i]))
 	{
 		if (ft_strcmp(cmd->argv[i], "exit") == 0
@@ -60,7 +52,6 @@ static void	run_single_command(t_cmd *cmd, t_env **env)
 			return ;
 		}
 	}
-
 	in_child_process(1, 1);
 	pid = fork();
 	if (pid < 0)
@@ -92,13 +83,6 @@ static void	run_single_command(t_cmd *cmd, t_env **env)
 	last_status(1, exit_code);
 }
 
-/**
- * @brief Process and execute a single line of shell input.
- * This function handles parsing the input line into commands,
- * executing them (either as a pipeline or a single command),
- * and cleaning up resources afterwards.
- * 
- */
 static void	run_shell_line(char *line, t_env **env, t_env **locals)
 {
 	t_cmd	*cmds;

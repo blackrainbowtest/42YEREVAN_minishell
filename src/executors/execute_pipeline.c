@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/14 12:40:33 by aramarak          #+#    #+#             */
-/*   Updated: 2025/10/04 10:18:12 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/10/06 01:12:44 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,35 +30,29 @@ static void	child_process(t_cmd *cmd, int in_fd, int out_fd, t_env **env)
 		dup2(out_fd, STDOUT_FILENO);
 		close(out_fd);
 	}
-	if (cmd->redir && apply_redirections(cmd) != 0)
-		_exit(1);
-
+	if (cmd->redir)
+	{
+		if (apply_redirections(cmd) != 0)
+			_exit(1);
+	}
 	if (is_builtin(cmd->argv[0]))
 		_exit(run_builtin(cmd->argv, env));
-
 	path = NULL;
 	if (ft_strchr(cmd->argv[0], '/'))
 	{
 		path = ft_strdup(cmd->argv[0]);
 		if (access(path, F_OK) != 0)
 		{
-			ft_putstr_fd("minishell: ", 2);
-			ft_putstr_fd(cmd->argv[0], 2);
-			ft_putstr_fd(": No such file or directory\n", 2);
-			last_status(1, 127);
+			perror(path);
 			_exit(127);
 		}
 	}
 	else
-		path = find_in_path(cmd->argv[0], *env);
-	if (!path)
 	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(cmd->argv[0], 2);
-		ft_putstr_fd(": command not found\n", 2);
-		last_status(1, 127);
-		_exit(127);
+		path = find_in_path(cmd->argv[0], *env);
 	}
+	if (!path)
+		_exit(127);
 
 	exit_code = check_exec_path(path);
 	if (exit_code != 0)
@@ -75,6 +69,7 @@ static void	child_process(t_cmd *cmd, int in_fd, int out_fd, t_env **env)
 	free(path);
 	_exit(126);
 }
+
 
 int	execute_pipeline(t_cmd *cmds, t_env **env)
 {
@@ -107,7 +102,9 @@ int	execute_pipeline(t_cmd *cmds, t_env **env)
 			signal_default();
 			if (cur->next)
 				close(pipe_fd[0]);
+
 			child_process(cur, in_fd, cur->next ? pipe_fd[1] : STDOUT_FILENO, env);
+			_exit(42);
 		}
 		if (in_fd != STDIN_FILENO)
 			close(in_fd);

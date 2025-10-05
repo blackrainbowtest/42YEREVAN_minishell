@@ -26,30 +26,48 @@ int	apply_redirections(t_cmd *cmd)
 	r = cmd->redir;
 	while (r)
 	{
-		if (r->type == R_IN)
-			fd = open_read(r->file);
-		else if (r->type == R_OUT)
-			fd = open_trunc(r->file);
-		else if (r->type == R_APPEND)
-			fd = open_append(r->file);
-		else if (r->type == R_HEREDOC)
-			fd = open_heredoc(r->file);
-		else
-			fd = -1;
-
-		if (fd < 0)
+		fd = -1;
+		if (r->file == NULL || r->file[0] == '\0')
 		{
-			ft_putstr_fd(" No such file or directory\n", 2);
+			ft_putstr_fd("minishell: ambiguous redirect\n", 2);
 			return (-1);
 		}
-
+		printf("r->type = %d, R_IN = %d, r->file = \"%s\"\n", r->type, R_IN, r->file);
+		if (r->type == R_IN)
+			fd = open(r->file, O_RDONLY);
+		else if (r->type == R_OUT)
+			fd = open(r->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		else if (r->type == R_APPEND)
+			fd = open(r->file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		else if (r->type == R_HEREDOC)
+			fd = open_heredoc(r->file);
+		printf("%d\n", fd);
+		if (fd < 0)
+		{
+			perror(r->file);
+			return (-1);
+		}
 		if (is_input_redir(r))
-			dup2(fd, STDIN_FILENO);
+		{
+			if (dup2(fd, STDIN_FILENO) < 0)
+			{
+				perror("dup2");
+				close(fd);
+				return (-1);
+			}
+		}
 		else if (is_output_redir(r))
-			dup2(fd, STDOUT_FILENO);
-
+		{
+			if (dup2(fd, STDOUT_FILENO) < 0)
+			{
+				perror("dup2");
+				close(fd);
+				return (-1);
+			}
+		}
 		close(fd);
 		r = r->next;
 	}
 	return (0);
 }
+

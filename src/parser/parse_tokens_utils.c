@@ -90,15 +90,37 @@ int	handle_word_token(t_cmd *cur, t_token *tok,
 	return (0);
 }
 
+static int	token_to_redir_type(t_toktype type)
+{
+	if (type == T_REDIR_IN)
+		return (R_IN);
+	if (type == T_REDIR_OUT)
+		return (R_OUT);
+	if (type == T_REDIR_APPEND)
+		return (R_APPEND);
+	if (type == T_HEREDOC)
+		return (R_HEREDOC);
+	return (-1);
+}
+
 int	handle_redir_token(t_cmd *cur, t_token *tok, t_cmd *head)
 {
+	int	rtype;
+
 	if (!tok->next || tok->next->type != T_WORD)
 	{
 		fprintf(stderr, "minishell: syntax error near redirection\n");
 		free_cmds(head);
 		return (-1);
 	}
-	if (add_redir(cur, tok->type, tok->next->value) < 0)
+	rtype = token_to_redir_type(tok->type);
+	if (rtype == -1)
+	{
+		fprintf(stderr, "minishell: internal error: unknown redir type\n");
+		free_cmds(head);
+		return (-1);
+	}
+	if (add_redir(cur, rtype, tok->next->value) < 0)
 	{
 		free_cmds(head);
 		return (-1);
