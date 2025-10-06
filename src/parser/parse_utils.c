@@ -6,13 +6,13 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 01:46:57 by aramarak          #+#    #+#             */
-/*   Updated: 2025/10/02 20:09:22 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/10/06 23:07:33 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	add_redir(t_cmd *cmd, t_toktype type, const char *file)
+int	add_redir(t_cmd *cmd, t_redir_type type, const char *file)
 {
 	t_redir	*new_redir;
 	t_redir	*tmp;

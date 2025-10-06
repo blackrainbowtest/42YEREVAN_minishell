@@ -32,7 +32,6 @@ int	apply_redirections(t_cmd *cmd)
 			ft_putstr_fd("minishell: ambiguous redirect\n", 2);
 			return (-1);
 		}
-		printf("r->type = %d, R_IN = %d, r->file = \"%s\"\n", r->type, R_IN, r->file);
 		if (r->type == R_IN)
 			fd = open(r->file, O_RDONLY);
 		else if (r->type == R_OUT)
@@ -41,7 +40,6 @@ int	apply_redirections(t_cmd *cmd)
 			fd = open(r->file, O_WRONLY | O_CREAT | O_APPEND, 0644);
 		else if (r->type == R_HEREDOC)
 			fd = open_heredoc(r->file);
-		printf("%d\n", fd);
 		if (fd < 0)
 		{
 			perror(r->file);

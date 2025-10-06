@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 15:38:18 by aramarak          #+#    #+#             */
-/*   Updated: 2025/10/04 12:06:48 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/10/06 01:40:53 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,9 @@ int	execute_command(char **argv, t_env *env)
 		free(path);
 		return (last_status(1, exit_code));
 	}
-
+	printf("[DEBUG EXEC] path='%s'\n", path);
+	for (int j = 0; argv[j]; j++)
+		printf("argv[%d]='%s'\n", j, argv[j]);
 	exit_code = spawn_and_wait(path, argv, env);
 	free(path);
 	return (exit_code);

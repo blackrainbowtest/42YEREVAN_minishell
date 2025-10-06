@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 23:07:48 by aramarak          #+#    #+#             */
-/*   Updated: 2025/10/02 20:09:15 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/10/06 23:22:03 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ typedef struct s_redir		t_redir;
 typedef struct s_env		t_env;
 typedef struct s_token		t_token;
 typedef enum e_toktype		t_toktype;
+typedef enum e_redir_type		t_redir_type;
 
 typedef struct s_cmd
 {
@@ -50,7 +51,7 @@ void	append_char(char **result, char c);
 void	append_str(char **result, const char *s);
 
 /* ===== parse_utils.c ===== */
-int		add_redir(t_cmd *cmd, t_toktype type, const char *file);
+int		add_redir(t_cmd *cmd, t_redir_type type, const char *file);
 t_cmd	*new_cmd(void);
 
 void	free_cmds(t_cmd *cmds);
