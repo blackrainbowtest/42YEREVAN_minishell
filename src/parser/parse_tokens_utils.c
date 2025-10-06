@@ -103,30 +103,32 @@ static int	token_to_redir_type(t_toktype type)
 	return (-1);
 }
 
-int	handle_redir_token(t_cmd *cur, t_token *tok, t_cmd *head)
+int	handle_redir_token(t_cmd *cur, t_token **tok, t_cmd *head)
 {
-	int	rtype;
+	t_redir_type	rtype;
 
-	if (!tok->next || tok->next->type != T_WORD)
+	if (!(*tok)->next || (*tok)->next->type != T_WORD)
 	{
 		fprintf(stderr, "minishell: syntax error near redirection\n");
 		free_cmds(head);
 		return (-1);
 	}
-	rtype = token_to_redir_type(tok->type);
+	rtype = token_to_redir_type((*tok)->type);
 	if (rtype == -1)
 	{
 		fprintf(stderr, "minishell: internal error: unknown redir type\n");
 		free_cmds(head);
 		return (-1);
 	}
-	if (add_redir(cur, rtype, tok->next->value) < 0)
+	if (add_redir(cur, rtype, (*tok)->next->value) < 0)
 	{
 		free_cmds(head);
 		return (-1);
 	}
+	*tok = (*tok)->next;
 	return (1);
 }
+
 
 int	handle_pipe_token(t_cmd **cur, t_cmd *head)
 {

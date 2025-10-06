@@ -39,7 +39,7 @@ int	add_arg(t_cmd *cmd, const char *value);
 int	ensure_current_cmd(t_cmd **cur, t_cmd **head);
 int	handle_word_token(t_cmd *cur, t_token *tok,
 	t_env **locals);
-int	handle_redir_token(t_cmd *cur, t_token *tok, t_cmd *head);
+int	handle_redir_token(t_cmd *cur, t_token **tok, t_cmd *head);
 int	handle_pipe_token(t_cmd **cur, t_cmd *head);
 
 // ===== expand_utils.c =====

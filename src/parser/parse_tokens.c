@@ -33,7 +33,7 @@ static int	process_token(t_cmd **cur, t_cmd **head,
 	if ((*tok)->type == T_REDIR_IN || (*tok)->type == T_REDIR_OUT
 		|| (*tok)->type == T_REDIR_APPEND || (*tok)->type == T_HEREDOC)
 	{
-		res = handle_redir_token(*cur, *tok, *head);
+		res = handle_redir_token(*cur, tok, *head);
 		if (res < 0)
 			return (-1);
 		if (res == 1)
