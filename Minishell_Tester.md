@@ -1,3 +1,4 @@
+root@DESKTOP-OCTCNHU:~/42YEREVAN_minishell/minishell_tester# ./tester 
 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
                                                                                              
  ██    ██ █ ██    █ █ █████ █   █ █████ █     █       ██████ █████ █████ ██████ █████ █████  
@@ -71,139 +72,40 @@ Test  57: ✅ grep hi <./test_files/infile
 Test  58: ✅ grep hi "<infile" <         ./test_files/infile 
 Test  59: ✅ echo hi < ./test_files/infile bye bye 
 Test  60: ✅ grep hi <./test_files/infile_big <./test_files/infile 
-Test  61: ❌ echo <"./test_files/infile" "bonjour       42" 
-mini output = ()
-bash output = (bonjour 42)
-mini exit code = 2
-bash exit code = 0
-mini error = ( syntax error near redirection unexpected token)
-bash error = ()
-Test  62: ❌ cat <"./test_files/file name with spaces" 
-mini output = ()
-bash output = (😈 😈 😈 This will break your minishell 😈 😈 😈)
-mini exit code = 2
-bash exit code = 0
-mini error = ( syntax error near redirection unexpected token)
-bash error = ()
+Test  61: ✅ echo <"./test_files/infile" "bonjour       42" 
+Test  62: ✅ cat <"./test_files/file name with spaces" 
 Test  63: ✅ cat <./test_files/infile_big ./test_files/infile 
-Test  64: ❌ cat <"1""2""3""4""5" 
-mini exit code = 2
-bash exit code = 1
-mini error = ( syntax error near redirection unexpected token)
-bash error = ( No such file or directory)
-Test  65: ❌ echo <"./test_files/infile" <missing <"./test_files/infile" 
-mini exit code = 2
-bash exit code = 1
-mini error = ( syntax error near redirection unexpected token)
-bash error = ( No such file or directory)
-Test  66: ❌ echo <missing <"./test_files/infile" <missing 
-mini exit code = 2
-bash exit code = 1
-mini error = ( syntax error near redirection unexpected token)
-bash error = ( No such file or directory)
-Test  67: ❌ cat <"./test_files/infile" 
-mini output = ()
-bash output = (hi hello world 42)
-mini exit code = 2
-bash exit code = 0
-mini error = ( syntax error near redirection unexpected token)
-bash error = ()
-Test  68: ❌ echo <"./test_files/infile_big" | cat <"./test_files/infile" 
-mini output = ()
-bash output = (hi hello world 42)
-mini exit code = 2
-bash exit code = 0
-mini error = ( syntax error near redirection unexpected token)
-bash error = ()
-Test  69: ❌ echo <"./test_files/infile_big" | cat "./test_files/infile" 
-mini output = ()
-bash output = (hi hello world 42)
-mini exit code = 2
-bash exit code = 0
-mini error = ( syntax error near redirection unexpected token)
-bash error = ()
-Test  70: ❌ echo <"./test_files/infile_big" | echo <"./test_files/infile" 
-mini exit code = 2
-bash exit code = 0
-mini error = ( syntax error near redirection unexpected token)
-bash error = ()
-Test  71: ❌ echo hi | cat <"./test_files/infile" 
-mini output = ()
-bash output = (hi hello world 42)
-mini exit code = 2
-bash exit code = 0
-mini error = ( syntax error near redirection unexpected token)
-bash error = ()
+Test  64: ✅ cat <"1""2""3""4""5" 
+Test  65: ✅ echo <"./test_files/infile" <missing <"./test_files/infile" 
+Test  66: ✅ echo <missing <"./test_files/infile" <missing 
+Test  67: ✅ cat <"./test_files/infile" 
+Test  68: ✅ echo <"./test_files/infile_big" | cat <"./test_files/infile" 
+Test  69: ✅ echo <"./test_files/infile_big" | cat "./test_files/infile" 
+Test  70: ✅ echo <"./test_files/infile_big" | echo <"./test_files/infile" 
+Test  71: ✅ echo hi | cat <"./test_files/infile" 
 Test  72: ✅ echo hi | cat "./test_files/infile" 
 Test  73: ❌ cat <"./test_files/infile" | echo hi 
-mini output = ()
-bash output = (hi)
-mini exit code = 2
+mini exit code = 141
 bash exit code = 0
-mini error = ( syntax error near redirection unexpected token)
-bash error = ( Broken pipe)
-Test  74: ❌ cat <"./test_files/infile" | grep hello 
-mini output = ()
-bash output = (hello)
-mini exit code = 2
-bash exit code = 0
-mini error = ( syntax error near redirection unexpected token)
-bash error = ()
+Test  74: ✅ cat <"./test_files/infile" | grep hello 
 Test  75: ❌ cat <"./test_files/infile_big" | echo hi 
-mini output = ()
-bash output = (hi)
-mini exit code = 2
+mini exit code = 141
 bash exit code = 0
-mini error = ( syntax error near redirection unexpected token)
-bash error = ( Broken pipe)
 Test  76: ✅ cat <missing 
 Test  77: ✅ cat <missing | cat 
 Test  78: ✅ cat <missing | echo oi 
-Test  79: ❌ cat <missing | cat <"./test_files/infile" 
-mini output = ()
-bash output = (hi hello world 42)
-mini exit code = 2
-bash exit code = 0
-mini error = ( syntax error near redirection unexpected token)
-bash error = ( No such file or directory)
+Test  79: ✅ cat <missing | cat <"./test_files/infile" 
 Test  80: ✅ echo <123 <456 hi | echo 42 
 Test  81: ✅ ls >./outfiles/outfile01 
 Test  82: ✅ ls >         ./outfiles/outfile01 
 Test  83: ✅ echo hi >         ./outfiles/outfile01 bye 
 Test  84: ✅ ls >./outfiles/outfile01 >./outfiles/outfile02 
 Test  85: ✅ ls >./outfiles/outfile01 >./test_files/invalid_permission 
-Test  86: ❌ ls >"./outfiles/outfile with spaces" 
-Only in ./bash_outfiles: outfile with spaces
-mini outfiles:
-cat: './mini_outfiles/*': No such file or directory
-bash outfiles:
-README.md
-bash.supp
-bash_outfiles
-bonus
-bonus_bonus
-builtins
-extras
-local.supp
-loop.out
-manual_tests
-mini_outfiles
-os_specific
-outfiles
-pipes
-redirects
-syntax
-test_files
-tester
-wildcards
-mini exit code = 2
-bash exit code = 0
-mini error = ( syntax error near redirection unexpected token)
-bash error = ()
+Test  86: ✅ ls >"./outfiles/outfile with spaces" 
 Test  87: ❌ ls >"./outfiles/outfile""1""2""3""4""5" 
+Only in ./mini_outfiles: outfile
 Only in ./bash_outfiles: outfile12345
 mini outfiles:
-cat: './mini_outfiles/*': No such file or directory
 bash outfiles:
 README.md
 bash.supp
@@ -224,61 +126,13 @@ syntax
 test_files
 tester
 wildcards
-mini exit code = 2
+mini exit code = 127
 bash exit code = 0
-mini error = ( syntax error near redirection unexpected token)
+mini error = ( command not found)
 bash error = ()
-Test  88: ❌ ls >"./outfiles/outfile01" >./test_files/invalid_permission >"./outfiles/outfile02" 
-Only in ./bash_outfiles: outfile01
-Only in ./bash_outfiles: outfile02
-mini outfiles:
-cat: './mini_outfiles/*': No such file or directory
-bash outfiles:
-README.md
-bash.supp
-bash_outfiles
-bonus
-bonus_bonus
-builtins
-extras
-local.supp
-loop.out
-manual_tests
-mini_outfiles
-os_specific
-outfiles
-pipes
-redirects
-syntax
-test_files
-tester
-wildcards
-mini exit code = 2
-bash exit code = 0
-mini error = ( syntax error near redirection unexpected token)
-bash error = ()
-Test  89: ❌ ls >./test_files/invalid_permission >"./outfiles/outfile01" >./test_files/invalid_permission 
-Only in ./bash_outfiles: outfile01
-mini outfiles:
-cat: './mini_outfiles/*': No such file or directory
-bash outfiles:
-mini exit code = 2
-bash exit code = 0
-mini error = ( syntax error near redirection unexpected token)
-bash error = ()
-Test  90: ❌ cat <"./test_files/infile" >"./outfiles/outfile01" 
-Only in ./bash_outfiles: outfile01
-mini outfiles:
-cat: './mini_outfiles/*': No such file or directory
-bash outfiles:
-hi
-hello
-world
-42
-mini exit code = 2
-bash exit code = 0
-mini error = ( syntax error near redirection unexpected token)
-bash error = ()
+Test  88: ✅ ls >"./outfiles/outfile01" >./test_files/invalid_permission >"./outfiles/outfile02" 
+Test  89: ✅ ls >./test_files/invalid_permission >"./outfiles/outfile01" >./test_files/invalid_permission 
+Test  90: ✅ cat <"./test_files/infile" >"./outfiles/outfile01" 
 Test  91: ✅ echo hi >./outfiles/outfile01 | echo bye 
 Test  92: ✅ echo hi >./outfiles/outfile01 >./outfiles/outfile02 | echo bye 
 Test  93: ✅ echo hi | echo >./outfiles/outfile01 bye 
@@ -290,16 +144,8 @@ Test  98: ✅ echo hi >./test_files/invalid_permission >./outfiles/outfile01 | e
 Test  99: ✅ echo hi | echo bye >./test_files/invalid_permission 
 Test 100: ✅ echo hi | >./outfiles/outfile01 echo bye >./test_files/invalid_permission 
 Test 101: ✅ echo hi | echo bye >./test_files/invalid_permission >./outfiles/outfile01 
-Test 102: ❌ cat <"./test_files/infile" >./test_files/invalid_permission 
-mini exit code = 2
-bash exit code = 0
-mini error = ( syntax error near redirection unexpected token)
-bash error = ()
-Test 103: ❌ cat >./test_files/invalid_permission <"./test_files/infile" 
-mini exit code = 2
-bash exit code = 0
-mini error = ( syntax error near redirection unexpected token)
-bash error = ()
+Test 102: ✅ cat <"./test_files/infile" >./test_files/invalid_permission 
+Test 103: ✅ cat >./test_files/invalid_permission <"./test_files/infile" 
 Test 104: ✅ cat <missing >./outfiles/outfile01 
 Test 105: ✅ cat >./outfiles/outfile01 <missing 
 Test 106: ✅ cat <missing >./test_files/invalid_permission 
@@ -348,5 +194,5 @@ mini exit code = 126
 bash exit code = 2
 mini error = ( Exec format error)
 bash error = ( command not found)
-124/146
+142/146
 😭 😭 😭
