@@ -103,13 +103,39 @@ static t_redir_type	token_to_redir_type(t_toktype type)
 	return (R_NONE);
 }
 
+const char	*token_to_str(t_toktype type)
+{
+	if (type == T_PIPE)
+		return ("|");
+	if (type == T_REDIR_IN)
+		return ("<");
+	if (type == T_REDIR_OUT)
+		return (">");
+	if (type == T_REDIR_APPEND)
+		return (">>");
+	if (type == T_HEREDOC)
+		return ("<<");
+	return ("?");
+}
+
 int	handle_redir_token(t_cmd *cur, t_token **tok, t_cmd *head)
 {
 	t_redir_type	rtype;
 
-	if (!(*tok)->next || (*tok)->next->type != T_WORD)
+	if (!(*tok)->next)
 	{
-		fprintf(stderr, "minishell: syntax error near redirection\n");
+		fprintf(stderr, "minishell: syntax error near unexpected token 'newline'\n");
+		free_cmds(head);
+		return (-1);
+	}
+	if ((*tok)->next->type == T_PIPE
+		|| (*tok)->next->type == T_REDIR_IN
+		|| (*tok)->next->type == T_REDIR_OUT
+		|| (*tok)->next->type == T_REDIR_APPEND
+		|| (*tok)->next->type == T_HEREDOC)
+	{
+		fprintf(stderr, "minishell: syntax error near unexpected token '%s'\n",
+			token_to_str((*tok)->next->type));
 		free_cmds(head);
 		return (-1);
 	}
