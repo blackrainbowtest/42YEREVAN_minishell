@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 13:23:31 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/25 21:15:40 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/10/06 01:39:34 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,20 +33,26 @@ static void	run_single_command(t_cmd *cmd, t_env **env)
 	pid_t	pid;
 	int		status;
 	int		exit_code;
+	int		i = 0;
 
-	if (!cmd || !cmd->argv || !cmd->argv[0] || cmd->argv[0][0] == '\0')
+	if (!cmd || !cmd->argv)
 		return ;
-	if (is_builtin(cmd->argv[0]))
+	while (cmd->argv[i] && cmd->argv[i][0] == '\0')
+		i++;
+	if (!cmd->argv[i])
+		return ;
+	if (is_builtin(cmd->argv[i]))
 	{
-		if (ft_strcmp(cmd->argv[0], "exit") == 0
-			|| ft_strcmp(cmd->argv[0], "cd") == 0
-			|| ft_strcmp(cmd->argv[0], "export") == 0
-			|| ft_strcmp(cmd->argv[0], "unset") == 0)
+		if (ft_strcmp(cmd->argv[i], "exit") == 0
+			|| ft_strcmp(cmd->argv[i], "cd") == 0
+			|| ft_strcmp(cmd->argv[i], "export") == 0
+			|| ft_strcmp(cmd->argv[i], "unset") == 0)
 		{
-			run_builtin(cmd->argv, env);
+			run_builtin(&cmd->argv[i], env);
 			return ;
 		}
 	}
+	in_child_process(1, 1);
 	pid = fork();
 	if (pid < 0)
 	{
@@ -55,32 +61,28 @@ static void	run_single_command(t_cmd *cmd, t_env **env)
 	}
 	else if (pid == 0)
 	{
+		signal_default();
 		if (cmd->redir && apply_redirections(cmd) != 0)
 			_exit(1);
-		if (is_builtin(cmd->argv[0]))
-			run_builtin(cmd->argv, env);
+		if (is_builtin(cmd->argv[i]))
+			exit_code = run_builtin(&cmd->argv[i], env);
 		else
-			execute_command(cmd->argv, *env);
-		_exit(0);
+			exit_code = execute_command(&cmd->argv[i], *env);
+		_exit(exit_code);
 	}
 	else
 		waitpid(pid, &status, 0);
+
 	if (WIFEXITED(status))
 		exit_code = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
 		exit_code = 128 + WTERMSIG(status);
 	else
 		exit_code = 1;
+	in_child_process(1, 0);
 	last_status(1, exit_code);
 }
 
-/**
- * @brief Process and execute a single line of shell input.
- * This function handles parsing the input line into commands,
- * executing them (either as a pipeline or a single command),
- * and cleaning up resources afterwards.
- * 
- */
 static void	run_shell_line(char *line, t_env **env, t_env **locals)
 {
 	t_cmd	*cmds;
@@ -110,6 +112,8 @@ static void	run_shell_loop(t_env **env, t_env **locals)
 		line = read_prompt();
 		if (!line)
 			break ;
+		if (*line)
+			add_history(line);
 		run_shell_line(line, env, locals);
 	}
 }
@@ -121,15 +125,16 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	(void)argv;
+	setup_signals();
 	env = init_env(envp);
 	locals = init_locals();
 	last_status(1, 0);
+	in_child_process(1, 0);
 	if (!env)
 	{
 		perror("minishell: failed to init env");
 		return (1);
 	}
-	setup_signals();
 	run_shell_loop(&env, &locals);
 	free_env(env);
 	free_locals(locals);

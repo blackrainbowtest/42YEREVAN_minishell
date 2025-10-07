@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/20 11:33:49 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/28 00:19:43 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/09/29 22:36:10 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,4 +40,13 @@ int	last_status(int mode, int new_value)
 	if (mode == 1)
 		status = new_value;
 	return (status);
+}
+
+int	in_child_process(int mode, int value)
+{
+	static int	in_child;
+
+	if (mode == 1)
+		in_child = value;
+	return in_child;
 }

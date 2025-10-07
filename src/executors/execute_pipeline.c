@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/14 12:40:33 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/27 19:00:45 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/10/06 01:12:44 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,10 @@ static void	child_process(t_cmd *cmd, int in_fd, int out_fd, t_env **env)
 {
 	char	**envp;
 	char	*path;
+	int		exit_code;
 
+	if (!cmd->argv || !cmd->argv[0] || cmd->argv[0][0] == '\0')
+		_exit(0);
 	if (in_fd != STDIN_FILENO)
 	{
 		dup2(in_fd, STDIN_FILENO);
@@ -33,27 +36,40 @@ static void	child_process(t_cmd *cmd, int in_fd, int out_fd, t_env **env)
 			_exit(1);
 	}
 	if (is_builtin(cmd->argv[0]))
+		_exit(run_builtin(cmd->argv, env));
+	path = NULL;
+	if (ft_strchr(cmd->argv[0], '/'))
 	{
-		last_status(1, run_builtin(cmd->argv, env));
-		_exit(0);
+		path = ft_strdup(cmd->argv[0]);
+		if (access(path, F_OK) != 0)
+		{
+			perror(path);
+			_exit(127);
+		}
 	}
-	path = find_in_path(cmd->argv[0], *env);
-	if (!path)
+	else
 	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(cmd->argv[0], 2);
-		ft_putstr_fd(": command not found\n", 2);
+		path = find_in_path(cmd->argv[0], *env);
+	}
+	if (!path)
 		_exit(127);
+
+	exit_code = check_exec_path(path);
+	if (exit_code != 0)
+	{
+		free(path);
+		_exit(last_status(1, exit_code));
 	}
 	envp = env_to_envp(*env);
-	if (cmd->argv[0] == NULL || cmd->argv[0][0] == '\0')
-		return ;
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 	execve(path, cmd->argv, envp);
 	perror("execve");
 	free_argv(envp);
 	free(path);
 	_exit(126);
 }
+
 
 int	execute_pipeline(t_cmd *cmds, t_env **env)
 {
@@ -62,11 +78,11 @@ int	execute_pipeline(t_cmd *cmds, t_env **env)
 	int		in_fd;
 	pid_t	pid;
 	int		status;
-	int		last_status;
+	int		exit_code;
 
 	cur = cmds;
 	in_fd = STDIN_FILENO;
-	last_status = 0;
+	exit_code = 0;
 	while (cur)
 	{
 		if (cur->next && pipe(pipe_fd) < 0)
@@ -74,6 +90,7 @@ int	execute_pipeline(t_cmd *cmds, t_env **env)
 			perror("pipe");
 			return (1);
 		}
+		in_child_process(1, 1);
 		pid = fork();
 		if (pid < 0)
 		{
@@ -82,9 +99,12 @@ int	execute_pipeline(t_cmd *cmds, t_env **env)
 		}
 		else if (pid == 0)
 		{
+			signal_default();
 			if (cur->next)
 				close(pipe_fd[0]);
+
 			child_process(cur, in_fd, cur->next ? pipe_fd[1] : STDOUT_FILENO, env);
+			_exit(42);
 		}
 		if (in_fd != STDIN_FILENO)
 			close(in_fd);
@@ -96,6 +116,12 @@ int	execute_pipeline(t_cmd *cmds, t_env **env)
 		cur = cur->next;
 	}
 	while (wait(&status) > 0)
-		last_status = WIFEXITED(status) ? WEXITSTATUS(status) : 1;
-	return (last_status);
+	{
+		if (WIFEXITED(status))
+			exit_code = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status))
+			exit_code = 128 + WTERMSIG(status);
+	}
+	in_child_process(1, 0);
+	return (last_status(1, exit_code));
 }

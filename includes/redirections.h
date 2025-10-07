@@ -17,11 +17,12 @@
 
 typedef enum e_redir_type
 {
-    R_IN,       // <
-    R_OUT,      // >
-    R_APPEND,   // >>
-    R_HEREDOC   // <<
-}   t_redir_type;
+	R_IN,       // <
+	R_OUT,      // >
+	R_APPEND,   // >>
+	R_HEREDOC,   // <<
+	R_NONE
+}			t_redir_type;
 
 // ===== t_redir structure =====
 /**

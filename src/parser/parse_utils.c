@@ -6,59 +6,13 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 01:46:57 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/25 19:34:56 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/10/06 23:07:33 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int merge_token(t_cmd *cmd, t_token *tok, int *arg_index)
-{
-	return 0;
-	if (!cmd->argv)
-	{
-		cmd->argv = malloc(sizeof(char *) * 2);
-		if (!cmd->argv)
-			return (-1);
-		cmd->argv[0] = ft_strdup(tok->value);
-		if (!cmd->argv[0])
-			return (-1);
-		cmd->argv[1] = NULL;
-		*arg_index = 0;
-	}
-	else if (tok->space_before == 0 && *arg_index >= 0)
-	{
-		char *old = cmd->argv[*arg_index];
-		cmd->argv[*arg_index] = ft_strjoin(old, tok->value);
-		free(old);
-		if (!cmd->argv[*arg_index])
-			return (-1);
-	}
-	else
-	{
-		int i = 0;
-		while (cmd->argv[i])
-			i++;
-		char **new_argv = malloc(sizeof(char *) * (i + 2));
-		if (!new_argv)
-			return (-1);
-		for (int j = 0; j < i; j++)
-			new_argv[j] = cmd->argv[j];
-		new_argv[i] = ft_strdup(tok->value);
-		if (!new_argv[i])
-		{
-			free(new_argv);
-			return (-1);
-		}
-		new_argv[i + 1] = NULL;
-		free(cmd->argv);
-		cmd->argv = new_argv;
-		*arg_index = i;
-	}
-	return (0);
-}
-
-int	add_redir(t_cmd *cmd, t_toktype type, const char *file)
+int	add_redir(t_cmd *cmd, t_redir_type type, const char *file)
 {
 	t_redir	*new_redir;
 	t_redir	*tmp;

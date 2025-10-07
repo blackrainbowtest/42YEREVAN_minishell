@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 13:23:23 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/11 20:03:17 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/10/01 00:57:38 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,5 @@ char	*read_prompt(void)
 	line = readline("minishell$ ");
 	if (!line)
 		return (NULL);
-	if (*line)
-		add_history(line);
 	return (line);
 }

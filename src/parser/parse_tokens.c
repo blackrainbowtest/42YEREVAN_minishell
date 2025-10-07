@@ -12,196 +12,108 @@
 
 #include "minishell.h"
 
-// t_cmd   *parse_tokens(t_token *tokens, t_env **locals)
-// {
-// 	t_cmd *head = NULL;
-// 	t_cmd *cur = NULL;
-// 	t_token *tok = tokens;
-// 	int arg_index = -1;
-
-// 	while (tok)
-// 	{
-// 		if (!cur)
-// 		{
-// 			cur = new_cmd();
-// 			if (!cur)
-// 				return (free_cmds(head), NULL);
-// 			if (!head)
-// 				head = cur;
-// 		}
-
-// 		if (tok->type == T_WORD || tok->type == T_VAR
-// 			|| tok->type == T_DQUOTE || tok->type == T_SQUOTE)
-// 		{
-// 			if (is_assignment_token(tok->value))
-// 			{
-// 				handle_assignment(locals, tok->value);
-// 				tok = tok->next;
-// 				continue ;
-// 			}
-// 			if (merge_token(cur, tok, &arg_index) < 0)
-// 			{
-// 				free_cmds(head);
-// 				return (NULL);
-// 			}
-// 		}
-// 		else if (tok->type == T_REDIR_IN || tok->type == T_REDIR_OUT
-// 			|| tok->type == T_REDIR_APPEND || tok->type == T_HEREDOC)
-// 		{
-// 			arg_index = -1;
-// 			if (!tok->next || tok->next->type != T_WORD)
-// 			{
-// 				fprintf(stderr, "minishell: syntax error near redirection\n");
-// 				return free_cmds(head), NULL;
-// 			}
-// 			if (add_redir(cur, tok->type, tok->next->value) < 0)
-// 				return free_cmds(head), NULL;
-// 			tok = tok->next;
-// 		}
-// 		else if (tok->type == T_PIPE)
-// 		{
-// 			arg_index = -1;
-// 			cur->next = new_cmd();
-// 			if (!cur->next)
-// 				return free_cmds(head), NULL;
-// 			cur = cur->next;
-// 		}
-// 		else
-// 		{
-// 			arg_index = -1;
-// 		}
-
-// 		tok = tok->next;
-// 	}
-// 	return (head);
-// }
-
-static int	add_arg(t_cmd *cmd, const char *value)
+static int	process_token(t_cmd **cur, t_cmd **head,
+			t_token **tok, t_env **locals)
 {
-	int		argc;
-	char	**new_argv;
+	int	res;
 
-	argc = 0;
-	if (cmd->argv)
+	if ((*tok)->type == T_WORD || (*tok)->type == T_VAR
+		|| (*tok)->type == T_DQUOTE || (*tok)->type == T_SQUOTE)
 	{
-		while (cmd->argv[argc])
-			argc++;
+		res = handle_word_token(*cur, *tok, locals);
+		if (res < 0)
+			return (-1);
+		if (res == 1)
+		{
+			*tok = (*tok)->next;
+			return (1);
+		}
+		return (0);
 	}
-	new_argv = malloc(sizeof(char *) * (argc + 2));
-	if (!new_argv)
-		return (-1);
-	for (int i = 0; i < argc; i++)
-		new_argv[i] = cmd->argv[i];
-	new_argv[argc] = ft_strdup(value);
-	if (!new_argv[argc])
+	if ((*tok)->type == T_REDIR_IN || (*tok)->type == T_REDIR_OUT
+		|| (*tok)->type == T_REDIR_APPEND || (*tok)->type == T_HEREDOC)
 	{
-		free(new_argv);
-		return (-1);
+		res = handle_redir_token(*cur, tok, *head);
+		if (res < 0)
+			return (-1);
+		if (res == 1)
+		{
+			*tok = (*tok)->next;
+			return (1);
+		}
+		return (0);
 	}
-	new_argv[argc + 1] = NULL;
-	free(cmd->argv);
-	cmd->argv = new_argv;
+	if ((*tok)->type == T_PIPE)
+	{
+		if (handle_pipe_token(cur, *head) < 0)
+			return (-1);
+	}
+	return (0);
+}
+
+int	ensure_current_cmd(t_cmd **cur, t_cmd **head)
+{
+	if (!*cur)
+	{
+		*cur = new_cmd();
+		if (!*cur)
+			return (-1);
+		if (!*head)
+			*head = *cur;
+	}
 	return (0);
 }
 
 t_cmd	*parse_tokens(t_token *tokens, t_env **locals)
 {
-	t_cmd	*head;
-	t_cmd	*cur;
-	t_token	*tok;
-	int arg_index = -1;
+	t_cmd	*head = NULL;
+	t_cmd	*cur = NULL;
+	t_token	*tok = tokens;
+	int		res;
 
-	head = NULL;
-	cur = NULL;
-	tok = tokens;
-	(void)locals;
 	while (tok)
 	{
-		if (!cur)
+		if (ensure_current_cmd(&cur, &head) < 0)
 		{
-			cur = new_cmd();
-			if (!cur)
-				return (free_cmds(head), NULL);
-			if (!head)
-				head = cur;
+			print_minishell_error("syntax error", NULL, "unexpected token", 2);
+			return (NULL);
 		}
-		if (tok->type == T_WORD || tok->type == T_VAR
-			|| tok->type == T_DQUOTE || tok->type == T_SQUOTE)
+		res = process_token(&cur, &head, &tok, locals);
+		if (res < 0)
 		{
-			if (is_assignment_token(tok->value))
-			{
-				if (!cur->argv || ft_strcmp(cur->argv[0], "export") != 0)
-				{
-					handle_assignment(locals, tok->value);
-					tok = tok->next;
-					continue ;
-				}
-			}
-			if (tok->space_before == 0 && cur->argv && arg_index >= 0)
-			{
-				char *old = cur->argv[arg_index];
-				cur->argv[arg_index] = ft_strjoin(old, tok->value);
-				free(old);
-			}
-			else
-			{
-				if (add_arg(cur, tok->value) < 0)
-				{
-					free_cmds(head);
-					return (NULL);
-				}
-				arg_index++;
-			}
+			print_minishell_error("syntax error", NULL, "unexpected token", 2);
+			last_status(1, 2);
+			return (NULL);
 		}
-		else if (tok->type == T_REDIR_IN || tok->type == T_REDIR_OUT
-			|| tok->type == T_REDIR_APPEND || tok->type == T_HEREDOC)
-		{
-			if (!tok->next || tok->next->type != T_WORD)
-			{
-				fprintf(stderr, "minishell: syntax error near redirection\n");
-				return (free_cmds(head), NULL);
-			}
-			if (add_redir(cur, tok->type, tok->next->value) < 0)
-				return (free_cmds(head), NULL);
-			tok = tok->next;
-		}
-		else if (tok->type == T_PIPE)
-		{
-			cur->next = new_cmd();
-			if (!cur->next)
-				return (free_cmds(head), NULL);
-			cur = cur->next;
-		}
+		if (res == 1)
+			continue ;
 		tok = tok->next;
 	}
 	return (head);
 }
 
+static void	free_redirs(t_redir *redir)
+{
+	t_redir	*tmp;
+
+	while (redir)
+	{
+		tmp = redir->next;
+		free(redir->file);
+		free(redir);
+		redir = tmp;
+	}
+}
+
 void	free_cmds(t_cmd *cmds)
 {
 	t_cmd	*tmp;
-	t_redir	*r;
-	t_redir	*r_tmp;
-	int		i;
 
 	while (cmds)
 	{
 		tmp = cmds->next;
-		if (cmds->argv)
-		{
-			i = 0;
-			while (cmds->argv[i])
-				free(cmds->argv[i++]);
-			free(cmds->argv);
-		}
-		r = cmds->redir;
-		while (r)
-		{
-			r_tmp = r->next;
-			free(r->file);
-			free(r);
-			r = r_tmp;
-		}
+		free_argv(cmds->argv);
+		free_redirs(cmds->redir);
 		free(cmds);
 		cmds = tmp;
 	}

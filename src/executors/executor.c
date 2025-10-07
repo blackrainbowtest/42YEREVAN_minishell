@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 15:38:18 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/25 21:08:34 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/10/06 01:40:53 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,9 @@
 static int	execute_child(char *path, char **argv, char **envp)
 {
 	pid_t	pid;
+	int		exit_code;
 
+	in_child_process(1, 1);
 	pid = fork();
 	if (pid < 0)
 	{
@@ -24,8 +26,19 @@ static int	execute_child(char *path, char **argv, char **envp)
 	}
 	if (pid == 0)
 	{
+		signal_default();
 		if (path == NULL || path[0] == '\0')
 			_exit(126);
+		if (access(path, F_OK) != 0)
+		{
+			ft_putstr_fd("minishell: ", 2);
+			ft_putstr_fd(argv[0], 2);
+			ft_putstr_fd(": No such file or directory\n", 2);
+			_exit(last_status(1, 127));
+		}
+		exit_code = check_exec_path(path);
+		if (exit_code != 0)
+			_exit(last_status(1, exit_code));
 		execve(path, argv, envp);
 		perror("execve");
 		_exit(126);
@@ -45,6 +58,7 @@ static int	spawn_and_wait(char *path, char **argv, t_env *env)
 		return (1);
 	pid = execute_child(path, argv, envp);
 	free_argv(envp);
+	in_child_process(1, 0);
 	if (waitpid(pid, &status, 0) < 0)
 	{
 		perror("waitpid");
@@ -64,19 +78,40 @@ static int	spawn_and_wait(char *path, char **argv, t_env *env)
 int	execute_command(char **argv, t_env *env)
 {
 	char	*path;
-	int		code;
+	char	*cmd;
+	int		i;
+	int		exit_code;
 
-	if (!argv || !argv[0])
+	i = 0;
+	if (!argv)
 		return (0);
-	path = find_in_path(argv[0], env);
+	while (argv[i] && argv[i][0] == '\0')
+		i++;
+	if (!argv[0])
+		return (0);
+	cmd = argv[i];
+	if (ft_strchr(cmd, '/'))
+		path = ft_strdup(cmd);
+	else
+		path = find_in_path(cmd, env);
 	if (!path)
 	{
 		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(argv[0], 2);
+		ft_putstr_fd(cmd, 2);
 		ft_putstr_fd(": command not found\n", 2);
-		return (127);
+		return (last_status(1, 127));
 	}
-	code = spawn_and_wait(path, argv, env);
+
+	exit_code = check_exec_path(path);
+	if (exit_code != 0)
+	{
+		free(path);
+		return (last_status(1, exit_code));
+	}
+	printf("[DEBUG EXEC] path='%s'\n", path);
+	for (int j = 0; argv[j]; j++)
+		printf("argv[%d]='%s'\n", j, argv[j]);
+	exit_code = spawn_and_wait(path, argv, env);
 	free(path);
-	return (code);
+	return (exit_code);
 }
