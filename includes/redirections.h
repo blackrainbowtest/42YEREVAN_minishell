@@ -17,10 +17,10 @@
 
 typedef enum e_redir_type
 {
-	R_IN,       // <
-	R_OUT,      // >
-	R_APPEND,   // >>
-	R_HEREDOC,   // <<
+	R_IN,
+	R_OUT,
+	R_APPEND,
+	R_HEREDOC,
 	R_NONE
 }			t_redir_type;
 
@@ -37,7 +37,7 @@ typedef struct s_redir
 {
 	char			*file;
 	int				type;
-    int             expand;
+	int				expand;
 	struct s_redir	*next;
 }				t_redir;
 

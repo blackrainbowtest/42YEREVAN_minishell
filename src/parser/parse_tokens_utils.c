@@ -121,40 +121,54 @@ const char	*token_to_str(t_toktype type)
 int	handle_redir_token(t_cmd *cur, t_token **tok, t_cmd *head)
 {
 	t_redir_type	rtype;
+	char			*filename;
+	char			*tmp;
+	t_token			*next;
 
-	if (!(*tok)->next)
+	next = (*tok)->next;
+	if (!next)
 	{
 		fprintf(stderr, "minishell: syntax error near unexpected token 'newline'\n");
 		free_cmds(head);
 		return (-1);
 	}
-	if ((*tok)->next->type == T_PIPE
-		|| (*tok)->next->type == T_REDIR_IN
-		|| (*tok)->next->type == T_REDIR_OUT
-		|| (*tok)->next->type == T_REDIR_APPEND
-		|| (*tok)->next->type == T_HEREDOC)
+	if (next->type == T_PIPE || next->type == T_REDIR_IN
+		|| next->type == T_REDIR_OUT || next->type == T_REDIR_APPEND
+		|| next->type == T_HEREDOC)
 	{
 		fprintf(stderr, "minishell: syntax error near unexpected token '%s'\n",
-			token_to_str((*tok)->next->type));
+			token_to_str(next->type));
 		free_cmds(head);
 		return (-1);
+	}
+	filename = ft_strdup(next->value);
+	while (next->next && next->next->space_before == 0
+		&& (next->next->type == T_WORD || next->next->type == T_DQUOTE
+			|| next->next->type == T_SQUOTE))
+	{
+		tmp = filename;
+		filename = ft_strjoin(tmp, next->next->value);
+		free(tmp);
+		next = next->next;
 	}
 	rtype = token_to_redir_type((*tok)->type);
 	if (rtype == R_NONE)
 	{
 		fprintf(stderr, "minishell: internal error: unknown redir type\n");
+		free(filename);
 		free_cmds(head);
 		return (-1);
 	}
-	if (add_redir(cur, rtype, (*tok)->next->value) < 0)
+	if (add_redir(cur, rtype, filename) < 0)
 	{
+		free(filename);
 		free_cmds(head);
 		return (-1);
 	}
-	*tok = (*tok)->next;
+	free(filename);
+	*tok = next;
 	return (1);
 }
-
 
 int	handle_pipe_token(t_cmd **cur, t_cmd *head)
 {

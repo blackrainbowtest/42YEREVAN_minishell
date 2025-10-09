@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/14 12:40:33 by aramarak          #+#    #+#             */
-/*   Updated: 2025/10/06 01:12:44 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/10/10 21:34:56 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ static void	child_process(t_cmd *cmd, int in_fd, int out_fd, t_env **env)
 	envp = env_to_envp(*env);
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
+	signal(SIGPIPE, SIG_DFL);
 	execve(path, cmd->argv, envp);
 	perror("execve");
 	free_argv(envp);
@@ -120,7 +121,13 @@ int	execute_pipeline(t_cmd *cmds, t_env **env)
 		if (WIFEXITED(status))
 			exit_code = WEXITSTATUS(status);
 		else if (WIFSIGNALED(status))
-			exit_code = 128 + WTERMSIG(status);
+		{
+			int sig = WTERMSIG(status);
+			if (sig == SIGPIPE)
+				exit_code = 0;
+			else
+				exit_code = 128 + sig;
+		}
 	}
 	in_child_process(1, 0);
 	return (last_status(1, exit_code));

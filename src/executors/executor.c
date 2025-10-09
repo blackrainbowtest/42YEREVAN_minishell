@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 15:38:18 by aramarak          #+#    #+#             */
-/*   Updated: 2025/10/06 01:40:53 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/10/10 21:19:43 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,9 @@ static int	execute_child(char *path, char **argv, char **envp)
 		exit_code = check_exec_path(path);
 		if (exit_code != 0)
 			_exit(last_status(1, exit_code));
+		signal(SIGPIPE, SIG_DFL);
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		execve(path, argv, envp);
 		perror("execve");
 		_exit(126);
