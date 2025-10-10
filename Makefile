@@ -42,7 +42,7 @@ SRC_PARSER := parse_tokens.c parse_utils.c parser_line.c \
 				expand_tokens.c expand_utils.c parse_tokens_utils.c
 
 # Files env
-SRC_ENV := env.c env_utils.c env_local.c env_local_utils.c
+SRC_ENV := env.c env_utils.c env_local.c env_local_utils.c env_create_utils.c
 
 # Files pipeline
 SRC_EXECUTION := execute_pipeline.c executor.c executor_utils.c
