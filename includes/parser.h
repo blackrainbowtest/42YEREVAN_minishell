@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 23:07:48 by aramarak          #+#    #+#             */
-/*   Updated: 2025/10/10 21:38:02 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/10/10 23:28:21 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,18 @@ t_cmd	*parse_line(const char *line, t_env *env, t_env **locals);
 
 // ===== expand_tokens.c =====
 void	expand_tokens(t_token *tokens, t_env *env, t_env *locals);
-char	*expand_string(const char *str, t_env *env, t_env *locals);
+char	*expand_local_env_var(const char *str,
+			size_t start, size_t end, t_env *locals);
+char	*expand_env_var(const char *str, size_t start, size_t end,
+			t_env *env);
+char	*expand_status(size_t *i);
 
 // ===== expand_tokens_utils.c =====
+char	*expand_string(const char *str, t_env *env, t_env *locals);
+char	*expand_dollar(const char *str,
+			size_t *i, t_env *env, t_env *locals);
+
+// ===== parse_tokens_utils.c =====
 int		add_arg(t_cmd *cmd, const char *value);
 int		ensure_current_cmd(t_cmd **cur, t_cmd **head);
 int		handle_word_token(t_cmd *cur, t_token *tok,
