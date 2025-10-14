@@ -19,12 +19,14 @@ int	print_minishell_error(char *cmd, char *arg,
 	{
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(cmd, 2);
-		ft_putstr_fd(": ", 2);
+		if (arg || msg)
+			ft_putstr_fd(": ", 2);
 	}
 	if (arg && *arg)
 	{
 		ft_putstr_fd(arg, 2);
-		ft_putstr_fd(": ", 2);
+		if (msg)
+			ft_putstr_fd(": ", 2);
 	}
 	if (msg && *msg)
 		ft_putstr_fd(msg, 2);

@@ -18,14 +18,11 @@
 static int	handle_env_args(char **argv)
 {
 	if (argv[2])
-	{
-		ft_putendl_fd("env: too many arguments", 2);
-		return (1);
-	}
-	ft_putstr_fd("env: ", 2);
-	ft_putstr_fd(argv[1], 2);
-	ft_putendl_fd(": No such file or directory", 2);
-	return (127);
+		return (print_minishell_error("env", NULL, ERR_TOO_MNY_ARGS, 1));
+	if (argv[1])
+		return (print_minishell_error("env", argv[1],
+				"No such file or directory", 127));
+	return (0);
 }
 
 static void	print_env_vars(t_env *env)
@@ -47,5 +44,5 @@ int	builtin_env(char **argv, t_env *env)
 	if (argv[1])
 		return (handle_env_args(argv));
 	print_env_vars(env);
-	return (0);
+	return (EXIT_SUCCESS);
 }

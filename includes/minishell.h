@@ -39,6 +39,7 @@
 # include "debug.h"
 # include "status.h"
 # include "token.h"
+# include "limits.h"
 
 // ===== signals =====
 void	setup_signals(void);

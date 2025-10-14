@@ -44,7 +44,7 @@ static char	*get_cd_target(char **args, t_env **env)
 
 int	builtin_cd(char **args, t_env **env)
 {
-	char	cwd[4096];
+	char	cwd[PATH_MAX];
 	char	*oldpwd;
 	char	*target;
 
@@ -55,7 +55,7 @@ int	builtin_cd(char **args, t_env **env)
 	oldpwd = ft_strdup(cwd);
 	target = get_cd_target(args, env);
 	if (!target)
-		return (free(oldpwd), 1);
+		return (free(oldpwd), EXIT_SUCCESS);
 	if (chdir(target) != 0)
 		return (print_minishell_error("cd", target, ERR_DIR, 1),
 			free(oldpwd), 1);
