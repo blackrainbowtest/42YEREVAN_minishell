@@ -11,17 +11,13 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-/**
- * TODO: add error when call env <arg>; "env: too many arguments" or 
- * "env: <arg>: No such file or directory"
- */
+
 static int	handle_env_args(char **argv)
 {
 	if (argv[2])
 		return (print_minishell_error("env", NULL, ERR_TOO_MNY_ARGS, 1));
 	if (argv[1])
-		return (print_minishell_error("env", argv[1],
-				"No such file or directory", 127));
+		return (print_minishell_error("env", argv[1], ERR_DIR, 127));
 	return (0);
 }
 
