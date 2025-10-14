@@ -24,7 +24,7 @@ t_token	*tokenize(const char *line)
 	{
 		had_space = skip_whitespace(line, &i);
 		if (!line[i])
-			break;
+			break ;
 		if (line[i] == '\'' || line[i] == '"')
 			add_quoted_token(&head, line, &i, had_space);
 		else if (line[i] == '|' || line[i] == '<' || line[i] == '>')
@@ -34,5 +34,5 @@ t_token	*tokenize(const char *line)
 		else
 			add_word_token(&head, line, &i, had_space);
 	}
-	return head;
+	return (head);
 }

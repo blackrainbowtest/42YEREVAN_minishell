@@ -65,5 +65,4 @@ t_token		*read_quoted(const char *line, size_t *i);
 // ===== tokenizer.c =====
 t_token		*tokenize(const char *line);
 
-
 #endif // TOKEN_H

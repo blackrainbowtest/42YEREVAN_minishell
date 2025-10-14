@@ -31,11 +31,9 @@ int			ft_setenv(t_env **env, const char *key,
 int			ft_unsetenv(t_env **env, const char *key);
 
 /* ===== env_local_utils.c ===== */
-t_env		*create_local_node(const char *key, const char *value);
 char		*ft_getvar(t_env *locals, t_env *env, const char *key);
 int			is_assignment_token(const char *str);
 int			move_local_to_env(t_env **locals, t_env **env, const char *key);
-t_env		*init_locals(void);
 
 /* ===== env_local.c ===== */
 char		*ft_getlocal(t_env *locals, const char *key);
@@ -44,4 +42,9 @@ int			ft_setlocal(t_env **locals, const char *key,
 int			ft_unsetlocal(t_env **locals, const char *key);
 void		free_locals(t_env *locals);
 int			handle_assignment(t_env **locals, const char *token);
+
+/* ===== env_create_utils.c ===== */
+t_env		*create_local_node(const char *key, const char *value);
+t_env		*init_locals(void);
+
 #endif

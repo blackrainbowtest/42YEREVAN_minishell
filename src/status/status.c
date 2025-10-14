@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/20 11:33:49 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/29 22:36:10 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/10/10 21:49:14 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,5 +48,5 @@ int	in_child_process(int mode, int value)
 
 	if (mode == 1)
 		in_child = value;
-	return in_child;
+	return (in_child);
 }
