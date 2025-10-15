@@ -73,7 +73,6 @@ void	add_word_token(t_token **head, const char *line,
 		&& line[*i] != '|' && line[*i] != '<' && line[*i] != '>'
 		&& line[*i] != '$')
 		(*i)++;
-
 	token = ft_substr(line, start, *i - start);
 	if (!token)
 		return ;
