@@ -17,25 +17,10 @@ int	check_exec_path(char *path)
 	struct stat	st;
 
 	if (stat(path, &st) != 0)
-	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(path, 2);
-		ft_putstr_fd(": No such file or directory\n", 2);
-		return (127);
-	}
+		return (print_minishell_error(NULL, path, ERR_DIR, 127));
 	if (S_ISDIR(st.st_mode))
-	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(path, 2);
-		ft_putstr_fd(": Is a directory\n", 2);
-		return (126);
-	}
+		return (print_minishell_error(NULL, path, ERR_IS_DIR, 126));
 	if (access(path, X_OK) != 0)
-	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(path, 2);
-		ft_putstr_fd(": Permission denied\n", 2);
-		return (126);
-	}
+		return (print_minishell_error(NULL, path, ERR_PERM, 126));
 	return (0);
 }

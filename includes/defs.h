@@ -34,6 +34,8 @@ looking for matching `%c`\n"
 # define ERR_O_NT_SET "OLDPWD not set"
 # define ERR_RET_CUR_DIR "error retrieving current directory"
 # define ERR_DIR "No such file or directory"
+# define ERR_IS_DIR "Is a directory"
+# define ERR_PERM "Permission denied"
 
 /* ===== exit =====*/
 # define ERR_NUMERIC "numeric argument required"
