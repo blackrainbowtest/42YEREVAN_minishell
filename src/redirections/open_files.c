@@ -42,60 +42,6 @@ int	open_read(char *file)
 	return (fd);
 }
 
-static void	heredoc_child_signals(void)
-{
-	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_IGN);
-}
-
-static void	heredoc_loop(int write_fd, const char *limiter)
-{
-	char	*line;
-
-	heredoc_child_signals();
-	while (1)
-	{
-		line = readline("> ");
-		if (!line)
-		{
-			exit(0);
-		}
-		if (strcmp(line, limiter) == 0)
-		{
-			free(line);
-			break ;
-		}
-		write(write_fd, line, strlen(line));
-		write(write_fd, "\n", 1);
-		free(line);
-	}
-	close(write_fd);
-	exit(0);
-}
-
-static int	wait_heredoc_child(pid_t pid, int pipefd[2])
-{
-	int	status;
-
-	close(pipefd[1]);
-	if (waitpid(pid, &status, 0) == -1)
-	{
-		close(pipefd[0]);
-		return (-1);
-	}
-	if (WIFSIGNALED(status))
-	{
-		close(pipefd[0]);
-		return (-1);
-	}
-	if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
-	{
-		close(pipefd[0]);
-		return (-1);
-	}
-	return (pipefd[0]);
-}
-
 int	open_heredoc(char *limiter)
 {
 	int		pipefd[2];

@@ -54,4 +54,9 @@ int		open_heredoc(char *limiter);
 int		is_input_redir(t_redir *r);
 int		is_output_redir(t_redir *r);
 
+// ===== heredoc_utils.c =====
+void	heredoc_child_signals(void);
+void	heredoc_loop(int write_fd, const char *limiter);
+int		wait_heredoc_child(pid_t pid, int pipefd[2]);
+
 #endif
