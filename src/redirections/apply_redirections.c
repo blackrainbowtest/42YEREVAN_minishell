@@ -12,60 +12,61 @@
 
 #include "minishell.h"
 
-/**
- * TODO: in feature need add dup2(fd, STDIN_FILENO/STDOUT_FILENO) 
- * depending on the type.
- */
+static int	open_target_file(t_redir *r)
+{
+	if (r->type == R_IN)
+		return (open(r->file, O_RDONLY));
+	else if (r->type == R_OUT)
+		return (open(r->file, O_WRONLY | O_CREAT | O_TRUNC, 0644));
+	else if (r->type == R_APPEND)
+		return (open(r->file, O_WRONLY | O_CREAT | O_APPEND, 0644));
+	else if (r->type == R_HEREDOC)
+		return (open_heredoc(r->file));
+	return (-1);
+}
+
+static int	apply_single_redir(t_redir *r)
+{
+	int	fd;
+	int	target;
+
+	fd = open_target_file(r);
+	if (fd < 0)
+	{
+		perror(r->file);
+		return (-1);
+	}
+	if (is_input_redir(r))
+		target = STDIN_FILENO;
+	else
+		target = STDOUT_FILENO;
+	if (dup2(fd, target) < 0)
+	{
+		perror("dup2");
+		close(fd);
+		return (-1);
+	}
+	close(fd);
+	return (0);
+}
+
 int	apply_redirections(t_cmd *cmd)
 {
 	t_redir	*r;
-	int		fd;
 
 	if (!cmd)
 		return (-1);
 	r = cmd->redir;
 	while (r)
 	{
-		fd = -1;
-		if (r->file == NULL || r->file[0] == '\0')
+		if (!r->file || r->file[0] == '\0')
 		{
 			ft_putstr_fd("minishell: ambiguous redirect\n", 2);
 			return (-1);
 		}
-		if (r->type == R_IN)
-			fd = open(r->file, O_RDONLY);
-		else if (r->type == R_OUT)
-			fd = open(r->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		else if (r->type == R_APPEND)
-			fd = open(r->file, O_WRONLY | O_CREAT | O_APPEND, 0644);
-		else if (r->type == R_HEREDOC)
-			fd = open_heredoc(r->file);
-		if (fd < 0)
-		{
-			perror(r->file);
+		if (apply_single_redir(r) < 0)
 			return (-1);
-		}
-		if (is_input_redir(r))
-		{
-			if (dup2(fd, STDIN_FILENO) < 0)
-			{
-				perror("dup2");
-				close(fd);
-				return (-1);
-			}
-		}
-		else if (is_output_redir(r))
-		{
-			if (dup2(fd, STDOUT_FILENO) < 0)
-			{
-				perror("dup2");
-				close(fd);
-				return (-1);
-			}
-		}
-		close(fd);
 		r = r->next;
 	}
 	return (0);
 }
-
