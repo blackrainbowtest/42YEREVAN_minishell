@@ -28,60 +28,69 @@ static int	is_blank(const char *s)
 	return (1);
 }
 
-static void	run_single_command(t_cmd *cmd, t_env **env)
+static int	is_direct_builtin(char *cmd)
+{
+	if (!cmd)
+		return (0);
+	return (!ft_strcmp(cmd, "exit")
+		|| !ft_strcmp(cmd, "cd")
+		|| !ft_strcmp(cmd, "export")
+		|| !ft_strcmp(cmd, "unset"));
+}
+
+static int	exec_child_process(t_cmd *cmd, t_env **env, int i)
+{
+	int	exit_code;
+
+	signal_default();
+	if (cmd->redir && apply_redirections(cmd) != 0)
+		_exit(1);
+	if (is_builtin(cmd->argv[i]))
+		exit_code = run_builtin(&cmd->argv[i], env);
+	else
+		exit_code = execute_command(&cmd->argv[i], *env);
+	_exit(exit_code);
+}
+
+static int	wait_for_child(pid_t pid)
+{
+	int	status;
+
+	waitpid(pid, &status, 0);
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
+	if (WIFSIGNALED(status))
+		return (128 + WTERMSIG(status));
+	return (1);
+}
+
+void	run_single_command(t_cmd *cmd, t_env **env)
 {
 	pid_t	pid;
-	int		status;
 	int		exit_code;
-	int		i = 0;
+	int		i;
 
 	if (!cmd || !cmd->argv)
 		return ;
+	i = 0;
 	while (cmd->argv[i] && cmd->argv[i][0] == '\0')
 		i++;
 	if (!cmd->argv[i])
 		return ;
-	if (is_builtin(cmd->argv[i]))
-	{
-		if (ft_strcmp(cmd->argv[i], "exit") == 0
-			|| ft_strcmp(cmd->argv[i], "cd") == 0
-			|| ft_strcmp(cmd->argv[i], "export") == 0
-			|| ft_strcmp(cmd->argv[i], "unset") == 0)
-		{
-			run_builtin(&cmd->argv[i], env);
-			return ;
-		}
-	}
+	if (is_direct_builtin(cmd->argv[i]))
+		return ((void)run_builtin(&cmd->argv[i], env));
+
 	in_child_process(1, 1);
 	pid = fork();
 	if (pid < 0)
-	{
-		perror("fork");
-		return ;
-	}
-	else if (pid == 0)
-	{
-		signal_default();
-		if (cmd->redir && apply_redirections(cmd) != 0)
-			_exit(1);
-		if (is_builtin(cmd->argv[i]))
-			exit_code = run_builtin(&cmd->argv[i], env);
-		else
-			exit_code = execute_command(&cmd->argv[i], *env);
-		_exit(exit_code);
-	}
-	else
-		waitpid(pid, &status, 0);
-
-	if (WIFEXITED(status))
-		exit_code = WEXITSTATUS(status);
-	else if (WIFSIGNALED(status))
-		exit_code = 128 + WTERMSIG(status);
-	else
-		exit_code = 1;
+		return ((void)perror("fork"));
+	if (pid == 0)
+		exec_child_process(cmd, env, i);
+	exit_code = wait_for_child(pid);
 	in_child_process(1, 0);
 	last_status(1, exit_code);
 }
+
 
 static void	run_shell_line(char *line, t_env **env, t_env **locals)
 {
