@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 13:23:31 by aramarak          #+#    #+#             */
-/*   Updated: 2025/10/06 01:39:34 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/10/15 19:25:10 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ void	run_single_command(t_cmd *cmd, t_env **env)
 		return ;
 	if (is_direct_builtin(cmd->argv[i]))
 		return ((void)run_builtin(&cmd->argv[i], env));
-
 	in_child_process(1, 1);
 	pid = fork();
 	if (pid < 0)
@@ -38,7 +37,6 @@ void	run_single_command(t_cmd *cmd, t_env **env)
 	in_child_process(1, 0);
 	last_status(1, exit_code);
 }
-
 
 static void	run_shell_line(char *line, t_env **env, t_env **locals)
 {
