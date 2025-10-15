@@ -66,11 +66,14 @@ int	ensure_current_cmd(t_cmd **cur, t_cmd **head)
 
 t_cmd	*parse_tokens(t_token *tokens, t_env **locals)
 {
-	t_cmd	*head = NULL;
-	t_cmd	*cur = NULL;
-	t_token	*tok = tokens;
+	t_cmd	*head;
+	t_cmd	*cur;
+	t_token	*tok;
 	int		res;
 
+	head = NULL;
+	cur = NULL;
+	tok = tokens;
 	while (tok)
 	{
 		if (ensure_current_cmd(&cur, &head) < 0)
