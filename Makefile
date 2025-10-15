@@ -82,8 +82,9 @@ val: all
 # Valgrind check
 val2: CFLAGS += -g3
 val2: all
-	@echo "$(GREEN)[VALGRIND] Running Valgrind on $(NAME)..."$(RST)"\n"
-	valgrind --leak-check=full --track-origins=yes ./$(NAME)
+	@echo "$(GREEN)[VALGRIND] Running Valgrind on $(NAME)...$(RST)\n"
+	valgrind --leak-check=full --track-origins=yes \
+		--suppressions=readline.supp ./$(NAME)
 
 # Create binary
 $(NAME): $(OBJS) $(LIBFT)
