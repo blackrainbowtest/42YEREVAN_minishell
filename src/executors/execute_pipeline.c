@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/14 12:40:33 by aramarak          #+#    #+#             */
-/*   Updated: 2025/10/15 19:17:09 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/10/16 19:46:09 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,12 +78,18 @@ int	execute_pipeline(t_cmd *cmds, t_env **env)
 	int		pipe_fd[2];
 	int		in_fd;
 	pid_t	pid;
+	pid_t	last_pid;
+	pid_t	finished;
 	int		status;
 	int		exit_code;
+	int		sig;
+	int		num = 0;
 
 	cur = cmds;
 	in_fd = STDIN_FILENO;
 	exit_code = 0;
+	last_pid = -1;
+	finished = -1;
 	while (cur)
 	{
 		if (cur->next && pipe(pipe_fd) < 0)
@@ -93,6 +99,8 @@ int	execute_pipeline(t_cmd *cmds, t_env **env)
 		}
 		in_child_process(1, 1);
 		pid = fork();
+		last_pid = pid;
+		num++;
 		if (pid < 0)
 		{
 			perror("fork");
@@ -116,13 +124,15 @@ int	execute_pipeline(t_cmd *cmds, t_env **env)
 		}
 		cur = cur->next;
 	}
-	while (wait(&status) > 0)
+	while ((finished = wait(&status)) > 0)
 	{
-		if (WIFEXITED(status))
-			exit_code = WEXITSTATUS(status);
-		else if (WIFSIGNALED(status))
+		if (WIFEXITED(status) && finished == last_pid)
 		{
-			int sig = WTERMSIG(status);
+			exit_code = WEXITSTATUS(status);
+		}
+		else if (WIFSIGNALED(status) && finished == last_pid)
+		{
+			sig = WTERMSIG(status);
 			if (sig == SIGPIPE)
 				exit_code = 0;
 			else
