@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 15:38:18 by aramarak          #+#    #+#             */
-/*   Updated: 2025/10/16 20:17:51 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/10/16 20:20:08 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,10 +100,7 @@ int	execute_command(char **argv, t_env *env)
 		return (print_minishell_error(cmd, NULL, "command not found", 127));
 	exit_code = check_exec_path(path);
 	if (exit_code != 0)
-	{
-		free(path);
-		return (last_status(1, exit_code));
-	}
+		return (free(path), last_status(1, exit_code));
 	exit_code = spawn_and_wait(path, argv, env);
 	free(path);
 	return (exit_code);
