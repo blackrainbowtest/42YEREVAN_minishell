@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 15:38:18 by aramarak          #+#    #+#             */
-/*   Updated: 2025/10/16 20:14:35 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/10/16 20:17:51 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,12 +84,12 @@ int	execute_command(char **argv, t_env *env)
 	int		i;
 	int		exit_code;
 
-	i = 0;
 	if (!argv)
 		return (0);
+	i = 0;
 	while (argv[i] && argv[i][0] == '\0')
 		i++;
-	if (!argv[0])
+	if (!argv[i])
 		return (0);
 	cmd = argv[i];
 	if (ft_strchr(cmd, '/'))
@@ -97,22 +97,13 @@ int	execute_command(char **argv, t_env *env)
 	else
 		path = find_in_path(cmd, env);
 	if (!path)
-	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(cmd, 2);
-		ft_putstr_fd(": command not found\n", 2);
-		return (last_status(1, 127));
-	}
-
+		return (print_minishell_error(cmd, NULL, "command not found", 127));
 	exit_code = check_exec_path(path);
 	if (exit_code != 0)
 	{
 		free(path);
 		return (last_status(1, exit_code));
 	}
-	printf("[DEBUG EXEC] path='%s'\n", path);
-	for (int j = 0; argv[j]; j++)
-		printf("argv[%d]='%s'\n", j, argv[j]);
 	exit_code = spawn_and_wait(path, argv, env);
 	free(path);
 	return (exit_code);
