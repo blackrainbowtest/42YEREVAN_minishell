@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 23:07:48 by aramarak          #+#    #+#             */
-/*   Updated: 2025/10/10 23:28:21 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/10/16 20:07:43 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,5 +65,9 @@ t_cmd	*new_cmd(void);
 
 void	free_cmds(t_cmd *cmds);
 t_cmd	*parse_tokens(t_token *tokens, t_env **locals);
+
+/* ===== parse_tokens_process.c ===== */
+int		process_token(t_cmd **cur, t_cmd **head,
+			t_token **tok, t_env **locals);
 
 #endif // PARSER_H
