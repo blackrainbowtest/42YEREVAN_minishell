@@ -6,16 +6,35 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 15:38:18 by aramarak          #+#    #+#             */
-/*   Updated: 2025/10/10 21:19:43 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/10/16 20:14:35 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	execute_child(char *path, char **argv, char **envp)
+static void	run_child(char *path, char **argv, char **envp)
+{
+	int	exit_code;
+
+	signal_default();
+	if (!path || !path[0])
+		_exit(126);
+	if (access(path, F_OK) != 0)
+	{
+		print_minishell_error(argv[0], NULL, "No such file or directory", 127);
+		_exit(127);
+	}
+	exit_code = check_exec_path(path);
+	if (exit_code != 0)
+		_exit(last_status(1, exit_code));
+	execve(path, argv, envp);
+	perror("execve");
+	_exit(126);
+}
+
+int	execute_child(char *path, char **argv, char **envp)
 {
 	pid_t	pid;
-	int		exit_code;
 
 	in_child_process(1, 1);
 	pid = fork();
@@ -25,27 +44,7 @@ static int	execute_child(char *path, char **argv, char **envp)
 		return (-1);
 	}
 	if (pid == 0)
-	{
-		signal_default();
-		if (path == NULL || path[0] == '\0')
-			_exit(126);
-		if (access(path, F_OK) != 0)
-		{
-			ft_putstr_fd("minishell: ", 2);
-			ft_putstr_fd(argv[0], 2);
-			ft_putstr_fd(": No such file or directory\n", 2);
-			_exit(last_status(1, 127));
-		}
-		exit_code = check_exec_path(path);
-		if (exit_code != 0)
-			_exit(last_status(1, exit_code));
-		signal(SIGPIPE, SIG_DFL);
-		signal(SIGINT, SIG_DFL);
-		signal(SIGQUIT, SIG_DFL);
-		execve(path, argv, envp);
-		perror("execve");
-		_exit(126);
-	}
+		run_child(path, argv, envp);
 	return (pid);
 }
 
