@@ -20,10 +20,7 @@ static void	run_child(char *path, char **argv, char **envp)
 	if (!path || !path[0])
 		_exit(126);
 	if (access(path, F_OK) != 0)
-	{
-		print_minishell_error(argv[0], NULL, "No such file or directory", 127);
-		_exit(127);
-	}
+		_exit(print_minishell_error(argv[0], NULL, ERR_DIR, 127));
 	exit_code = check_exec_path(path);
 	if (exit_code != 0)
 		_exit(last_status(1, exit_code));
@@ -64,8 +61,7 @@ static int	spawn_and_wait(char *path, char **argv, t_env *env)
 	if (waitpid(pid, &status, 0) < 0)
 	{
 		perror("waitpid");
-		last_status(1, 1);
-		return (1);
+		return (last_status(1, 1));
 	}
 	if (WIFEXITED(status))
 		exit_code = WEXITSTATUS(status);
