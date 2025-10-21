@@ -31,7 +31,7 @@ static int	check_redir_syntax(t_token *tok, t_cmd *head)
 		|| next->type == T_HEREDOC)
 	{
 		ft_putstr_fd("minishell: syntax error near unexpected token '", 2);
-		ft_putstr_fd(token_to_str(next->type), 2);
+		ft_putstr_fd((char *)token_to_str(next->type), 2);
 		ft_putendl_fd("'", 2);
 		free_cmds(head);
 		return (-1);
