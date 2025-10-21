@@ -39,7 +39,6 @@ static int	wait_for_children(pid_t last_pid)
 	return (exit_code);
 }
 
-
 static int	fork_and_run(t_cmd *cur, int in_fd,
 	int *pipe_fd, t_env **env)
 {
