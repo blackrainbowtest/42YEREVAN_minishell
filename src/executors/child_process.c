@@ -12,14 +12,8 @@
 
 #include "minishell.h"
 
-void	child_process(t_cmd *cmd, int in_fd, int out_fd, t_env **env)
+static void	setup_io_fds(int in_fd, int out_fd)
 {
-	char	**envp;
-	char	*path;
-	int		exit_code;
-
-	if (!cmd->argv || !cmd->argv[0] || cmd->argv[0][0] == '\0')
-		_exit(0);
 	if (in_fd != STDIN_FILENO)
 	{
 		dup2(in_fd, STDIN_FILENO);
@@ -30,13 +24,18 @@ void	child_process(t_cmd *cmd, int in_fd, int out_fd, t_env **env)
 		dup2(out_fd, STDOUT_FILENO);
 		close(out_fd);
 	}
-	if (cmd->redir)
-	{
-		if (apply_redirections(cmd) != 0)
-			_exit(1);
-	}
-	if (is_builtin(cmd->argv[0]))
-		_exit(run_builtin(cmd->argv, env));
+}
+
+static void	handle_redirections(t_cmd *cmd)
+{
+	if (cmd->redir && apply_redirections(cmd) != 0)
+		_exit(1);
+}
+
+static char	*resolve_command_path(t_cmd *cmd, t_env *env)
+{
+	char	*path;
+
 	path = NULL;
 	if (ft_strchr(cmd->argv[0], '/'))
 	{
@@ -48,12 +47,22 @@ void	child_process(t_cmd *cmd, int in_fd, int out_fd, t_env **env)
 		}
 	}
 	else
-	{
-		path = find_in_path(cmd->argv[0], *env);
-	}
+		path = find_in_path(cmd->argv[0], env);
 	if (!path)
 		_exit(127);
+	return (path);
+}
 
+static void	exec_child_builtin_or_execve(t_cmd *cmd, t_env **env)
+{
+	char	*path;
+	char	**envp;
+	int		exit_code;
+
+	if (is_builtin(cmd->argv[0]))
+		_exit(run_builtin(cmd->argv, env));
+
+	path = resolve_command_path(cmd, *env);
 	exit_code = check_exec_path(path);
 	if (exit_code != 0)
 	{
@@ -69,4 +78,13 @@ void	child_process(t_cmd *cmd, int in_fd, int out_fd, t_env **env)
 	free_argv(envp);
 	free(path);
 	_exit(126);
+}
+
+void	child_process(t_cmd *cmd, int in_fd, int out_fd, t_env **env)
+{
+	if (!cmd->argv || !cmd->argv[0] || cmd->argv[0][0] == '\0')
+		_exit(0);
+	setup_io_fds(in_fd, out_fd);
+	handle_redirections(cmd);
+	exec_child_builtin_or_execve(cmd, env);
 }
