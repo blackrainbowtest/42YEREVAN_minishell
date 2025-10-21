@@ -52,10 +52,6 @@ char	*read_prompt(void);
 // ===== path =====
 char	*find_in_path(const char *cmd, t_env *env);
 
-// ===== executor =====
-int		execute_command(char **argv, t_env *env);
-char	**env_to_envp(t_env *env);
-
 // ===== utils =====
 int		check_exec_path(char *path);
 int		is_blank(const char *s);

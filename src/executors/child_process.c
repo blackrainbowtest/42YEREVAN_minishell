@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static void	child_process(t_cmd *cmd, int in_fd, int out_fd, t_env **env)
+void	child_process(t_cmd *cmd, int in_fd, int out_fd, t_env **env)
 {
 	char	**envp;
 	char	*path;

@@ -29,7 +29,7 @@ static void	run_child(char *path, char **argv, char **envp)
 	_exit(126);
 }
 
-int	execute_child(char *path, char **argv, char **envp)
+static int	execute_child(char *path, char **argv, char **envp)
 {
 	pid_t	pid;
 
