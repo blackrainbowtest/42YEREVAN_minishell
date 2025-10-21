@@ -43,11 +43,13 @@ void		free_tokens(t_token *lst);
 int			skip_whitespace(const char *line, size_t *i);
 void		add_quoted_token(t_token **head, const char *line,
 				size_t *i, int had_space);
-void		add_operator_token(t_token **head, const char *line, size_t *i,
-				int had_space);
 void		add_var_token(t_token **head, const char *line, size_t *i,
 				int had_space);
 void		add_word_token(t_token **head, const char *line, size_t *i,
+				int had_space);
+
+// ===== token_helper_operator.c =====
+void		add_operator_token(t_token **head, const char *line, size_t *i,
 				int had_space);
 
 // ===== token_list.c =====

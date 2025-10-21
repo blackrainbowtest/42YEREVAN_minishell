@@ -21,39 +21,40 @@ t_toktype	get_quote_type(char quote)
 
 size_t	get_quoted_length(const char *line, size_t start, char quote)
 {
-	size_t i;
+	size_t	i;
 
 	i = start;
 	while (line[i] && line[i] != quote)
 		i++;
 	if (!line[i])
-		return ((size_t)-1);
-	return i - start;
+		return ((size_t) - 1);
+	return (i - start);
 }
 
 t_token	*handle_unclosed_quote(char quote)
 {
 	fprintf(stderr, ERR_SYN_EOF, quote);
 	last_status(1, 2);
-	return NULL;
+	return (NULL);
 }
 
-t_token *read_quoted(const char *line, size_t *i)
+t_token	*read_quoted(const char *line, size_t *i)
 {
-	char	quote;
-	size_t	start;
-	size_t	len;
-	char	*substr;
+	char		quote;
+	size_t		start;
+	size_t		len;
+	char		*substr;
+	t_toktype	type;
 
 	quote = line[*i];
-	t_toktype type = get_quote_type(quote);
+	type = get_quote_type(quote);
 	start = ++(*i);
 	len = get_quoted_length(line, *i, quote);
 	if (len == (size_t)-1)
-		return handle_unclosed_quote(quote);
+		return (handle_unclosed_quote(quote));
 	substr = ft_substr(line, start, len);
 	if (!substr)
-		return NULL;
+		return (NULL);
 	*i += len + 1;
-	return new_token(substr, type);
+	return (new_token(substr, type));
 }

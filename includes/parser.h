@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 23:07:48 by aramarak          #+#    #+#             */
-/*   Updated: 2025/10/10 23:28:21 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/10/18 22:45:56 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,41 +29,52 @@ typedef struct s_cmd
 }				t_cmd;
 
 // ===== parser_line.c =====
-t_cmd	*parse_line(const char *line, t_env *env, t_env **locals);
+t_cmd			*parse_line(const char *line, t_env *env, t_env **locals);
 
 // ===== expand_tokens.c =====
-void	expand_tokens(t_token *tokens, t_env *env, t_env *locals);
-char	*expand_local_env_var(const char *str,
-			size_t start, size_t end, t_env *locals);
-char	*expand_env_var(const char *str, size_t start, size_t end,
-			t_env *env);
-char	*expand_status(size_t *i);
+void			expand_tokens(t_token *tokens, t_env *env, t_env *locals);
+char			*expand_local_env_var(const char *str,
+					size_t start, size_t end, t_env *locals);
+char			*expand_env_var(const char *str, size_t start, size_t end,
+					t_env *env);
+char			*expand_status(size_t *i);
 
 // ===== expand_tokens_utils.c =====
-char	*expand_string(const char *str, t_env *env, t_env *locals);
-char	*expand_dollar(const char *str,
-			size_t *i, t_env *env, t_env *locals);
+char			*expand_string(const char *str, t_env *env, t_env *locals);
+char			*expand_dollar(const char *str,
+					size_t *i, t_env *env, t_env *locals);
+
+// ===== parser_args.c =====
+int				add_arg(t_cmd *cmd, const char *value);
+
+// ===== parser_words.c =====
+int				handle_word_token(t_cmd *cur, t_token *tok,
+					t_env **locals);
 
 // ===== parse_tokens_utils.c =====
-int		add_arg(t_cmd *cmd, const char *value);
-int		ensure_current_cmd(t_cmd **cur, t_cmd **head);
-int		handle_word_token(t_cmd *cur, t_token *tok,
-			t_env **locals);
-int		handle_redir_token(t_cmd *cur, t_token **tok, t_cmd *head);
-int		handle_pipe_token(t_cmd **cur, t_cmd *head);
+int				ensure_current_cmd(t_cmd **cur, t_cmd **head);
+const char		*token_to_str(t_toktype type);
+t_redir_type	token_to_redir_type(t_toktype type);
+
+int				handle_redir_token(t_cmd *cur, t_token **tok, t_cmd *head);
+int				handle_pipe_token(t_cmd **cur, t_cmd *head);
 
 // ===== expand_utils.c =====
-void	expand_var_token(t_token *tok, t_env *env, t_env *locals);
-void	expand_word_token(t_token *tok, t_env *env, t_env *locals);
-void	expand_dquote_token(t_token *tok, t_env *env, t_env *locals);
-void	append_char(char **result, char c);
-void	append_str(char **result, const char *s);
+void			expand_var_token(t_token *tok, t_env *env, t_env *locals);
+void			expand_word_token(t_token *tok, t_env *env, t_env *locals);
+void			expand_dquote_token(t_token *tok, t_env *env, t_env *locals);
+void			append_char(char **result, char c);
+void			append_str(char **result, const char *s);
 
 /* ===== parse_utils.c ===== */
-int		add_redir(t_cmd *cmd, t_redir_type type, const char *file);
-t_cmd	*new_cmd(void);
+int				add_redir(t_cmd *cmd, t_redir_type type, const char *file);
+t_cmd			*new_cmd(void);
 
-void	free_cmds(t_cmd *cmds);
-t_cmd	*parse_tokens(t_token *tokens, t_env **locals);
+void			free_cmds(t_cmd *cmds);
+t_cmd			*parse_tokens(t_token *tokens, t_env **locals);
+
+/* ===== parse_tokens_process.c ===== */
+int				process_token(t_cmd **cur, t_cmd **head,
+					t_token **tok, t_env **locals);
 
 #endif // PARSER_H

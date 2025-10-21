@@ -39,15 +39,17 @@ SRC_BUILTINS := echo.c cd.c pwd.c env.c export.c export_utils.c \
 SRC_PARSER := parse_tokens.c parse_utils.c parser_line.c \
 				tokenizer.c token_free.c token_helper.c \
 				token_quote.c token_list.c expand_tokens_utils.c \
-				expand_tokens.c expand_utils.c parse_tokens_utils.c
+				expand_tokens.c expand_utils.c parse_tokens_utils.c \
+				token_helper_operator.c parse_tokens_process.c \
+				parser_args.c parser_words.c parser_redirs.c
 
 # Files env
 SRC_ENV := env.c env_utils.c env_local.c env_local_utils.c env_create_utils.c
 
 # Files pipeline
-SRC_EXECUTION := execute_pipeline.c executor.c executor_utils.c
+SRC_EXECUTION := execute_pipeline.c executor.c executor_utils.c child_process.c
 
-SRC_REDIRECTION := apply_redirections.c open_files.c utils_redir.c
+SRC_REDIRECTION := apply_redirections.c open_files.c utils_redir.c heredoc_utils.c
 
 SRC_DEBUG := debug_parser.c debug_tokens.c
 
@@ -81,8 +83,9 @@ val: all
 # Valgrind check
 val2: CFLAGS += -g3
 val2: all
-	@echo "$(GREEN)[VALGRIND] Running Valgrind on $(NAME)..."$(RST)"\n"
-	valgrind --leak-check=full --track-origins=yes ./$(NAME)
+	@echo "$(GREEN)[VALGRIND] Running Valgrind on $(NAME)...$(RST)\n"
+	valgrind --leak-check=full --track-origins=yes \
+		--suppressions=readline.supp ./$(NAME)
 
 # Create binary
 $(NAME): $(OBJS) $(LIBFT)

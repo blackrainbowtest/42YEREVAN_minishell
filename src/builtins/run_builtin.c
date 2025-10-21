@@ -53,5 +53,5 @@ int	run_builtin(char **argv, t_env **env)
 		return (builtin_unset(argv, env));
 	if (strcmp(argv[0], "exit") == 0)
 		return (builtin_exit(argv));
-	return (EXIT_SUCCESS);
+	return (last_status(1, 0));
 }

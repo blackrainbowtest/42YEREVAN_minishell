@@ -39,6 +39,7 @@
 # include "debug.h"
 # include "status.h"
 # include "token.h"
+# include "limits.h"
 
 // ===== signals =====
 void	setup_signals(void);
@@ -51,11 +52,11 @@ char	*read_prompt(void);
 // ===== path =====
 char	*find_in_path(const char *cmd, t_env *env);
 
-// ===== executor =====
-int		execute_command(char **argv, t_env *env);
-char	**env_to_envp(t_env *env);
-
 // ===== utils =====
 int		check_exec_path(char *path);
+int		is_blank(const char *s);
+int		is_direct_builtin(char *cmd);
+int		exec_child_process(t_cmd *cmd, t_env **env, int i);
+int		wait_for_child(pid_t pid);
 
 #endif // MINISHELL_H

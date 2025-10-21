@@ -1,4 +1,3 @@
-root@DESKTOP-OCTCNHU:~/42YEREVAN_minishell/minishell_tester# ./tester 
 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
                                                                                              
  ██    ██ █ ██    █ █ █████ █   █ █████ █     █       ██████ █████ █████ ██████ █████ █████  
@@ -84,13 +83,13 @@ Test  69: ✅ echo <"./test_files/infile_big" | cat "./test_files/infile"
 Test  70: ✅ echo <"./test_files/infile_big" | echo <"./test_files/infile" 
 Test  71: ✅ echo hi | cat <"./test_files/infile" 
 Test  72: ✅ echo hi | cat "./test_files/infile" 
-Test  73: ❌ cat <"./test_files/infile" | echo hi 
-mini exit code = 141
-bash exit code = 0
+Test  73: ✅⚠️  cat <"./test_files/infile" | echo hi 
+mini error = ()
+bash error = ( Broken pipe)
 Test  74: ✅ cat <"./test_files/infile" | grep hello 
-Test  75: ❌ cat <"./test_files/infile_big" | echo hi 
-mini exit code = 141
-bash exit code = 0
+Test  75: ✅⚠️  cat <"./test_files/infile_big" | echo hi 
+mini error = ()
+bash error = ( Broken pipe)
 Test  76: ✅ cat <missing 
 Test  77: ✅ cat <missing | cat 
 Test  78: ✅ cat <missing | echo oi 
@@ -102,34 +101,7 @@ Test  83: ✅ echo hi >         ./outfiles/outfile01 bye
 Test  84: ✅ ls >./outfiles/outfile01 >./outfiles/outfile02 
 Test  85: ✅ ls >./outfiles/outfile01 >./test_files/invalid_permission 
 Test  86: ✅ ls >"./outfiles/outfile with spaces" 
-Test  87: ❌ ls >"./outfiles/outfile""1""2""3""4""5" 
-Only in ./mini_outfiles: outfile
-Only in ./bash_outfiles: outfile12345
-mini outfiles:
-bash outfiles:
-README.md
-bash.supp
-bash_outfiles
-bonus
-bonus_bonus
-builtins
-extras
-local.supp
-loop.out
-manual_tests
-mini_outfiles
-os_specific
-outfiles
-pipes
-redirects
-syntax
-test_files
-tester
-wildcards
-mini exit code = 127
-bash exit code = 0
-mini error = ( command not found)
-bash error = ()
+Test  87: ✅ ls >"./outfiles/outfile""1""2""3""4""5" 
 Test  88: ✅ ls >"./outfiles/outfile01" >./test_files/invalid_permission >"./outfiles/outfile02" 
 Test  89: ✅ ls >./test_files/invalid_permission >"./outfiles/outfile01" >./test_files/invalid_permission 
 Test  90: ✅ cat <"./test_files/infile" >"./outfiles/outfile01" 
@@ -138,9 +110,15 @@ Test  92: ✅ echo hi >./outfiles/outfile01 >./outfiles/outfile02 | echo bye
 Test  93: ✅ echo hi | echo >./outfiles/outfile01 bye 
 Test  94: ✅ echo hi | echo bye >./outfiles/outfile01 >./outfiles/outfile02 
 Test  95: ✅ echo hi >./outfiles/outfile01 | echo bye >./outfiles/outfile02 
-Test  96: ✅ echo hi >./outfiles/outfile01 >./test_files/invalid_permission | echo bye 
-Test  97: ✅ echo hi >./test_files/invalid_permission | echo bye 
-Test  98: ✅ echo hi >./test_files/invalid_permission >./outfiles/outfile01 | echo bye 
+Test  96: ❌ echo hi >./outfiles/outfile01 >./test_files/invalid_permission | echo bye 
+mini exit code = 1
+bash exit code = 0
+Test  97: ❌ echo hi >./test_files/invalid_permission | echo bye 
+mini exit code = 1
+bash exit code = 0
+Test  98: ❌ echo hi >./test_files/invalid_permission >./outfiles/outfile01 | echo bye 
+mini exit code = 1
+bash exit code = 0
 Test  99: ✅ echo hi | echo bye >./test_files/invalid_permission 
 Test 100: ✅ echo hi | >./outfiles/outfile01 echo bye >./test_files/invalid_permission 
 Test 101: ✅ echo hi | echo bye >./test_files/invalid_permission >./outfiles/outfile01 
@@ -168,8 +146,12 @@ Test 122: ✅ echo hi >>./outfiles/outfile01 >>./outfiles/outfile02 | echo bye
 Test 123: ✅ echo hi | echo >>./outfiles/outfile01 bye 
 Test 124: ✅ echo hi | echo bye >>./outfiles/outfile01 >>./outfiles/outfile02 
 Test 125: ✅ echo hi >>./outfiles/outfile01 | echo bye >>./outfiles/outfile02 
-Test 126: ✅ echo hi >>./test_files/invalid_permission | echo bye 
-Test 127: ✅ echo hi >>./test_files/invalid_permission >./outfiles/outfile01 | echo bye 
+Test 126: ❌ echo hi >>./test_files/invalid_permission | echo bye 
+mini exit code = 1
+bash exit code = 0
+Test 127: ❌ echo hi >>./test_files/invalid_permission >./outfiles/outfile01 | echo bye 
+mini exit code = 1
+bash exit code = 0
 Test 128: ✅ echo hi | echo bye >>./test_files/invalid_permission 
 Test 129: ✅ echo hi | echo >>./outfiles/outfile01 bye >./test_files/invalid_permission 
 Test 130: ✅ cat <minishell.h>./outfiles/outfile 
@@ -189,10 +171,6 @@ Test 142: ✅ /test_files
 Test 143: ✅ minishell.h 
 Test 144: ✅ $ 
 Test 145: ✅ $? 
-Test 146: ❌ README.md 
-mini exit code = 126
-bash exit code = 2
-mini error = ( Exec format error)
-bash error = ( command not found)
-142/146
+Test 146: ✅ README.md 
+141/146
 😭 😭 😭

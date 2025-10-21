@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 22:37:27 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/28 00:38:36 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/10/18 22:47:14 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,12 @@ looking for matching `%c`\n"
 # define ERR_O_NT_SET "OLDPWD not set"
 # define ERR_RET_CUR_DIR "error retrieving current directory"
 # define ERR_DIR "No such file or directory"
+# define ERR_IS_DIR "Is a directory"
+# define ERR_PERM "Permission denied"
 
 /* ===== exit =====*/
 # define ERR_NUMERIC "numeric argument required"
+
+# define MIN_OUT "minishell: syntax error near unexpected token 'newline'"
+# define MIN_UNKNOWN "minishell: internal error: unknown redir type"
 #endif // DEFS_H

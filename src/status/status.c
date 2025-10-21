@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/20 11:33:49 by aramarak          #+#    #+#             */
-/*   Updated: 2025/10/10 21:49:14 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/10/16 19:46:31 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,14 @@ int	print_minishell_error(char *cmd, char *arg,
 	{
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(cmd, 2);
-		ft_putstr_fd(": ", 2);
+		if (arg || msg)
+			ft_putstr_fd(": ", 2);
 	}
 	if (arg && *arg)
 	{
 		ft_putstr_fd(arg, 2);
-		ft_putstr_fd(": ", 2);
+		if (msg)
+			ft_putstr_fd(": ", 2);
 	}
 	if (msg && *msg)
 		ft_putstr_fd(msg, 2);
