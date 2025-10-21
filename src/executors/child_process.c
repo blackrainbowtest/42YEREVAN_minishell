@@ -61,7 +61,6 @@ static void	exec_child_builtin_or_execve(t_cmd *cmd, t_env **env)
 
 	if (is_builtin(cmd->argv[0]))
 		_exit(run_builtin(cmd->argv, env));
-
 	path = resolve_command_path(cmd, *env);
 	exit_code = check_exec_path(path);
 	if (exit_code != 0)
@@ -88,3 +87,4 @@ void	child_process(t_cmd *cmd, int in_fd, int out_fd, t_env **env)
 	handle_redirections(cmd);
 	exec_child_builtin_or_execve(cmd, env);
 }
+
