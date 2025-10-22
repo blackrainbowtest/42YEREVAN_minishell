@@ -67,14 +67,14 @@ Print doublicate error message on near unexpected token error.
    ls >> >>
    ```
 
-### 5. [No exit code on break]
+### ✔5. [No exit code on break]
 **Description:**  
 Need exit with exit code on break.
 
 **Steps to reproduce:**  
 1. Command:  
    ```bash
-   
+   ^D
    ```
 
 ### 6. [Leak error]

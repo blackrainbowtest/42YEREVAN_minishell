@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 13:23:31 by aramarak          #+#    #+#             */
-/*   Updated: 2025/10/15 19:25:10 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/10/22 23:39:07 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,11 @@ static void	run_shell_loop(t_env **env, t_env **locals)
 	{
 		line = read_prompt();
 		if (!line)
-			break ;
+		{
+			if (isatty(STDIN_FILENO))
+				ft_putendl_fd("exit", STDERR_FILENO);
+			exit(last_status(0, 0));
+		}
 		if (*line)
 			add_history(line);
 		run_shell_line(line, env, locals);
@@ -94,5 +98,5 @@ int	main(int argc, char **argv, char **envp)
 	free_env(env);
 	free_locals(locals);
 	clear_history();
-	return (EXIT_SUCCESS);
+	return (last_status(0, 0));
 }
