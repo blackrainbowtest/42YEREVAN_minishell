@@ -29,7 +29,7 @@ Heredoc dont working.
    echo "hello" >> file | cat << file
    ```
 
-### 2. [Exit error]
+### ✔2. [Exit error] DONE
 **Description:**  
 On exit didnt print exit.
 
