@@ -91,7 +91,7 @@ Catch leak when use echo with quote or double quote. read_quoted(token_quote.c:5
    echo 'a'
    ```
 
-### 8. [Invalid handling of special variable `_`]
+### ✔8. [Invalid handling of special variable `_`]
 
 **Description:**  
 The variable `_` is treated as a normal environment variable when declared or exported.  
