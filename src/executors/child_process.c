@@ -68,6 +68,14 @@ static void	exec_child_builtin_or_execve(t_cmd *cmd, t_env **env)
 		free(path);
 		_exit(last_status(1, exit_code));
 	}
+	// TODO: make diff function
+	if (cmd->argv && cmd->argv[0])
+	{
+		int	last = 0;
+		while (cmd->argv[last + 1])
+			last++;
+		ft_setenv(env, "_", cmd->argv[last], 1);
+	}
 	envp = env_to_envp(*env);
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);

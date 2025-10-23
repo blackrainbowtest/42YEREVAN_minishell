@@ -102,3 +102,14 @@ In bash, `_` is a special shell variable and should not be manually set by `expo
    ```bash
    declare -x _=""
    ```
+
+### 9. [Invalid grep command]
+
+**Description:**
+The extern command get wrong arguments maybe NULL
+
+**Steps to reproduce:**  
+1. Run command:  
+   ```bash
+   env | grep "_="
+   ```

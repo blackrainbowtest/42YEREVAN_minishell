@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 13:23:31 by aramarak          #+#    #+#             */
-/*   Updated: 2025/10/22 23:39:07 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/10/23 22:49:52 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,14 @@ void	run_single_command(t_cmd *cmd, t_env **env)
 		return ;
 	if (is_direct_builtin(cmd->argv[i]))
 		return ((void)run_builtin(&cmd->argv[i], env));
+	// TODO: make diff function
+	if (cmd->argv && cmd->argv[0])
+	{
+		int	last = 0;
+		while (cmd->argv[last + 1])
+			last++;
+		ft_setenv(env, "_", cmd->argv[last], 1);
+	}
 	in_child_process(1, 1);
 	pid = fork();
 	if (pid < 0)
