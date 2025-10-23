@@ -35,6 +35,13 @@ static int	export_with_arguments(char **argv, t_env **env)
 	i = 1;
 	while (argv[i])
 	{
+		if (ft_strcmp(argv[i], "_") == 0 || ft_strncmp(argv[i], "_=", 2) == 0)
+		{
+			print_minishell_error("export", argv[i], ERR_NT_VAL_INP, 1);
+			status = 1;
+			i++;
+			continue ;
+		}
 		if (!is_valid_identifier(argv[i]))
 		{
 			status = print_minishell_error("export",
