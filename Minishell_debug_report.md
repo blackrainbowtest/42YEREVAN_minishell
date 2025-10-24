@@ -77,7 +77,7 @@ Need exit with exit code on break.
    ^D
    ```
 
-### 6. [Leak error]
+### 6. ✔[Leak error] DONE
 **Description:**  
 Catch leak when use echo with quote or double quote. read_quoted(token_quote.c:55)
 
