@@ -106,7 +106,7 @@ In bash, `_` is a special shell variable and should not be manually set by `expo
 ### 9. [Invalid grep command]
 
 **Description:**
-The extern command get wrong arguments maybe NULL
+The variable is intercepted if there is text before it that satisfies the VALUE=KEY criteria; in other situations, the code works correctly.
 
 **Steps to reproduce:**  
 1. Run command:  
