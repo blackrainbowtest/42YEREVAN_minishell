@@ -47,7 +47,11 @@ t_cmd	*parse_tokens(t_token *tokens, t_env **locals)
 			return (syntax_error(), NULL);
 		res = process_token(&cur, &head, &tok, locals);
 		if (res < 0)
+		{
+			if (res == -2)
+				return (NULL);
 			return (syntax_error(), NULL);
+		}
 		if (res == 1)
 			continue ;
 		tok = tok->next;

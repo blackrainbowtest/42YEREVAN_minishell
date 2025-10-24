@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/18 22:36:31 by aramarak          #+#    #+#             */
-/*   Updated: 2025/10/18 22:47:00 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/10/24 23:27:40 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,10 @@ static int	check_redir_syntax(t_token *tok, t_cmd *head)
 
 	next = tok->next;
 	if (!next)
-		return (parser_error(MIN_OUT, head));
+	{
+		parser_error(MIN_OUT, head);
+		return (-2);
+	}
 	if (next->type == T_PIPE || next->type == T_REDIR_IN
 		|| next->type == T_REDIR_OUT || next->type == T_REDIR_APPEND
 		|| next->type == T_HEREDOC)
@@ -34,7 +37,7 @@ static int	check_redir_syntax(t_token *tok, t_cmd *head)
 		ft_putstr_fd((char *)token_to_str(next->type), 2);
 		ft_putendl_fd("'", 2);
 		free_cmds(head);
-		return (-1);
+		return (-2);
 	}
 	return (0);
 }
@@ -75,9 +78,11 @@ int	handle_redir_token(t_cmd *cur, t_token **tok, t_cmd *head)
 {
 	t_redir_type	rtype;
 	char			*filename;
+	int				res;
 
-	if (check_redir_syntax(*tok, head) < 0)
-		return (-1);
+	res = check_redir_syntax(*tok, head);
+	if (res < 0)
+		return (res);
 	filename = collect_filename(tok);
 	rtype = token_to_redir_type((*tok)->type);
 	if (add_redirection_to_cmd(cur, rtype, filename, head) < 0)

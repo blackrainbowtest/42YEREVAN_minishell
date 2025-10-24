@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 20:06:08 by aramarak          #+#    #+#             */
-/*   Updated: 2025/10/16 20:09:24 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/10/24 23:30:51 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,11 @@ static int	handle_redirection(t_cmd *cur, t_cmd *head, t_token **tok)
 
 	res = handle_redir_token(cur, tok, head);
 	if (res < 0)
-		return (-1);
+		return (res);
 	if (res == 1)
 	{
 		*tok = (*tok)->next;
-		return (1);
+		return (res);
 	}
 	return (0);
 }

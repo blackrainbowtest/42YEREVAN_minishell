@@ -49,7 +49,7 @@ Default command su not working.
    su -
    ```
 
-### 4. [doublicate error message]
+### 4. ✔[doublicate error message] DONE
 **Description:**  
 Print doublicate error message on near unexpected token error.
 
