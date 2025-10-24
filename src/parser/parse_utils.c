@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 01:46:57 by aramarak          #+#    #+#             */
-/*   Updated: 2025/10/06 23:07:33 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/10/25 00:20:49 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int	add_redir(t_cmd *cmd, t_redir_type type, const char *file)
 	new_redir->type = type;
 	new_redir->file = ft_strdup(file);
 	new_redir->next = NULL;
+	new_redir->fd = -1;
 	if (!new_redir->file)
 	{
 		free(new_redir);

@@ -21,7 +21,7 @@ static int	open_target_file(t_redir *r)
 	else if (r->type == R_APPEND)
 		return (open(r->file, O_WRONLY | O_CREAT | O_APPEND, 0644));
 	else if (r->type == R_HEREDOC)
-		return (open_heredoc(r->file));
+		return (r->fd);
 	return (-1);
 }
 
