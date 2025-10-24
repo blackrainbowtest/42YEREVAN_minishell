@@ -67,7 +67,7 @@ Print doublicate error message on near unexpected token error.
    ls >> >>
    ```
 
-### ✔5. [No exit code on break]
+### ✔5. [No exit code on break] DONE
 **Description:**  
 Need exit with exit code on break.
 
@@ -91,7 +91,7 @@ Catch leak when use echo with quote or double quote. read_quoted(token_quote.c:5
    echo 'a'
    ```
 
-### ✔8. [Invalid handling of special variable `_`]
+### ✔8. [Invalid handling of special variable `_`] DONE
 
 **Description:**  
 The variable `_` is treated as a normal environment variable when declared or exported.  
@@ -103,7 +103,7 @@ In bash, `_` is a special shell variable and should not be manually set by `expo
    declare -x _=""
    ```
 
-### 9. [Invalid grep command]
+### ✔9. [Invalid grep command] DONE
 
 **Description:**
 The variable is intercepted if there is text before it that satisfies the VALUE=KEY criteria; in other situations, the code works correctly.
