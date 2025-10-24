@@ -42,7 +42,7 @@ static char	*resolve_command_path(t_cmd *cmd, t_env *env)
 		path = ft_strdup(cmd->argv[0]);
 		if (access(path, F_OK) != 0)
 		{
-			perror(path);
+			perror("path");
 			_exit(127);
 		}
 	}
@@ -89,10 +89,10 @@ static void	exec_child_builtin_or_execve(t_cmd *cmd, t_env **env)
 
 void	child_process(t_cmd *cmd, int in_fd, int out_fd, t_env **env)
 {
-	if (!cmd->argv || !cmd->argv[0] || cmd->argv[0][0] == '\0')
-		_exit(0);
 	setup_io_fds(in_fd, out_fd);
 	handle_redirections(cmd);
+	if (!cmd->argv || !cmd->argv[0] || cmd->argv[0][0] == '\0')
+		_exit(0);
 	exec_child_builtin_or_execve(cmd, env);
 }
 
