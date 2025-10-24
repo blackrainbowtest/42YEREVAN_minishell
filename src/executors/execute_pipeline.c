@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/14 12:40:33 by aramarak          #+#    #+#             */
-/*   Updated: 2025/10/25 00:22:23 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/10/25 02:08:03 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,19 +81,22 @@ static void	close_fds(int *in_fd, int *pipe_fd, t_cmd *cur)
 	}
 }
 
-static int  prepare_heredocs(t_cmd *cmds)
+int	prepare_heredocs(t_cmd *cmds)
 {
-	t_cmd   *cur = cmds;
+	t_cmd	*cur;
+	int 	fd;
+
+	cur = cmds;
 	while (cur)
 	{
 		for (t_redir *r = cur->redir; r; r = r->next)
 		{
 			if (r->type == R_HEREDOC)
 			{
-				int fd = open_heredoc(r->file);
+				fd = open_heredoc(r->file);
 				if (fd < 0)
-					return (-1);        // ошибка чтения here-doc
-				r->fd = fd;              // сохранили дескриптор
+					return (-1);
+				r->fd = fd;
 			}
 		}
 		cur = cur->next;
