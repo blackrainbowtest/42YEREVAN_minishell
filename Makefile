@@ -87,6 +87,11 @@ val2: all
 	valgrind --leak-check=full --track-origins=yes \
 		--suppressions=readline.supp ./$(NAME)
 
+# Valgrind check
+val3: CFLAGS += -g3
+val3: all
+	valgrind --leak-check=full --show-leak-kinds=all ./minishell 2>&1 | tee minishell_log
+
 # Create binary
 $(NAME): $(OBJS) $(LIBFT)
 	@echo $(GREEN)"Compiling $(NAME)..."$(RST)
