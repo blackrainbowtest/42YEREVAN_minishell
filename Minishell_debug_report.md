@@ -15,7 +15,7 @@ The main functions were tested, as well as the operation of built-in functions, 
 
 ## 🪲 Bugs Found
 
-### 1. [Heredoc error]
+### 1. ✔[Heredoc error] DONE
 **Description:**  
 Heredoc dont working.
 

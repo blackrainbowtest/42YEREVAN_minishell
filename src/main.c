@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 13:23:31 by aramarak          #+#    #+#             */
-/*   Updated: 2025/10/25 02:08:43 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/10/25 13:01:32 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,11 @@ void	run_single_command(t_cmd *cmd, t_env **env)
 	int		exit_code;
 	int		i;
 
-	if (!cmd || !cmd->argv)
+	if (!cmd)
 		return ;
 	if (prepare_heredocs(cmd) < 0)
+		return ;
+	if (!cmd->argv)
 		return ;
 	i = 0;
 	while (cmd->argv[i] && cmd->argv[i][0] == '\0')
