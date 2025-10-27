@@ -113,3 +113,70 @@ The variable is intercepted if there is text before it that satisfies the VALUE=
    ```bash
    env | grep "_="
    ```
+
+27.10.2025
+minishell$ cat << a | cat << b
+> d
+> f
+> a
+> d
+> b
+dup2: Bad file descriptor
+dup2: Bad file descriptor
+minishell$ ls | <<
+minishell: syntax error near unexpected token 'newline'
+minishell$ 
+
+
+
+minishell$ << a << b
+> 
+minishell$ ^C
+
+minishell$ ls|<
+minishell: syntax error near unexpected token 'newline'
+minishell$ $?
+minishell: 0: command not found
+
+**
+minishell$ su -
+Password: 
+minishell: lslslslsl: command not found
+minishell: afsd: command not found
+minishell: adsf: command not found
+**
+
+when add in export without = update in env too
+
+**
+minishell$ << "$USER"
+> $USER
+> aramarak
+minishell$ 
+**
+
+^C signal check 130
+
+minishell$ |  -> exit code check 
+
+minishell$ unset PATH
+minishell$ ls | ls
+minishell$ 
+
+minishell$ ls | a where the f** errors
+
+https://github.com/zstenger93/42_minishell_tester show this
+
+
+minishell$ chmod 000 a
+minishell$ echo a > a
+minishell: failed to open heredoc for `a'
+
+
+minishell$ cat a
+cat: a: Permission denied
+minishell$ $?
+minishell: 1: command not found
+
+minishell$ < a
+
