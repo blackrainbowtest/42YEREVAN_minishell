@@ -23,6 +23,12 @@ int	builtin_unset(char **argv, t_env **env)
 	i = 1;
 	while (argv[i])
 	{
+		if (ft_strcmp(argv[i], "_") == 0)
+		{
+			status = 1;
+			i++;
+			continue ;
+		}
 		if (!is_valid_identifier(argv[i]))
 		{
 			ft_putstr_fd("minishell: unset: `", 2);

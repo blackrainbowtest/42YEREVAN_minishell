@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/18 22:34:29 by aramarak          #+#    #+#             */
-/*   Updated: 2025/10/18 22:40:05 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/10/24 22:55:16 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,10 @@ static int	ft_arrlen(char **arr)
 static int	handle_assignment_if_needed(t_cmd *cur, t_token *tok,
 		t_env **locals)
 {
-	if (is_assignment_token(tok->value))
+	if (is_assignment_token(tok->value) && !cur->argv)
 	{
-		if (!cur->argv || ft_strcmp(cur->argv[0], "export") != 0)
-		{
-			handle_assignment(locals, tok->value);
-			return (1);
-		}
+		handle_assignment(locals, tok->value);
+		return (1);
 	}
 	return (0);
 }

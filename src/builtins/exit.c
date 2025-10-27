@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 19:39:32 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/28 00:35:26 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/10/22 23:33:22 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ static int	get_exit_status(const char *str)
 
 int	builtin_exit(char **argv)
 {
+	if (isatty(STDIN_FILENO))
+		ft_putendl_fd("exit", STDERR_FILENO);
 	if (!argv[1])
 		exit(0);
 	if (!is_numeric_arg(argv[1]))

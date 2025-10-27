@@ -45,6 +45,7 @@ t_token	*read_quoted(const char *line, size_t *i)
 	size_t		len;
 	char		*substr;
 	t_toktype	type;
+	t_token     *tok;
 
 	quote = line[*i];
 	type = get_quote_type(quote);
@@ -55,6 +56,8 @@ t_token	*read_quoted(const char *line, size_t *i)
 	substr = ft_substr(line, start, len);
 	if (!substr)
 		return (NULL);
+	tok = new_token(substr, type);
+	free(substr);
 	*i += len + 1;
-	return (new_token(substr, type));
+	return (tok);
 }

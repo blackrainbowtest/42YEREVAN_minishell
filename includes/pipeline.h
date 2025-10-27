@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/14 12:49:26 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/18 19:23:26 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/10/25 02:08:20 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,4 +29,6 @@ void	free_argv(char **argv);
 /* ===== executor.c ===== */
 int		execute_command(char **argv, t_env *env);
 
+
+int		prepare_heredocs(t_cmd *cmds);
 #endif

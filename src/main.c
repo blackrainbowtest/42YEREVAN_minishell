@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 13:23:31 by aramarak          #+#    #+#             */
-/*   Updated: 2025/10/15 19:25:10 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/10/25 13:01:32 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,11 @@ void	run_single_command(t_cmd *cmd, t_env **env)
 	int		exit_code;
 	int		i;
 
-	if (!cmd || !cmd->argv)
+	if (!cmd)
+		return ;
+	if (prepare_heredocs(cmd) < 0)
+		return ;
+	if (!cmd->argv)
 		return ;
 	i = 0;
 	while (cmd->argv[i] && cmd->argv[i][0] == '\0')
@@ -27,6 +31,14 @@ void	run_single_command(t_cmd *cmd, t_env **env)
 		return ;
 	if (is_direct_builtin(cmd->argv[i]))
 		return ((void)run_builtin(&cmd->argv[i], env));
+	// TODO: make diff function
+	if (cmd->argv && cmd->argv[0])
+	{
+		int	last = 0;
+		while (cmd->argv[last + 1])
+			last++;
+		ft_setenv(env, "_", cmd->argv[last], 1);
+	}
 	in_child_process(1, 1);
 	pid = fork();
 	if (pid < 0)
@@ -66,7 +78,11 @@ static void	run_shell_loop(t_env **env, t_env **locals)
 	{
 		line = read_prompt();
 		if (!line)
-			break ;
+		{
+			if (isatty(STDIN_FILENO))
+				ft_putendl_fd("exit", STDERR_FILENO);
+			exit(last_status(0, 0));
+		}
 		if (*line)
 			add_history(line);
 		run_shell_line(line, env, locals);
@@ -94,5 +110,5 @@ int	main(int argc, char **argv, char **envp)
 	free_env(env);
 	free_locals(locals);
 	clear_history();
-	return (EXIT_SUCCESS);
+	return (last_status(0, 0));
 }

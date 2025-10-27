@@ -21,7 +21,7 @@ static int	open_target_file(t_redir *r)
 	else if (r->type == R_APPEND)
 		return (open(r->file, O_WRONLY | O_CREAT | O_APPEND, 0644));
 	else if (r->type == R_HEREDOC)
-		return (open_heredoc(r->file));
+		return (r->fd);
 	return (-1);
 }
 
@@ -33,7 +33,9 @@ static int	apply_single_redir(t_redir *r)
 	fd = open_target_file(r);
 	if (fd < 0)
 	{
-		perror(r->file);
+		ft_putstr_fd("minishell: failed to open heredoc for `", 2);
+		ft_putstr_fd(r->file, 2);
+		ft_putendl_fd("'", 2);
 		return (-1);
 	}
 	if (is_input_redir(r))

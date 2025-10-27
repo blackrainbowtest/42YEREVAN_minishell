@@ -35,6 +35,12 @@ static int	export_with_arguments(char **argv, t_env **env)
 	i = 1;
 	while (argv[i])
 	{
+		if (ft_strcmp(argv[i], "_") == 0 || ft_strncmp(argv[i], "_=", 2) == 0)
+		{
+			status = 1;
+			i++;
+			continue ;
+		}
 		if (!is_valid_identifier(argv[i]))
 		{
 			status = print_minishell_error("export",
@@ -69,6 +75,11 @@ void	print_sorted_env(t_env *env, char **keys)
 	i = 0;
 	while (keys[i])
 	{
+		if (ft_strcmp(keys[i], "_") == 0)
+		{
+			i++;
+			continue ;
+		}
 		cur = env;
 		while (cur)
 		{
