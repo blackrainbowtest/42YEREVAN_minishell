@@ -134,10 +134,18 @@ Get bad file descriptor when call (bug in child_process.c mumltiply call apply_r
    dup2: Bad file descriptor
    ```
 
+### 11. [Bad SIGINT output]
 
-minishell$ << a << b
-> 
-minishell$ ^C
+**Description:**
+
+
+**Steps to reproduce:**
+1. Run command:
+   ```bash
+   minishell$ << a << b
+   > 
+   minishell$ ^C
+   ```
 
 minishell$ ls|<
 minishell: syntax error near unexpected token 'newline'
