@@ -115,18 +115,24 @@ The variable is intercepted if there is text before it that satisfies the VALUE=
    ```
 
 27.10.2025
-minishell$ cat << a | cat << b
-> d
-> f
-> a
-> d
-> b
-dup2: Bad file descriptor
-dup2: Bad file descriptor
-minishell$ ls | <<
-minishell: syntax error near unexpected token 'newline'
-minishell$ 
 
+### ✔10. [Bad file descriptor] DONE
+
+**Description:**
+Get bad file descriptor when call (bug in child_process.c mumltiply call apply_redirections())
+
+**Steps to reproduce:**
+1. Run command:
+   ```bash
+   minishell$ cat << a | cat << b
+   > d
+   > f
+   > a
+   > d
+   > b
+   dup2: Bad file descriptor
+   dup2: Bad file descriptor
+   ```
 
 
 minishell$ << a << b
