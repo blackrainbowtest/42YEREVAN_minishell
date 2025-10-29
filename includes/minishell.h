@@ -40,6 +40,7 @@
 # include "status.h"
 # include "token.h"
 # include "limits.h"
+# include "heredoc_signals.h"
 
 // ===== signals =====
 void	setup_signals(void);

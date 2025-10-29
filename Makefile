@@ -49,7 +49,8 @@ SRC_ENV := env.c env_utils.c env_local.c env_local_utils.c env_create_utils.c
 # Files pipeline
 SRC_EXECUTION := execute_pipeline.c executor.c executor_utils.c child_process.c
 
-SRC_REDIRECTION := apply_redirections.c open_files.c utils_redir.c heredoc_utils.c
+SRC_REDIRECTION := apply_redirections.c open_files.c utils_redir.c heredoc_utils.c \
+				heredoc_signals.c
 
 SRC_DEBUG := debug_parser.c debug_tokens.c
 

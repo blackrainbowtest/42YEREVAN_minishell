@@ -29,6 +29,4 @@ void	free_argv(char **argv);
 /* ===== executor.c ===== */
 int		execute_command(char **argv, t_env *env);
 
-
-int		prepare_heredocs(t_cmd *cmds);
 #endif
