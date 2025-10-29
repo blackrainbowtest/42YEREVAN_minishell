@@ -134,10 +134,10 @@ Get bad file descriptor when call (bug in child_process.c mumltiply call apply_r
    dup2: Bad file descriptor
    ```
 
-### 11. [Bad SIGINT output]
+### ✔11. [Bad SIGINT output] DONE
 
 **Description:**
-
+In heredoc SIGINT working double time, need disable it when we in heredock and restore it when exit
 
 **Steps to reproduce:**
 1. Run command:
