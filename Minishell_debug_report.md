@@ -147,7 +147,7 @@ In heredoc SIGINT working double time, need disable it when we in heredock and r
    minishell$ ^C
    ```
 
-### 12. [Wrong exit code]
+### ✔12. [Wrong exit code] DONE
 
 **Description:**
 Wrong exit code

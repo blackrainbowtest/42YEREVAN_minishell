@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "heredoc_signals.h"
+#include "minishell.h"
 
 static void	ignore_heredoc_signals(struct sigaction *old_int,
 							struct sigaction *old_quit)
@@ -65,7 +65,7 @@ int	prepare_heredocs(t_cmd *cmds)
 {
 	struct sigaction	old_int;
 	struct sigaction	old_quit;
-	t_cmd *cur;
+	t_cmd				*cur;
 
 	ignore_heredoc_signals(&old_int, &old_quit);
 	cur = cmds;

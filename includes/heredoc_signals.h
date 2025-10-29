@@ -13,7 +13,7 @@
 #ifndef HEREDOC_SIGNALS_H
 # define HEREDOC_SIGNALS_H
 
-# include <signal.h>
+typedef struct s_cmd	t_cmd;
 
 int	prepare_heredocs(t_cmd *cmds);
 
