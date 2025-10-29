@@ -14,8 +14,8 @@
 
 void	clean_and_exit(int status)
 {
-	free_env(env_storage(NULL, GET));
-	free_locals(locals_storage(NULL, GET));
+	env_storage(NULL, FREE);
+	locals_storage(NULL, FREE);
 	clear_history();
 	exit(status);
 }
