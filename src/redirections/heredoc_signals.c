@@ -53,10 +53,8 @@ static int	process_heredoc_redirs(t_redir *redir)
 	{
 		if (r->type == R_HEREDOC)
 		{
-			int fd = open_heredoc(r->file);
-			if (fd < 0)
+			if (open_and_store_heredoc(r) < 0)
 				return (-1);
-			r->fd = fd;
 		}
 		r = r->next;
 	}
