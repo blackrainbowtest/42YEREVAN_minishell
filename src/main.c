@@ -81,7 +81,7 @@ static void	run_shell_loop(t_env **env, t_env **locals)
 		{
 			if (isatty(STDIN_FILENO))
 				ft_putendl_fd("exit", STDERR_FILENO);
-			exit(last_status(0, 0));
+			clean_and_exit(last_status(0, GET));
 		}
 		if (*line)
 			add_history(line);
@@ -99,6 +99,8 @@ int	main(int argc, char **argv, char **envp)
 	setup_signals();
 	env = init_env(envp);
 	locals = init_locals();
+	env_storage(env, SET);
+	locals_storage(locals, SET);
 	last_status(1, 0);
 	in_child_process(1, 0);
 	if (!env)

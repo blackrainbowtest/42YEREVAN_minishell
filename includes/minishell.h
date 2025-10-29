@@ -60,4 +60,11 @@ int		is_direct_builtin(char *cmd);
 int		exec_child_process(t_cmd *cmd, t_env **env, int i);
 int		wait_for_child(pid_t pid);
 
+// ===== cleaner =====
+void	clean_and_exit(int status);
+
+// ===== storage =====
+t_env	*env_storage(t_env *new_env, int mode);
+t_env	*locals_storage(t_env *new_locals, int mode);
+
 #endif // MINISHELL_H

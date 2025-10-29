@@ -14,6 +14,8 @@
 # define DEFS_H
 
 # define DEBUG 1
+# define GET 0
+# define SET 1
 
 # define PWD_CRWD "minishell: pwd: cannot retrieve working directory\n"
 # define EXP_AERR "minishell: export: %s: allocation error\n"

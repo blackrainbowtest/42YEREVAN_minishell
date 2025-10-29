@@ -29,7 +29,7 @@ RM      := rm -f
 OBJ_DIR := obj
 
 # Files src
-SRC_MAIN := main.c prompt.c signals.c utils.c path.c \
+SRC_MAIN := main.c prompt.c signals.c utils.c path.c storage.c cleaner.c\
 
 # Files builtins
 SRC_BUILTINS := echo.c cd.c pwd.c env.c export.c export_utils.c \
