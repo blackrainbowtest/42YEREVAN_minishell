@@ -147,10 +147,19 @@ In heredoc SIGINT working double time, need disable it when we in heredock and r
    minishell$ ^C
    ```
 
-minishell$ ls|<
-minishell: syntax error near unexpected token 'newline'
-minishell$ $?
-minishell: 0: command not found
+### 12. [Bad SIGINT output]
+
+**Description:**
+Wrong exit code
+
+**Steps to reproduce:**
+1. Run command:
+   ```bash
+   minishell$ ls|<
+   minishell: syntax error near unexpected token 'newline'
+   minishell$ $?
+   minishell: 0: command not found
+   ```
 
 **
 minishell$ su -

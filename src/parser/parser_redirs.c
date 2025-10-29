@@ -27,6 +27,7 @@ static int	check_redir_syntax(t_token *tok, t_cmd *head)
 	if (!next)
 	{
 		parser_error(MIN_OUT, head);
+		last_status(1, 258);
 		return (-2);
 	}
 	if (next->type == T_PIPE || next->type == T_REDIR_IN
@@ -37,6 +38,7 @@ static int	check_redir_syntax(t_token *tok, t_cmd *head)
 		ft_putstr_fd((char *)token_to_str(next->type), 2);
 		ft_putendl_fd("'", 2);
 		free_cmds(head);
+		last_status(1, 258);
 		return (-2);
 	}
 	return (0);
