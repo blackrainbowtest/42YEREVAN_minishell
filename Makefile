@@ -85,13 +85,13 @@ val: all
 val2: CFLAGS += -g3
 val2: all
 	@echo "$(GREEN)[VALGRIND] Running Valgrind on $(NAME)...$(RST)\n"
-	valgrind --leak-check=full --track-origins=yes \
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes \
 		--suppressions=readline.supp ./$(NAME)
 
 # Valgrind check
 val3: CFLAGS += -g3
 val3: all
-	valgrind --leak-check=full --show-leak-kinds=all ./minishell 2>&1 | tee minishell_log
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./minishell 2>&1 | tee minishell_log
 
 # Create binary
 $(NAME): $(OBJS) $(LIBFT)
