@@ -147,7 +147,7 @@ In heredoc SIGINT working double time, need disable it when we in heredock and r
    minishell$ ^C
    ```
 
-### 12. [Bad SIGINT output]
+### 12. [Wrong exit code]
 
 **Description:**
 Wrong exit code
@@ -161,6 +161,18 @@ Wrong exit code
    minishell: 0: command not found
    ```
 
+### 13. [ENV update]
+
+**Description:**
+When changed data with export need update env too.
+
+**Steps to reproduce:**
+1. Run command:
+   ```bash
+   export TEST
+   env
+   ```
+
 **
 minishell$ su -
 Password: 
@@ -168,8 +180,6 @@ minishell: lslslslsl: command not found
 minishell: afsd: command not found
 minishell: adsf: command not found
 **
-
-when add in export without = update in env too
 
 **
 minishell$ << "$USER"
