@@ -33,9 +33,14 @@ static int	apply_single_redir(t_redir *r)
 	fd = open_target_file(r);
 	if (fd < 0)
 	{
-		ft_putstr_fd("minishell: failed to open heredoc for `", 2);
-		ft_putstr_fd(r->file, 2);
-		ft_putendl_fd("'", 2);
+		if (r->type == R_HEREDOC)
+		{
+			ft_putstr_fd("minishell: failed to open heredoc for `", 2);
+			ft_putstr_fd(r->file, 2);
+			ft_putendl_fd("'", 2);
+		}
+		else
+			perror(r->file);
 		return (-1);
 	}
 	if (is_input_redir(r))

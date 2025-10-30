@@ -173,6 +173,19 @@ When changed data with export need update env too.
    env
    ```
 
+### 14. [Wrong error text]
+
+**Description:**
+When we havent access to open file (not enought permission) minishell return wrong error text
+
+**Steps to reproduce:**
+1. Run command:
+   ```bash
+   minishell$ chmod 000 a
+   minishell$ echo a > a
+   minishell: failed to open heredoc for `a'
+   ```
+
 **
 minishell$ su -
 Password: 
@@ -201,9 +214,7 @@ minishell$ ls | a where the f** errors
 https://github.com/zstenger93/42_minishell_tester show this
 
 
-minishell$ chmod 000 a
-minishell$ echo a > a
-minishell: failed to open heredoc for `a'
+
 
 
 minishell$ cat a
