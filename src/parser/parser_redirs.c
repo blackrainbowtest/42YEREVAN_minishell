@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/18 22:36:31 by aramarak          #+#    #+#             */
-/*   Updated: 2025/10/24 23:27:40 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/10/30 23:35:03 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,12 +81,14 @@ int	handle_redir_token(t_cmd *cur, t_token **tok, t_cmd *head)
 	t_redir_type	rtype;
 	char			*filename;
 	int				res;
+	t_toktype		redir_tok_type;
 
 	res = check_redir_syntax(*tok, head);
 	if (res < 0)
 		return (res);
+	redir_tok_type = (*tok)->type;
 	filename = collect_filename(tok);
-	rtype = token_to_redir_type((*tok)->type);
+	rtype = token_to_redir_type(redir_tok_type);
 	if (add_redirection_to_cmd(cur, rtype, filename, head) < 0)
 		return (free(filename), -1);
 	free(filename);
