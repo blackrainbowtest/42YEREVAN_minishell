@@ -186,6 +186,19 @@ When we havent access to open file (not enought permission) minishell return wro
    minishell: failed to open heredoc for `a'
    ```
 
+### 15. [Wrong exit code]
+
+**Description:**
+When call SIGINT signal need change exit code to 130
+
+**Steps to reproduce:**
+1. Run command:
+   ```bash
+   ^C
+   echo $?
+   ```
+
+
 **
 minishell$ su -
 Password: 
@@ -201,7 +214,7 @@ minishell$ << "$USER"
 minishell$ 
 **
 
-^C signal check 130
+
 
 minishell$ |  -> exit code check 
 
