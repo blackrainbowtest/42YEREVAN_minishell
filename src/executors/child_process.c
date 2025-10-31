@@ -49,7 +49,10 @@ static char	*resolve_command_path(t_cmd *cmd, t_env *env)
 	else
 		path = find_in_path(cmd->argv[0], env);
 	if (!path)
+	{
+		print_minishell_error(cmd->argv[0], NULL, "command not found", 127);
 		_exit(127);
+	}
 	return (path);
 }
 
