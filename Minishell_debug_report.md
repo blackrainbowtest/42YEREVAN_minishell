@@ -198,6 +198,26 @@ When use SIGINT need update correct exit code
    ^C
    ```
 
+### ✔16. [Wrong error and exit code] DONE
+
+**Description:**
+When use solo pipe dont get error and exit code
+
+**Steps to reproduce:**
+1. Run command:
+   ```bash
+   minishell$ |  -> exit code check 
+   ```
+2. Run command:
+   ```bash
+   minishell$ unset PATH
+   minishell$ ls | ls
+   minishell$ 
+   ```
+3. Run command:
+   ```bash
+   minishell$ ls | a
+   ```
 
 **
 minishell$ su -
@@ -213,14 +233,6 @@ minishell$ << "$USER"
 > aramarak
 minishell$ 
 **
-
-minishell$ |  -> exit code check 
-
-minishell$ unset PATH
-minishell$ ls | ls
-minishell$ 
-
-minishell$ ls | a where the f** errors
 
 https://github.com/zstenger93/42_minishell_tester show this
 
