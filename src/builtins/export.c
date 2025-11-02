@@ -67,32 +67,31 @@ int	builtin_export(char **argv, t_env **env)
 	return (export_with_arguments(argv, env));
 }
 
+static void	print_env_entry(t_env *env, const char *key)
+{
+	while (env)
+	{
+		if (ft_strcmp(env->key, key) == 0)
+		{
+			if (env->value)
+				printf("declare -x %s=\"%s\"\n", env->key, env->value);
+			else
+				printf("declare -x %s\n", env->key);
+			return ;
+		}
+		env = env->next;
+	}
+}
+
 void	print_sorted_env(t_env *env, char **keys)
 {
-	int		i;
-	t_env	*cur;
+	int	i;
 
 	i = 0;
 	while (keys[i])
 	{
-		if (ft_strcmp(keys[i], "_") == 0)
-		{
-			i++;
-			continue ;
-		}
-		cur = env;
-		while (cur)
-		{
-			if (ft_strcmp(cur->key, keys[i]) == 0)
-			{
-				if (cur->value)
-					printf("declare -x %s=\"%s\"\n", cur->key, cur->value);
-				else
-					printf("declare -x %s\n", cur->key);
-				break ;
-			}
-			cur = cur->next;
-		}
+		if (ft_strcmp(keys[i], "_") != 0)
+			print_env_entry(env, keys[i]);
 		i++;
 	}
 }
