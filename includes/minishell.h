@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 13:23:38 by aramarak          #+#    #+#             */
-/*   Updated: 2025/10/04 10:07:34 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/11/04 00:29:15 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,5 +66,8 @@ void	clean_and_exit(int status);
 // ===== storage =====
 t_env	*env_storage(t_env *new_env, int mode);
 t_env	*locals_storage(t_env *new_locals, int mode);
+
+// ===== single command =====
+void	run_single_command(t_cmd *cmd, t_env **env);
 
 #endif // MINISHELL_H

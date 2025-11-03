@@ -29,7 +29,8 @@ RM      := rm -f
 OBJ_DIR := obj
 
 # Files src
-SRC_MAIN := main.c prompt.c signals.c utils.c path.c storage.c cleaner.c\
+SRC_MAIN := main.c prompt.c signals.c utils.c path.c storage.c cleaner.c \
+			single_command.c
 
 # Files builtins
 SRC_BUILTINS := echo.c cd.c pwd.c env.c export.c export_utils.c \
@@ -47,7 +48,8 @@ SRC_PARSER := parse_tokens.c parse_utils.c parser_line.c \
 SRC_ENV := env.c env_utils.c env_local.c env_local_utils.c env_create_utils.c
 
 # Files pipeline
-SRC_EXECUTION := execute_pipeline.c executor.c executor_utils.c child_process.c
+SRC_EXECUTION := execute_pipeline.c executor.c executor_utils.c child_process.c \
+				child_process_utils.c
 
 SRC_REDIRECTION := apply_redirections.c open_files.c utils_redir.c heredoc_utils.c \
 				heredoc_signals.c

@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/14 12:40:33 by aramarak          #+#    #+#             */
-/*   Updated: 2025/10/25 02:08:03 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/11/03 22:08:30 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ static int	wait_for_children(pid_t last_pid)
 	int		sig;
 
 	exit_code = 0;
-	while ((finished = wait(&status)) > 0)
+	finished = wait(&status);
+	while (finished > 0)
 	{
 		if (finished == last_pid)
 		{
@@ -35,6 +36,7 @@ static int	wait_for_children(pid_t last_pid)
 					exit_code = 128 + sig;
 			}
 		}
+		finished = wait(&status);
 	}
 	return (exit_code);
 }
