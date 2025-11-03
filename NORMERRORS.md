@@ -27,7 +27,6 @@ src/builtins/pwd.c: OK!
 src/builtins/echo.c: OK!
 src/builtins/export.c: Error!
 Error: TOO_MANY_LINES       (line:  61, col:   1):      Function has more than 25 lines
-Error: CONSECUTIVE_NEWLINES (line:  86, col:   1):      Consecutive newlines
 src/builtins/cd.c: OK!
 src/builtins/export_utils.c: OK!
 src/builtins/env.c: OK!

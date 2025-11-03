@@ -25,41 +25,6 @@ static int	export_no_arguments(t_env **env)
 	return (last_status(1, 0));
 }
 
-static int	export_with_arguments(char **argv, t_env **env)
-{
-	int		status;
-	int		i;
-	char	*eq;
-
-	status = 0;
-	i = 1;
-	while (argv[i])
-	{
-		if (ft_strcmp(argv[i], "_") == 0 || ft_strncmp(argv[i], "_=", 2) == 0)
-		{
-			status = 1;
-			i++;
-			continue ;
-		}
-		if (!is_valid_identifier(argv[i]))
-		{
-			status = print_minishell_error("export",
-					argv[i], ERR_NT_VAL_INP, 1);
-			i++;
-			continue ;
-		}
-		eq = ft_strchr(argv[i], '=');
-		if (eq)
-			export_update_env(argv[i], env, eq, &status);
-		else if (ft_setenv(env, argv[i], "", 0) != 0)
-			status = print_minishell_error("export",
-					argv[i], ERR_MEM_AL, 1);
-		i++;
-	}
-	last_status(1, status);
-	return (status);
-}
-
 int	builtin_export(char **argv, t_env **env)
 {
 	if (!argv[1])
