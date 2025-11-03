@@ -15,7 +15,7 @@
 static int	unset_single(char *arg, t_env **env)
 {
 	if (ft_strcmp(arg, "_") == 0)
-		return (1);
+		return (0);
 	if (!is_valid_identifier(arg))
 	{
 		ft_putstr_fd("minishell: unset: `", 2);
