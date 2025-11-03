@@ -25,8 +25,7 @@ src/executors/executor.c: OK!
 src/builtins/run_builtin.c: OK!
 src/builtins/pwd.c: OK!
 src/builtins/echo.c: OK!
-src/builtins/export.c: Error!
-Error: TOO_MANY_LINES       (line:  61, col:   1):      Function has more than 25 lines
+src/builtins/export.c: OK!
 src/builtins/cd.c: OK!
 src/builtins/export_utils.c: OK!
 src/builtins/env.c: OK!

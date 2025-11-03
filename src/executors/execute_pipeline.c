@@ -39,22 +39,27 @@ static int	wait_for_children(pid_t last_pid)
 	return (exit_code);
 }
 
-static int	fork_and_run(t_cmd *cur, int in_fd,
-	int *pipe_fd, t_env **env)
+static int	fork_and_run(t_cmd *cur, int in_fd, int *pipe_fd, t_env **env)
 {
 	pid_t	pid;
+	int		out_fd;
 
 	in_child_process(1, 1);
 	pid = fork();
 	if (pid < 0)
-		return (perror("fork"), -1);
+	{
+		perror("fork");
+		return (-1);
+	}
 	if (pid == 0)
 	{
 		signal_default();
 		if (cur->next)
 			close(pipe_fd[0]);
-		child_process(cur, in_fd,
-			cur->next ? pipe_fd[1] : STDOUT_FILENO, env);
+		out_fd = STDOUT_FILENO;
+		if (cur->next)
+			out_fd = pipe_fd[1];
+		child_process(cur, in_fd, out_fd, env);
 		_exit(42);
 	}
 	return (pid);
