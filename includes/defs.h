@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 22:37:27 by aramarak          #+#    #+#             */
-/*   Updated: 2025/10/18 22:47:14 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/10/31 02:13:38 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 # define DEFS_H
 
 # define DEBUG 1
+# define GET 0
+# define SET 1
+# define FREE 2
 
 # define PWD_CRWD "minishell: pwd: cannot retrieve working directory\n"
 # define EXP_AERR "minishell: export: %s: allocation error\n"
@@ -42,4 +45,6 @@ looking for matching `%c`\n"
 
 # define MIN_OUT "minishell: syntax error near unexpected token 'newline'"
 # define MIN_UNKNOWN "minishell: internal error: unknown redir type"
+
+# define MINISHELL "minishell"
 #endif // DEFS_H

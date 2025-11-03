@@ -29,11 +29,12 @@ RM      := rm -f
 OBJ_DIR := obj
 
 # Files src
-SRC_MAIN := main.c prompt.c signals.c utils.c path.c \
+SRC_MAIN := main.c prompt.c signals.c utils.c path.c storage.c cleaner.c \
+			single_command.c
 
 # Files builtins
 SRC_BUILTINS := echo.c cd.c pwd.c env.c export.c export_utils.c \
-                unset.c exit.c run_builtin.c
+                unset.c exit.c run_builtin.c export_with_args.c
 
 # Files parser
 SRC_PARSER := parse_tokens.c parse_utils.c parser_line.c \
@@ -47,9 +48,11 @@ SRC_PARSER := parse_tokens.c parse_utils.c parser_line.c \
 SRC_ENV := env.c env_utils.c env_local.c env_local_utils.c env_create_utils.c
 
 # Files pipeline
-SRC_EXECUTION := execute_pipeline.c executor.c executor_utils.c child_process.c
+SRC_EXECUTION := execute_pipeline.c executor.c executor_utils.c child_process.c \
+				child_process_utils.c
 
-SRC_REDIRECTION := apply_redirections.c open_files.c utils_redir.c heredoc_utils.c
+SRC_REDIRECTION := apply_redirections.c open_files.c utils_redir.c heredoc_utils.c \
+				heredoc_signals.c
 
 SRC_DEBUG := debug_parser.c debug_tokens.c
 
@@ -84,13 +87,13 @@ val: all
 val2: CFLAGS += -g3
 val2: all
 	@echo "$(GREEN)[VALGRIND] Running Valgrind on $(NAME)...$(RST)\n"
-	valgrind --leak-check=full --track-origins=yes \
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes \
 		--suppressions=readline.supp ./$(NAME)
 
 # Valgrind check
 val3: CFLAGS += -g3
 val3: all
-	valgrind --leak-check=full --show-leak-kinds=all ./minishell 2>&1 | tee minishell_log
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./minishell 2>&1 | tee minishell_log
 
 # Create binary
 $(NAME): $(OBJS) $(LIBFT)

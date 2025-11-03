@@ -40,19 +40,17 @@ t_token	*handle_unclosed_quote(char quote)
 
 t_token	*read_quoted(const char *line, size_t *i)
 {
-	char		quote;
 	size_t		start;
 	size_t		len;
 	char		*substr;
 	t_toktype	type;
-	t_token     *tok;
+	t_token		*tok;
 
-	quote = line[*i];
-	type = get_quote_type(quote);
+	type = get_quote_type(line[*i]);
 	start = ++(*i);
-	len = get_quoted_length(line, *i, quote);
+	len = get_quoted_length(line, *i, line[start - 1]);
 	if (len == (size_t)-1)
-		return (handle_unclosed_quote(quote));
+		return (handle_unclosed_quote(line[start - 1]));
 	substr = ft_substr(line, start, len);
 	if (!substr)
 		return (NULL);

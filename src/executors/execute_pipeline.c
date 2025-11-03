@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/14 12:40:33 by aramarak          #+#    #+#             */
-/*   Updated: 2025/10/25 02:08:03 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/11/03 22:08:30 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ static int	wait_for_children(pid_t last_pid)
 	int		sig;
 
 	exit_code = 0;
-	while ((finished = wait(&status)) > 0)
+	finished = wait(&status);
+	while (finished > 0)
 	{
 		if (finished == last_pid)
 		{
@@ -35,26 +36,32 @@ static int	wait_for_children(pid_t last_pid)
 					exit_code = 128 + sig;
 			}
 		}
+		finished = wait(&status);
 	}
 	return (exit_code);
 }
 
-static int	fork_and_run(t_cmd *cur, int in_fd,
-	int *pipe_fd, t_env **env)
+static int	fork_and_run(t_cmd *cur, int in_fd, int *pipe_fd, t_env **env)
 {
 	pid_t	pid;
+	int		out_fd;
 
 	in_child_process(1, 1);
 	pid = fork();
 	if (pid < 0)
-		return (perror("fork"), -1);
+	{
+		perror("fork");
+		return (-1);
+	}
 	if (pid == 0)
 	{
 		signal_default();
 		if (cur->next)
 			close(pipe_fd[0]);
-		child_process(cur, in_fd,
-			cur->next ? pipe_fd[1] : STDOUT_FILENO, env);
+		out_fd = STDOUT_FILENO;
+		if (cur->next)
+			out_fd = pipe_fd[1];
+		child_process(cur, in_fd, out_fd, env);
 		_exit(42);
 	}
 	return (pid);
@@ -79,29 +86,6 @@ static void	close_fds(int *in_fd, int *pipe_fd, t_cmd *cur)
 		close(pipe_fd[1]);
 		*in_fd = pipe_fd[0];
 	}
-}
-
-int	prepare_heredocs(t_cmd *cmds)
-{
-	t_cmd	*cur;
-	int 	fd;
-
-	cur = cmds;
-	while (cur)
-	{
-		for (t_redir *r = cur->redir; r; r = r->next)
-		{
-			if (r->type == R_HEREDOC)
-			{
-				fd = open_heredoc(r->file);
-				if (fd < 0)
-					return (-1);
-				r->fd = fd;
-			}
-		}
-		cur = cur->next;
-	}
-	return (0);
 }
 
 int	execute_pipeline(t_cmd *cmds, t_env **env)

@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 13:23:38 by aramarak          #+#    #+#             */
-/*   Updated: 2025/10/04 10:07:34 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/11/04 00:29:15 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@
 # include "status.h"
 # include "token.h"
 # include "limits.h"
+# include "heredoc_signals.h"
 
 // ===== signals =====
 void	setup_signals(void);
@@ -58,5 +59,15 @@ int		is_blank(const char *s);
 int		is_direct_builtin(char *cmd);
 int		exec_child_process(t_cmd *cmd, t_env **env, int i);
 int		wait_for_child(pid_t pid);
+
+// ===== cleaner =====
+void	clean_and_exit(int status);
+
+// ===== storage =====
+t_env	*env_storage(t_env *new_env, int mode);
+t_env	*locals_storage(t_env *new_locals, int mode);
+
+// ===== single command =====
+void	run_single_command(t_cmd *cmd, t_env **env);
 
 #endif // MINISHELL_H

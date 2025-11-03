@@ -113,3 +113,137 @@ The variable is intercepted if there is text before it that satisfies the VALUE=
    ```bash
    env | grep "_="
    ```
+
+27.10.2025
+
+### ✔10. [Bad file descriptor] DONE
+
+**Description:**
+Get bad file descriptor when call (bug in child_process.c mumltiply call apply_redirections())
+
+**Steps to reproduce:**
+1. Run command:
+   ```bash
+   minishell$ cat << a | cat << b
+   > d
+   > f
+   > a
+   > d
+   > b
+   dup2: Bad file descriptor
+   dup2: Bad file descriptor
+   ```
+
+### ✔11. [Bad SIGINT output] DONE
+
+**Description:**
+In heredoc SIGINT working double time, need disable it when we in heredock and restore it when exit
+
+**Steps to reproduce:**
+1. Run command:
+   ```bash
+   minishell$ << a << b
+   > 
+   minishell$ ^C
+   ```
+
+### ✔12. [Wrong exit code] DONE
+
+**Description:**
+Wrong exit code
+
+**Steps to reproduce:**
+1. Run command:
+   ```bash
+   minishell$ ls|<
+   minishell: syntax error near unexpected token 'newline'
+   minishell$ $?
+   minishell: 0: command not found
+   ```
+
+### 13. [ENV update]
+
+**Description:**
+When changed data with export need update env too.
+
+**Steps to reproduce:**
+1. Run command:
+   ```bash
+   export TEST
+   env
+   ```
+
+### 14. [Wrong error text]
+
+**Description:**
+When we havent access to open file (not enought permission) minishell return wrong error text
+
+**Steps to reproduce:**
+1. Run command:
+   ```bash
+   minishell$ chmod 000 a
+   minishell$ echo a > a
+   minishell: failed to open heredoc for `a'
+   ```
+
+
+### ✔15. [Wrong SIGINT code] DONE
+
+**Description:**
+When use SIGINT need update correct exit code
+
+**Steps to reproduce:**
+1. Run command:
+   ```bash
+   ^C
+   ```
+
+### ✔16. [Wrong error and exit code] DONE
+
+**Description:**
+When use solo pipe dont get error and exit code
+
+**Steps to reproduce:**
+1. Run command:
+   ```bash
+   minishell$ |  -> exit code check 
+   ```
+2. Run command:
+   ```bash
+   minishell$ unset PATH
+   minishell$ ls | ls
+   minishell$ 
+   ```
+3. Run command:
+   ```bash
+   minishell$ ls | a
+   ```
+
+**
+minishell$ su -
+Password: 
+minishell: lslslslsl: command not found
+minishell: afsd: command not found
+minishell: adsf: command not found
+**
+
+**
+minishell$ << "$USER"
+> $USER
+> aramarak
+minishell$ 
+**
+
+https://github.com/zstenger93/42_minishell_tester show this
+
+
+
+
+
+minishell$ cat a
+cat: a: Permission denied
+minishell$ $?
+minishell: 1: command not found
+
+minishell$ < a
+
