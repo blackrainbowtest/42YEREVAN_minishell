@@ -23,7 +23,7 @@ static int	unset_single(char *arg, t_env **env)
 		ft_putendl_fd("': not a valid identifier", 2);
 		return (1);
 	}
-	if (ft_unsetenv(env, arg) != 0)
+	if (ft_unsetenv(env, arg) < 0)
 		return (1);
 	return (0);
 }
