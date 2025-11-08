@@ -218,32 +218,121 @@ When use solo pipe dont get error and exit code
    ```bash
    minishell$ ls | a
    ```
+### ✔17. [Makefile: libft not rebuilt] DONE
+**Description:**  
+The top-level Makefile did not trigger rebuilding libft when libft sources changed, so the project linked against an outdated libft.a.
 
-**
-minishell$ su -
-Password: 
-minishell: lslslslsl: command not found
-minishell: afsd: command not found
-minishell: adsf: command not found
-**
+**Steps to reproduce:**  
+1. Modify any file under libft/ (e.g. libft/ft_strlen.c).  
+2. Run `make` in the project root.  
+   Previously libft was not rebuilt.
 
-**
-minishell$ << "$USER"
-> $USER
-> aramarak
-minishell$ 
-**
+**Fix:**  
+- Added in root Makefile: `LIBFT_SRCS = $(shell find $(LIBFT_DIR) -type f \( -name '*.c' -o -name '*.h' \))` and made `$(LIBFT)` depend on `$(LIBFT_SRCS)`, i.e. `$(LIBFT): $(LIBFT_SRCS)` so `make` runs `make -C libft` when libft sources change.  
+- Updated `libft/Makefile` to print clear start/finish messages (e.g. "Compiling libft..." / "Finished compiling libft!").
 
-https://github.com/zstenger93/42_minishell_tester show this
+**Status:** DONE
 
+### ✔18. [Program accepts arguments] DONE
+**Description:**  
+Running `./minishell arg1 ...` started the shell although it must refuse any command-line arguments.
 
+**Steps to reproduce:**  
+1. Run:  
+   ```bash
+   ./minishell foo
+   ```  
+2. Observe the minishell prompt appears.
 
+**Expected behavior:**  
+Print an error to stderr and exit with a non‑zero status without entering the interactive shell.
 
+**Fix implemented:**  
+- Added a static helper `reject_args(int argc)` in `src/main.c` that checks `argc > 1`, prints the error string `MIN_EXIT_ERR` to stderr using `ft_putendl_fd`, and returns non‑zero.  
+- `main()` now calls `reject_args(argc)` before any initialization and returns `1` if arguments were provided.  
+- `ft_putendl_fd` is used instead of stdio functions (e.g. `fprintf`) to comply with project rules.  
+- The argument check was extracted to a static function to keep `main` short (<= 26 lines).
 
-minishell$ cat a
-cat: a: Permission denied
-minishell$ $?
-minishell: 1: command not found
+**Files changed:**  
+- src/main.c — added `static int reject_args(int argc)` and the call in `main`.
 
-minishell$ < a
+**Status:** DONE
 
+### ✔19. [echo -n parsing] DONE
+**Description:**  
+Echo treated "-nnnn" and similar forms as normal arguments instead of recognizing them as repeated `-n` flags, printing the flag text instead of suppressing the trailing newline.
+
+**Steps to reproduce:**  
+1. Run:  
+   ```bash
+   echo -nnnn a
+   ```  
+   Previously output: `-nnnn a`  
+   Expected (bash): `a` (no trailing newline)
+
+**Fix implemented:**  
+- `is_n_flag` now correctly recognizes `-n`, `-nn`, `-nnnn`, etc.  
+- `builtin_echo` was changed to skip any number of consecutive `-n` flags (while loop) before printing arguments, so combinations like `echo -n -n a` and `echo -nnnn a` behave like bash.
+
+**Files changed:**  
+- src/builtins/echo.c — fixed `is_n_flag` usage and adjusted `builtin_echo` to iterate over multiple `-n` flags.
+
+**Status:** DONE
+
+### ✔20. [Heredoc: Ctrl+C ignored with multiple heredocs] DONE
+**Description:**  
+When running chained heredocs like `<< a << b`, pressing Ctrl+C during heredoc input was ignored and the shell behaved incorrectly (no newline, heredoc not cancelled).
+
+**Steps to reproduce:**  
+1. Run:  
+   ```bash
+   minishell$ << a << b
+   > 
+   ```
+2. Press Ctrl+C during the heredoc input.  
+   Previously: no proper cancellation/newline and command continued.
+
+**Expected behavior:**  
+The heredoc reader (child) should be terminated by SIGINT, parent should print a newline, abort heredoc preparation and not execute the command.
+
+**Fix implemented:**  
+- Heredoc reading moved to a forked child; parent ignores SIGINT/SIGQUIT while preparing heredocs.  
+- Child restores default signal handlers (SIG_DFL) so Ctrl+C kills it.  
+- Parent waits for child and checks WIFSIGNALED/WTERMSIG == SIGINT, prints a newline, closes temp fd and returns error to abort execution.  
+- Signal save/restore logic in prepare_heredocs/heredoc_signals was corrected to ensure consistent behavior with multiple heredocs.
+
+**Files changed:**  
+- src/redirections/open_heredoc.c — added forked reader and SIG_DFL in child, proper wait/status handling.  
+- src/redirections/heredoc_signals.c — fixed save/restore and SIG_IGN setup for parent.  
+- redirections caller (prepare_heredocs / heredoc utils) — propagate -1 on interrupted heredoc so command is not executed.
+
+**Status:** DONE
+
+### ✔21. [Pipeline + heredoc] DONE
+**Description:**  
+Command with a pipeline where one side uses heredoc (e.g. `ls | << a`) behaved incorrectly — heredoc was not prepared/applied to the correct process or redirections produced bad FDs, so the pipeline failed or produced wrong output.
+
+**Steps to reproduce:**  
+1. Run:  
+   ```bash
+   minishell$ ls | << a
+   > line
+   > a
+   ```
+2. Previously the heredoc input was not applied to the right side of the pipe or the pipeline failed.
+
+**Expected behavior:**  
+Heredoc content should be provided as stdin to the correct pipeline stage (right-hand command), pipeline executes normally and produces same result as bash.
+
+**Fix implemented:**  
+- Ensure heredocs are prepared (open_heredoc) and their temporary FDs are stored before forking pipeline children.  
+- Apply redirections (dup2) inside child processes so each child gets its own correct stdin/stdout.  
+- Close unused FDs in parent/children to avoid "Bad file descriptor" and duplicated dup2 calls.  
+- Propagate heredoc interruption/errors (SIGINT) so pipeline is not executed on aborted heredoc.
+
+**Files changed:**  
+- src/redirections/open_heredoc.c — forked reader, correct fd handling.  
+- src/redirections/heredoc_signals.c — proper save/restore of signal handlers.  
+- src/executors/child_process.c / apply_redirections.c — apply heredoc FDs in children and close unused descriptors.
+
+**Status:** DONE

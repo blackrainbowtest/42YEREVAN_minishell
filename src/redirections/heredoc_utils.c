@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 19:33:11 by aramarak          #+#    #+#             */
-/*   Updated: 2025/10/15 19:34:44 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/11/08 11:09:17 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,11 @@ int	wait_heredoc_child(pid_t pid, int pipefd[2])
 	}
 	if (WIFSIGNALED(status))
 	{
+		if (WTERMSIG(status) == SIGINT)
+		{
+			write(1, "\n", 1);
+			last_status(1, 130);
+		}
 		close(pipefd[0]);
 		return (-1);
 	}

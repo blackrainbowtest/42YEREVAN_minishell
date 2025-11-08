@@ -51,3 +51,15 @@ t_redir_type	token_to_redir_type(t_toktype type)
 		return (R_HEREDOC);
 	return (R_NONE);
 }
+
+int	is_redir_token(t_toktype type)
+{
+	return (type == T_REDIR_IN || type == T_REDIR_OUT
+		|| type == T_REDIR_APPEND || type == T_HEREDOC);
+}
+
+int	is_valid_next_token(t_token *tok)
+{
+	return (tok->type == T_WORD || tok->type == T_VAR
+		|| tok->type == T_DQUOTE || tok->type == T_SQUOTE);
+}

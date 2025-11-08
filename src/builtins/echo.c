@@ -12,6 +12,22 @@
 
 #include "minishell.h"
 
+static int	is_n_flag(const char *s)
+{
+	int	i;
+
+	if (!s || s[0] != '-' || s[1] == '\0')
+		return (0);
+	i = 1;
+	while (s[i])
+	{
+		if (s[i] != 'n')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 /**
  * @brief Implementation of the "echo" builtin command.
  *
@@ -34,7 +50,7 @@ int	builtin_echo(char **args)
 
 	i = 1;
 	newline = 1;
-	if (args[1] && ft_strcmp(args[1], "-n") == 0)
+	if (args[1] && is_n_flag(args[i]))
 	{
 		newline = 0;
 		i = 2;
