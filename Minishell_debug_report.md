@@ -279,3 +279,32 @@ Echo treated "-nnnn" and similar forms as normal arguments instead of recognizin
 
 **Status:** DONE
 
+### ✔20. [Heredoc: Ctrl+C ignored with multiple heredocs] DONE
+**Description:**  
+When running chained heredocs like `<< a << b`, pressing Ctrl+C during heredoc input was ignored and the shell behaved incorrectly (no newline, heredoc not cancelled).
+
+**Steps to reproduce:**  
+1. Run:  
+   ```bash
+   minishell$ << a << b
+   > 
+   ```
+2. Press Ctrl+C during the heredoc input.  
+   Previously: no proper cancellation/newline and command continued.
+
+**Expected behavior:**  
+The heredoc reader (child) should be terminated by SIGINT, parent should print a newline, abort heredoc preparation and not execute the command.
+
+**Fix implemented:**  
+- Heredoc reading moved to a forked child; parent ignores SIGINT/SIGQUIT while preparing heredocs.  
+- Child restores default signal handlers (SIG_DFL) so Ctrl+C kills it.  
+- Parent waits for child and checks WIFSIGNALED/WTERMSIG == SIGINT, prints a newline, closes temp fd and returns error to abort execution.  
+- Signal save/restore logic in prepare_heredocs/heredoc_signals was corrected to ensure consistent behavior with multiple heredocs.
+
+**Files changed:**  
+- src/redirections/open_heredoc.c — added forked reader and SIG_DFL in child, proper wait/status handling.  
+- src/redirections/heredoc_signals.c — fixed save/restore and SIG_IGN setup for parent.  
+- redirections caller (prepare_heredocs / heredoc utils) — propagate -1 on interrupted heredoc so command is not executed.
+
+**Status:** DONE
+
