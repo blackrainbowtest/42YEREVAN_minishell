@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 20:06:08 by aramarak          #+#    #+#             */
-/*   Updated: 2025/10/31 00:27:02 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/11/08 11:32:02 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,24 +28,27 @@ static int	validate_pipe(t_cmd *cur, t_cmd *head, t_token *tok)
 {
 	t_token	*next;
 
-	if (!cur->argv || !cur->argv[0])
+	if ((!cur->argv || !cur->argv[0])
+		&& (!tok->next || tok->next->type != T_HEREDOC))
 		return (pipe_syntax_error(head, token_to_str(tok->type)));
 	next = tok->next;
 	if (!next)
-		return (pipe_syntax_error(head, "newline"));
-	while (next && (next->type == T_REDIR_IN || next->type == T_REDIR_OUT
-			|| next->type == T_REDIR_APPEND || next->type == T_HEREDOC))
+		return (pipe_syntax_error(head, "newline1"));
+	while (next && is_redir_token(next->type))
 	{
 		if (!next->next)
-			return (pipe_syntax_error(head, "newline"));
+			return (pipe_syntax_error(head, "newline2"));
 		next = next->next->next;
 	}
 	if (!next)
-		return (pipe_syntax_error(head, "newline"));
+	{
+		if (tok->next && tok->next->type == T_HEREDOC)
+			return (0);
+		return (pipe_syntax_error(head, "newline3"));
+	}
 	if (next->type == T_PIPE)
 		return (pipe_syntax_error(head, token_to_str(next->type)));
-	if (next->type != T_WORD && next->type != T_VAR
-		&& next->type != T_DQUOTE && next->type != T_SQUOTE)
+	if (!is_valid_next_token(next))
 		return (pipe_syntax_error(head, token_to_str(next->type)));
 	return (0);
 }

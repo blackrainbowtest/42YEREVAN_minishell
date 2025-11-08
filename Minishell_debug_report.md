@@ -308,3 +308,31 @@ The heredoc reader (child) should be terminated by SIGINT, parent should print a
 
 **Status:** DONE
 
+### ✔21. [Pipeline + heredoc] DONE
+**Description:**  
+Command with a pipeline where one side uses heredoc (e.g. `ls | << a`) behaved incorrectly — heredoc was not prepared/applied to the correct process or redirections produced bad FDs, so the pipeline failed or produced wrong output.
+
+**Steps to reproduce:**  
+1. Run:  
+   ```bash
+   minishell$ ls | << a
+   > line
+   > a
+   ```
+2. Previously the heredoc input was not applied to the right side of the pipe or the pipeline failed.
+
+**Expected behavior:**  
+Heredoc content should be provided as stdin to the correct pipeline stage (right-hand command), pipeline executes normally and produces same result as bash.
+
+**Fix implemented:**  
+- Ensure heredocs are prepared (open_heredoc) and their temporary FDs are stored before forking pipeline children.  
+- Apply redirections (dup2) inside child processes so each child gets its own correct stdin/stdout.  
+- Close unused FDs in parent/children to avoid "Bad file descriptor" and duplicated dup2 calls.  
+- Propagate heredoc interruption/errors (SIGINT) so pipeline is not executed on aborted heredoc.
+
+**Files changed:**  
+- src/redirections/open_heredoc.c — forked reader, correct fd handling.  
+- src/redirections/heredoc_signals.c — proper save/restore of signal handlers.  
+- src/executors/child_process.c / apply_redirections.c — apply heredoc FDs in children and close unused descriptors.
+
+**Status:** DONE

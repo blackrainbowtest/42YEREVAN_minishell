@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 23:07:48 by aramarak          #+#    #+#             */
-/*   Updated: 2025/10/18 22:45:56 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/11/08 11:29:04 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ int				handle_word_token(t_cmd *cur, t_token *tok,
 int				ensure_current_cmd(t_cmd **cur, t_cmd **head);
 const char		*token_to_str(t_toktype type);
 t_redir_type	token_to_redir_type(t_toktype type);
+int				is_redir_token(t_toktype type);
+int				is_valid_next_token(t_token *tok);
 
 int				handle_redir_token(t_cmd *cur, t_token **tok, t_cmd *head);
 int				handle_pipe_token(t_cmd **cur, t_cmd *head);
