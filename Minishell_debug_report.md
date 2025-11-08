@@ -258,3 +258,24 @@ Print an error to stderr and exit with a non‑zero status without entering the 
 
 **Status:** DONE
 
+### ✔19. [echo -n parsing] DONE
+**Description:**  
+Echo treated "-nnnn" and similar forms as normal arguments instead of recognizing them as repeated `-n` flags, printing the flag text instead of suppressing the trailing newline.
+
+**Steps to reproduce:**  
+1. Run:  
+   ```bash
+   echo -nnnn a
+   ```  
+   Previously output: `-nnnn a`  
+   Expected (bash): `a` (no trailing newline)
+
+**Fix implemented:**  
+- `is_n_flag` now correctly recognizes `-n`, `-nn`, `-nnnn`, etc.  
+- `builtin_echo` was changed to skip any number of consecutive `-n` flags (while loop) before printing arguments, so combinations like `echo -n -n a` and `echo -nnnn a` behave like bash.
+
+**Files changed:**  
+- src/builtins/echo.c — fixed `is_n_flag` usage and adjusted `builtin_echo` to iterate over multiple `-n` flags.
+
+**Status:** DONE
+
