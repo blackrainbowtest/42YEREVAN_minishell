@@ -18,6 +18,8 @@ DEBUGING := 0
 LIBFT_DIR := libft
 LIBFT     := $(LIBFT_DIR)/libft.a
 
+LIBFT_SRCS := $(shell find $(LIBFT_DIR) -type f \( -name '*.c' -o -name '*.h' \))
+
 # Compiler
 CC      := cc
 # -g3 -fsanitize=address,undefined,leak
@@ -100,7 +102,7 @@ $(NAME): $(OBJS) $(LIBFT)
 	@echo $(GREEN)"Compiling $(NAME)..."$(RST)
 	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LIBFT) $(LIBS)
 	@echo $(GREEN)"Finished Compiling!" $(RST)
-$(LIBFT):
+$(LIBFT): $(LIBFT_SRCS)
 	@$(MAKE) --no-print-directory -C $(LIBFT_DIR)
 
 # Compile .c to .o
