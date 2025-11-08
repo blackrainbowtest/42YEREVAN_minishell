@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 13:23:31 by aramarak          #+#    #+#             */
-/*   Updated: 2025/11/08 10:23:10 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/11/08 10:36:36 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,24 @@ static void	run_shell_loop(t_env **env, t_env **locals)
 	}
 }
 
+static int	reject_args(int argc)
+{
+	if (argc > 1)
+	{
+		ft_putendl_fd(MIN_EXIT_ERR, STDERR_FILENO);
+		return (1);
+	}
+	return (0);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_env	*env;
 	t_env	*locals;
 
-	(void)argc;
 	(void)argv;
+	if (reject_args(argc))
+		return (1);
 	setup_signals();
 	env = init_env(envp);
 	locals = init_locals();

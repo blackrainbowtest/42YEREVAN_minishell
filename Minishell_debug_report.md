@@ -218,32 +218,43 @@ When use solo pipe dont get error and exit code
    ```bash
    minishell$ ls | a
    ```
+### ✔17. [Makefile: libft not rebuilt] DONE
+**Description:**  
+The top-level Makefile did not trigger rebuilding libft when libft sources changed, so the project linked against an outdated libft.a.
 
-**
-minishell$ su -
-Password: 
-minishell: lslslslsl: command not found
-minishell: afsd: command not found
-minishell: adsf: command not found
-**
+**Steps to reproduce:**  
+1. Modify any file under libft/ (e.g. libft/ft_strlen.c).  
+2. Run `make` in the project root.  
+   Previously libft was not rebuilt.
 
-**
-minishell$ << "$USER"
-> $USER
-> aramarak
-minishell$ 
-**
+**Fix:**  
+- Added in root Makefile: `LIBFT_SRCS = $(shell find $(LIBFT_DIR) -type f \( -name '*.c' -o -name '*.h' \))` and made `$(LIBFT)` depend on `$(LIBFT_SRCS)`, i.e. `$(LIBFT): $(LIBFT_SRCS)` so `make` runs `make -C libft` when libft sources change.  
+- Updated `libft/Makefile` to print clear start/finish messages (e.g. "Compiling libft..." / "Finished compiling libft!").
 
-https://github.com/zstenger93/42_minishell_tester show this
+**Status:** DONE
 
+### ✔18. [Program accepts arguments] DONE
+**Description:**  
+Running `./minishell arg1 ...` started the shell although it must refuse any command-line arguments.
 
+**Steps to reproduce:**  
+1. Run:  
+   ```bash
+   ./minishell foo
+   ```  
+2. Observe the minishell prompt appears.
 
+**Expected behavior:**  
+Print an error to stderr and exit with a non‑zero status without entering the interactive shell.
 
+**Fix implemented:**  
+- Added a static helper `reject_args(int argc)` in `src/main.c` that checks `argc > 1`, prints the error string `MIN_EXIT_ERR` to stderr using `ft_putendl_fd`, and returns non‑zero.  
+- `main()` now calls `reject_args(argc)` before any initialization and returns `1` if arguments were provided.  
+- `ft_putendl_fd` is used instead of stdio functions (e.g. `fprintf`) to comply with project rules.  
+- The argument check was extracted to a static function to keep `main` short (<= 26 lines).
 
-minishell$ cat a
-cat: a: Permission denied
-minishell$ $?
-minishell: 1: command not found
+**Files changed:**  
+- src/main.c — added `static int reject_args(int argc)` and the call in `main`.
 
-minishell$ < a
+**Status:** DONE
 
