@@ -44,7 +44,8 @@ SRC_PARSER := parse_tokens.c parse_utils.c parser_line.c \
 				token_quote.c token_list.c expand_tokens_utils.c \
 				expand_tokens.c expand_utils.c parse_tokens_utils.c \
 				token_helper_operator.c parse_tokens_process.c \
-				parser_args.c parser_words.c parser_redirs.c
+				parser_args.c parser_words.c parser_redirs.c \
+				parse_tokens_process_utils.c
 
 # Files env
 SRC_ENV := env.c env_utils.c env_local.c env_local_utils.c env_create_utils.c

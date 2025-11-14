@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 20:06:08 by aramarak          #+#    #+#             */
-/*   Updated: 2025/11/08 11:32:02 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/11/13 19:29:49 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,18 +33,18 @@ static int	validate_pipe(t_cmd *cur, t_cmd *head, t_token *tok)
 		return (pipe_syntax_error(head, token_to_str(tok->type)));
 	next = tok->next;
 	if (!next)
-		return (pipe_syntax_error(head, "newline1"));
+		return (pipe_syntax_error(head, "newline"));
 	while (next && is_redir_token(next->type))
 	{
 		if (!next->next)
-			return (pipe_syntax_error(head, "newline2"));
+			return (pipe_syntax_error(head, "newline"));
 		next = next->next->next;
 	}
 	if (!next)
 	{
-		if (tok->next && tok->next->type == T_HEREDOC)
+		if (handle_pipe_redirection(tok))
 			return (0);
-		return (pipe_syntax_error(head, "newline3"));
+		return (pipe_syntax_error(head, "newline"));
 	}
 	if (next->type == T_PIPE)
 		return (pipe_syntax_error(head, token_to_str(next->type)));
