@@ -57,11 +57,6 @@ void	expand_tokens(t_token *tokens, t_env *env, t_env *locals)
 	t_token	*tok;
 
 	(void)locals;
-	if (DEBUGING)
-	{
-		printf("Before expansion:\n");
-		debug_print_tokens(tokens);
-	}
 	tok = tokens;
 	while (tok)
 	{
@@ -72,10 +67,5 @@ void	expand_tokens(t_token *tokens, t_env *env, t_env *locals)
 		else if (tok->type == T_DQUOTE)
 			expand_dquote_token(tok, env, locals);
 		tok = tok->next;
-	}
-	if (DEBUGING)
-	{
-		printf("After expansion:\n");
-		debug_print_tokens(tokens);
 	}
 }

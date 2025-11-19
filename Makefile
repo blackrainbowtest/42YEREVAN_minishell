@@ -18,8 +18,6 @@ DEBUGING := 0
 LIBFT_DIR := libft
 LIBFT     := $(LIBFT_DIR)/libft.a
 
-LIBFT_SRCS := $(shell find $(LIBFT_DIR) -type f \( -name '*.c' -o -name '*.h' \))
-
 # Compiler
 CC      := cc
 # -g3 -fsanitize=address,undefined,leak
@@ -57,8 +55,6 @@ SRC_EXECUTION := execute_pipeline.c executor.c executor_utils.c child_process.c 
 SRC_REDIRECTION := apply_redirections.c open_files.c utils_redir.c heredoc_utils.c \
 				heredoc_signals.c
 
-SRC_DEBUG := debug_parser.c debug_tokens.c
-
 SRC_STATUS := status.c
 
 # Формируем полные пути
@@ -68,11 +64,7 @@ SRC :=  $(addprefix $(SRC_DIR)/, $(SRC_MAIN)) \
 		$(addprefix $(SRC_DIR)/parser/, $(SRC_PARSER)) \
 		$(addprefix $(SRC_DIR)/executors/, $(SRC_EXECUTION)) \
 		$(addprefix $(SRC_DIR)/redirections/, $(SRC_REDIRECTION)) \
-		$(addprefix $(SRC_DIR)/debug/, $(SRC_DEBUG)) \
 		$(addprefix $(SRC_DIR)/status/, $(SRC_STATUS))
-
-# Quiet build
-QUIET = $(if $(filter 0,$(VERBOSE)),@,)
 
 # Object files
 OBJS := $(addprefix $(OBJ_DIR)/,$(SRC:.c=.o))
@@ -80,31 +72,14 @@ OBJS := $(addprefix $(OBJ_DIR)/,$(SRC:.c=.o))
 # Default target
 all: $(NAME)
 
-# Valgrind check
-val: CFLAGS += -g3
-val: all
-	@echo "$(GREEN)[VALGRIND] Running Valgrind on $(NAME)..."$(RST)"\n"
-	valgrind --leak-check=full --show-leak-kinds=definite ./$(NAME)
-
-# Valgrind check
-val2: CFLAGS += -g3
-val2: all
-	@echo "$(GREEN)[VALGRIND] Running Valgrind on $(NAME)...$(RST)\n"
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes \
-		--suppressions=readline.supp ./$(NAME)
-
-# Valgrind check
-val3: CFLAGS += -g3
-val3: all
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./minishell 2>&1 | tee minishell_log
-
 # Create binary
 $(NAME): $(OBJS) $(LIBFT)
 	@echo $(GREEN)"Compiling $(NAME)..."$(RST)
 	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LIBFT) $(LIBS)
 	@echo $(GREEN)"Finished Compiling!" $(RST)
-$(LIBFT): $(LIBFT_SRCS)
-	@$(MAKE) --no-print-directory -C $(LIBFT_DIR)
+
+$(LIBFT):
+	@$(MAKE) -C $(LIBFT_DIR)
 
 # Compile .c to .o
 $(OBJ_DIR)/%.o: %.c
