@@ -36,7 +36,6 @@
 # include "parser.h"
 # include "pipeline.h"
 # include "redirections.h"
-# include "debug.h"
 # include "status.h"
 # include "token.h"
 # include "limits.h"
