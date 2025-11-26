@@ -98,6 +98,9 @@ git clone https://github.com/LucasKuhn/minishell_tester.git
 cd minishell_tester
 ./tester
 
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/zstenger93/42_minishell_tester/master/install.sh)"
+``` :contentReference[oaicite:1]{index=1}  
+
 ## TODOS
 - fix not updating the code inside the single quotes 
 - fix exit codes
