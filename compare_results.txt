@@ -1,0 +1,615 @@
+/bin/echo ""$?""
+minishell$ /bin/echo ""$?""
+0
+minishell$ 
+0
+
+
+/bin/echo $?"42"
+minishell$ /bin/echo $?"42"
+042
+minishell$ 
+042
+
+
+/bin/echo ''$?''"42"
+minishell$ /bin/echo ''$?''"42"
+042
+minishell$ 
+042
+
+
+/bin/echo '"$USER"'
+minishell$ /bin/echo '"$USER"'
+"$USER"
+minishell$ 
+"$USER"
+
+
+/bin/echo "'$USER'"
+minishell$ /bin/echo "'$USER'"
+'aramarak'
+minishell$ 
+'aramarak'
+
+
+/bin/echo ""'$USER'""
+minishell$ /bin/echo ""'$USER'""
+$USER
+minishell$ 
+$USER
+
+
+/bin/echo '"'$USER'"'
+minishell$ /bin/echo '"'$USER'"'
+"aramarak"
+minishell$ 
+"aramarak"
+
+
+/bin/echo "''$USER''"
+minishell$ /bin/echo "''$USER''"
+''aramarak''
+minishell$ 
+''aramarak''
+
+
+/bin/echo "'"'$USER'"'"
+minishell$ /bin/echo "'"'$USER'"'"
+'$USER'
+minishell$ 
+'$USER'
+
+
+/bin/echo '"'"$USER"'"'
+minishell$ /bin/echo '"'"$USER"'"'
+"aramarak"
+minishell$ 
+"aramarak"
+
+
+/bin/echo $"HOME"$USER
+minishell$ /bin/echo $"HOME"$USER
+HOMEaramarak
+minishell$ 
+HOMEaramarak
+
+
+/bin/echo $"HOM"E$USER
+minishell$ /bin/echo $"HOM"E$USER
+HOMEaramarak
+minishell$ 
+HOMEaramarak
+
+
+/bin/echo "exit_code ->$? user ->$USER home -> $HOME"
+minishell$ /bin/echo "exit_code ->$? user ->$USER home -> $HOME"
+exit_code ->0 user ->aramarak home -> /home/aramarak
+minishell$ 
+exit_code ->0 user ->aramarak home -> /home/aramarak
+
+
+/bin/echo $"HOME"
+minishell$ /bin/echo $"HOME"
+HOME
+minishell$ 
+HOME
+
+
+/bin/echo $"42$"
+minishell$ /bin/echo $"42$"
+42$
+minishell$ 
+42$
+
+
+/bin/echo "$ "
+minishell$ /bin/echo "$ "
+$ 
+minishell$ 
+$ 
+
+
+/bin/echo hi >./outfiles/outfile01 | /bin/echo bye
+minishell$ /bin/echo hi >./outfiles/outfile01 | /bin/echo bye
+./outfiles/outfile01: No such file or directory
+bye
+minishell$ 
+bash: line 1: ./outfiles/outfile01: No such file or directory
+bye
+
+
+/bin/echo <123 <456 hi | /bin/echo 42
+minishell$ /bin/echo <123 <456 hi | /bin/echo 42
+123: No such file or directory
+42
+minishell$ 
+bash: line 1: 123: No such file or directory
+42
+
+
+/bin/echo '$='
+minishell$ /bin/echo '$='
+$=
+minishell$ 
+$=
+
+
+/bin/echo '$ '
+minishell$ /bin/echo '$ '
+$ 
+minishell$ 
+$ 
+
+
+/bin/echo "$?"
+minishell$ /bin/echo "$?"
+0
+minishell$ 
+0
+
+
+/bin/echo '$?'
+minishell$ /bin/echo '$?'
+$?
+minishell$ 
+$?
+
+
+/bin/echo "'$?'"
+minishell$ /bin/echo "'$?'"
+'0'
+minishell$ 
+'0'
+
+
+/bin/echo \$USER
+minishell$ /bin/echo \$USER
+\aramarak
+minishell$ 
+$USER
+
+
+/bin/echo \\$USER
+minishell$ /bin/echo \\$USER
+\\aramarak
+minishell$ 
+\aramarak
+
+
+/bin/echo \\\$USER
+minishell$ /bin/echo \\\$USER
+\\\aramarak
+minishell$ 
+\$USER
+
+
+/bin/echo \\\\$USER
+minishell$ /bin/echo \\\\$USER
+\\\\aramarak
+minishell$ 
+\\aramarak
+
+
+/bin/echo \\\\\$USER
+minishell$ /bin/echo \\\\\$USER
+\\\\\aramarak
+minishell$ 
+\\$USER
+
+
+/bin/echo \\\\\\\\\$USER
+minishell$ /bin/echo \\\\\\\\\$USER
+\\\\\\\\\aramarak
+minishell$ 
+\\\\$USER
+
+
+/bin/echo \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\$USER \$PATH \\$PWD
+minishell$ /bin/echo \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\$USER \$PATH \\$PWD
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\aramarak \/home/aramarak/miniconda3/bin:/home/aramarak/miniconda3/condabin:/home/aramarak/.local/bin:/home/aramarak/bin:/home/aramarak/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/aramarak/.config/Code/User/globalStorage/github.copilot-chat/debugCommand \\/sgoinfre/aramarak/42YEREVAN_minishell
+minishell$ 
+\\\\\\\\\\\\\\\\$USER $PATH \/sgoinfre/aramarak/42YEREVAN_minishell
+
+
+/bin/echo "cat lol.c | cat > lol.c"
+minishell$ /bin/echo "cat lol.c | cat > lol.c"
+cat lol.c | cat > lol.c
+minishell$ 
+cat lol.c | cat > lol.c
+
+
+/bin/echo "cat lol.c '|' cat > lol.c"
+minishell$ /bin/echo "cat lol.c '|' cat > lol.c"
+cat lol.c '|' cat > lol.c
+minishell$ 
+cat lol.c '|' cat > lol.c
+
+
+/bin/echo '$USER' "$USER" "text  ' text"
+minishell$ /bin/echo '$USER' "$USER" "text  ' text"
+$USER aramarak text  ' text
+minishell$ 
+$USER aramarak text  ' text
+
+
+/bin/echo $USER =intergalaktikus miaf*szomez
+minishell$ /bin/echo $USER =intergalaktikus miaf*szomez
+aramarak =intergalaktikus miaf*szomez
+minishell$ 
+aramarak =intergalaktikus miaf*szomez
+
+
+/bin/echo -n"-n" bonjour
+minishell$ /bin/echo -n"-n" bonjour
+-n-n bonjour
+minishell$ 
+-n-n bonjour
+
+
+/bin/echo "'$USER'"
+minishell$ /bin/echo "'$USER'"
+'aramarak'
+minishell$ 
+'aramarak'
+
+
+/bin/echo " '$USER' "
+minishell$ /bin/echo " '$USER' "
+ 'aramarak' 
+minishell$ 
+ 'aramarak' 
+
+
+/bin/echo text"$USER"
+minishell$ /bin/echo text"$USER"
+textaramarak
+minishell$ 
+textaramarak
+
+
+/bin/echo text"'$USER'" ' $USER '
+minishell$ /bin/echo text"'$USER'" ' $USER '
+text'aramarak'  $USER 
+minishell$ 
+text'aramarak'  $USER 
+
+
+/bin/echo "text"   "$USER"    "$USER"
+minishell$ /bin/echo "text"   "$USER"    "$USER"
+text aramarak aramarak
+minishell$ 
+text aramarak aramarak
+
+
+/bin/echo '              $USER          '
+minishell$ /bin/echo '              $USER          '
+              $USER          
+minishell$ 
+              $USER          
+
+
+/bin/echo ''''''''''$USER''''''''''
+minishell$ /bin/echo ''''''''''$USER''''''''''
+aramarak
+minishell$ 
+aramarak
+
+
+/bin/echo """"""""$USER""""""""
+minishell$ /bin/echo """"""""$USER""""""""
+aramarak
+minishell$ 
+aramarak
+
+
+/bin/echo '""""""""$USER""""""""'
+minishell$ /bin/echo '""""""""$USER""""""""'
+""""""""$USER""""""""
+minishell$ 
+""""""""$USER""""""""
+
+
+/bin/echo ""'""""""$USER""""""'""
+minishell$ /bin/echo ""'""""""$USER""""""'""
+""""""$USER""""""
+minishell$ 
+""""""$USER""""""
+
+
+/bin/echo """"""""'$USER'""""""""
+minishell$ /bin/echo """"""""'$USER'""""""""
+$USER
+minishell$ 
+$USER
+
+
+/bin/echo """""""'"$USER"'"""""""
+minishell$ /bin/echo """""""'"$USER"'"""""""
+'aramarak'
+minishell$ 
+'aramarak'
+
+
+/bin/echo """"""'""$USER""'""""""
+minishell$ /bin/echo """"""'""$USER""'""""""
+""$USER""
+minishell$ 
+""$USER""
+
+
+/bin/echo ""'""'""""$USER""""'""'""
+minishell$ /bin/echo ""'""'""""$USER""""'""'""
+""aramarak""
+minishell$ 
+""aramarak""
+
+
+/bin/echo '""'""'""""$USER""""'""'""'
+minishell$ /bin/echo '""'""'""""$USER""""'""'""'
+""""""$USER""""""
+minishell$ 
+""""""$USER""""""
+
+
+/bin/echo $USER'$USER'text oui oui     oui  oui $USER oui      $USER ''
+minishell$ /bin/echo $USER'$USER'text oui oui     oui  oui $USER oui      $USER ''
+aramarak$USERtext oui oui oui oui aramarak oui aramarak 
+minishell$ 
+aramarak$USERtext oui oui oui oui aramarak oui aramarak 
+
+
+/bin/echo "text" "text$USER" ... "$USER"
+minishell$ /bin/echo "text" "text$USER" ... "$USER"
+text textaramarak ... aramarak
+minishell$ 
+text textaramarak ... aramarak
+
+
+/bin/echo
+minishell$ /bin/echo
+
+minishell$ 
+
+
+
+/bin/echo ''
+minishell$ /bin/echo ''
+
+minishell$ 
+
+
+
+/bin/echo ""
+minishell$ /bin/echo ""
+
+minishell$ 
+
+
+
+/bin/echo '' ""
+minishell$ /bin/echo '' ""
+ 
+minishell$ 
+ 
+
+
+/bin/echo /bin/echo
+minishell$ /bin/echo /bin/echo
+/bin/echo
+minishell$ 
+/bin/echo
+
+
+/bin/echo test1
+minishell$ /bin/echo test1
+test1
+minishell$ 
+test1
+
+
+/bin/echo 'test1'
+minishell$ /bin/echo 'test1'
+test1
+minishell$ 
+test1
+
+
+/bin/echo "/bin/echo hallo"
+minishell$ /bin/echo "/bin/echo hallo"
+/bin/echo hallo
+minishell$ 
+/bin/echo hallo
+
+
+/bin/echo /bin/echo"1"
+minishell$ /bin/echo /bin/echo"1"
+/bin/echo1
+minishell$ 
+/bin/echo1
+
+
+/bin/echo "test1 test2"
+minishell$ /bin/echo "test1 test2"
+test1 test2
+minishell$ 
+test1 test2
+
+
+/bin/echo "test1  test2" test3
+minishell$ /bin/echo "test1  test2" test3
+test1  test2 test3
+minishell$ 
+test1  test2 test3
+
+
+/bin/echo " test1 test2 " 'test3 '
+minishell$ /bin/echo " test1 test2 " 'test3 '
+ test1 test2  test3 
+minishell$ 
+ test1 test2  test3 
+
+
+/bin/echo test1		test2
+minishell$ /bin/echo test1test2
+test1test2
+minishell$ 
+test1 test2
+
+
+/bin/echo $USER$TESTNOTFOUND$HOME$
+minishell$ /bin/echo $USER$TESTNOTFOUND$HOME$
+aramarak/home/aramarak$
+minishell$ 
+aramarak/home/aramarak$
+
+
+/bin/echo $USER$TESTNOTFOUND$HOME$WTF$PWD
+minishell$ /bin/echo $USER$TESTNOTFOUND$HOME$WTF$PWD
+aramarak/home/aramarak/sgoinfre/aramarak/42YEREVAN_minishell
+minishell$ 
+aramarak/home/aramarak/sgoinfre/aramarak/42YEREVAN_minishell
+
+
+/bin/echo -n test1
+minishell$ /bin/echo -n test1
+test1minishell$ 
+test1
+
+
+/bin/echo -n "test1 test2"
+minishell$ /bin/echo -n "test1 test2"
+test1 test2minishell$ 
+test1 test2
+
+
+/bin/echo -n "test1 test2" test3
+minishell$ /bin/echo -n "test1 test2" test3
+test1 test2 test3minishell$ 
+test1 test2 test3
+
+
+/bin/echo -n " test1 test2 " 'test3 '
+minishell$ /bin/echo -n " test1 test2 " 'test3 '
+ test1 test2  test3 minishell$ 
+ test1 test2  test3 
+
+
+/bin/echo -n test1		test2
+minishell$ /bin/echo -n test1test2
+test1test2minishell$ 
+test1 test2
+
+
+/bin/echo test1 -n
+minishell$ /bin/echo test1 -n
+test1 -n
+minishell$ 
+test1 -n
+
+
+/bin/echo "test1 -n"
+minishell$ /bin/echo "test1 -n"
+test1 -n
+minishell$ 
+test1 -n
+
+
+/bin/echo -n -n test1
+minishell$ /bin/echo -n -n test1
+test1minishell$ 
+test1
+
+
+/bin/echo -n -n -n -n -n test1
+minishell$ /bin/echo -n -n -n -n -n test1
+test1minishell$ 
+test1
+
+
+/bin/echo "  -nn "
+minishell$ /bin/echo "  -nn "
+  -nn 
+minishell$ 
+  -nn 
+
+
+/bin/echo "-n test1 -n test2"
+minishell$ /bin/echo "-n test1 -n test2"
+-n test1 -n test2
+minishell$ 
+-n test1 -n test2
+
+
+/bin/echo "test1 -n test2"
+minishell$ /bin/echo "test1 -n test2"
+test1 -n test2
+minishell$ 
+test1 -n test2
+
+
+/bin/echo ~42
+minishell$ /bin/echo ~42
+~42
+minishell$ 
+~42
+
+
+/bin/echo -n -n -nasd
+minishell$ /bin/echo -n -n -nasd
+-nasdminishell$ 
+-nasd
+
+
+/bin/echo -n -n -n-nnnnn
+minishell$ /bin/echo -n -n -n-nnnnn
+-n-nnnnnminishell$ 
+-n-nnnnn
+
+
+/bin/echo -n -nnnnnnn -n -nnn -nnnnn -n-n
+minishell$ /bin/echo -n -nnnnnnn -n -nnn -nnnnn -n-n
+-n-nminishell$ 
+-n-n
+
+
+/bin/echo -n -nnnnnnn -n -nnn -nnnnn -n feel my pain
+minishell$ /bin/echo -n -nnnnnnn -n -nnn -nnnnn -n feel my pain
+feel my painminishell$ 
+feel my pain
+
+
+/bin/echo -n -n -n-n
+minishell$ /bin/echo -n -n -n-n
+-n-nminishell$ 
+-n-n
+
+
+/bin/echo "'totally logical'"
+minishell$ /bin/echo "'totally logical'"
+'totally logical'
+minishell$ 
+'totally logical'
+
+
+/bin/echo 'totally logical'
+minishell$ /bin/echo 'totally logical'
+totally logical
+minishell$ 
+totally logical
+
+
+/bin/echo ''totally logical''
+minishell$ /bin/echo ''totally logical''
+totally logical
+minishell$ 
+totally logical
+
+
+/bin/echo ""'totally logical'""
+minishell$ /bin/echo ""'totally logical'""
+totally logical
+minishell$ 
+totally logical
+
+
