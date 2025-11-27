@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 00:10:15 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/25 20:20:12 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/11/27 19:43:23 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,14 @@ void	expand_var_token(t_token *tok, t_env *env, t_env *locals)
 {
 	char	*expanded;
 
+	if (tok && tok->value && tok->value[0] == '$' && tok->value[1] == '\0'
+		&& tok->next && (tok->next->type == T_DQUOTE
+			|| tok->next->type == T_SQUOTE))
+	{
+		free(tok->value);
+		tok->value = ft_strdup("");
+		return ;
+	}
 	expanded = expand_string(tok->value, env, locals);
 	free(tok->value);
 	tok->value = expanded;

@@ -106,3 +106,4 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/zstenger93/42_minishell_
 - fix exit codes
 - fix <<-s
 - check leaks
+/bin/echo ""$?""

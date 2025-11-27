@@ -336,3 +336,8 @@ Heredoc content should be provided as stdin to the correct pipeline stage (right
 - src/executors/child_process.c / apply_redirections.c — apply heredoc FDs in children and close unused descriptors.
 
 **Status:** DONE
+
+
+новые ошибки
+
+/bin/echo $"HOME"$USER
