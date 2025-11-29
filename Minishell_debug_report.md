@@ -340,4 +340,9 @@ Heredoc content should be provided as stdin to the correct pipeline stage (right
 
 новые ошибки
 
-/bin/echo $"HOME"$USER
+/bin/echo $"HOME"$USER +++
+
+echo "$USER
+> "
+
+> ""

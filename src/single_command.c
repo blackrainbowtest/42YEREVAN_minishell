@@ -24,45 +24,13 @@ static void	update_last_arg(t_cmd *cmd, t_env **env)
 	ft_setenv(env, "_", cmd->argv[last], 1);
 }
 
-// void	run_single_command(t_cmd *cmd, t_env **env)
-// {
-// 	pid_t	pid;
-// 	int		exit_code;
-// 	int		i;
-
-// 	if (!cmd)
-// 		return ;
-// 	if (prepare_heredocs(cmd) < 0)
-// 		return ;
-// 	if (!cmd->argv)
-// 		return ;
-// 	i = 0;
-// 	while (cmd->argv[i] && cmd->argv[i][0] == '\0')
-// 		i++;
-// 	if (!cmd->argv[i])
-// 		return ;
-// 	if (is_direct_builtin(cmd->argv[i]))
-// 	{
-// 		run_builtin(&cmd->argv[i], env);
-// 		return ;
-// 	}
-// 	update_last_arg(cmd, env);
-// 	in_child_process(1, 1);
-// 	pid = fork();
-// 	if (pid < 0)
-// 		return ((void)perror("fork"));
-// 	if (pid == 0)
-// 		exec_child_process(cmd, env, i);
-// 	exit_code = wait_for_child(pid);
-// 	in_child_process(1, 0);
-// 	last_status(1, exit_code);
-// }
-
 static int	skip_empty_args(t_cmd *cmd)
 {
 	int	i;
 
 	i = 0;
+	if (cmd->argv[0] && cmd->argv[0][0] == '\0')
+		return (-1);
 	while (cmd->argv[i] && cmd->argv[i][0] == '\0')
 		i++;
 	if (!cmd->argv[i])
@@ -116,7 +84,10 @@ void	run_single_command(t_cmd *cmd, t_env **env)
 		return ;
 	i = skip_empty_args(cmd);
 	if (i < 0)
+	{
+		print_minishell_error("", NULL, ERR_CNF, 127);
 		return ;
+	}
 	if (handle_direct_builtin(cmd, env, i))
 		return ;
 	spawn_child_process(cmd, env, i);
