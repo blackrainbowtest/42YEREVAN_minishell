@@ -22,7 +22,8 @@ int	is_builtin(char *cmd)
 		|| strcmp(cmd, "env") == 0
 		|| strcmp(cmd, "export") == 0
 		|| strcmp(cmd, "unset") == 0
-		|| strcmp(cmd, "exit") == 0);
+		|| strcmp(cmd, "exit") == 0
+		|| strcmp(cmd, ".") == 0);
 }
 
 int	is_parent_builtin(char *cmd)
@@ -53,5 +54,7 @@ int	run_builtin(char **argv, t_env **env)
 		return (builtin_unset(argv, env));
 	if (strcmp(argv[0], "exit") == 0)
 		return (builtin_exit(argv));
+	if (strcmp(argv[0], ".") == 0)
+		return (builtin_dot(argv, env));
 	return (last_status(1, 0));
 }

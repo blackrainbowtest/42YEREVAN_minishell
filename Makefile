@@ -34,7 +34,8 @@ SRC_MAIN := main.c prompt.c signals.c utils.c path.c storage.c cleaner.c \
 
 # Files builtins
 SRC_BUILTINS := echo.c cd.c pwd.c env.c export.c export_utils.c \
-                unset.c exit.c run_builtin.c export_with_args.c
+                unset.c exit.c run_builtin.c export_with_args.c \
+				dot.c
 
 # Files parser
 SRC_PARSER := parse_tokens.c parse_utils.c parser_line.c \

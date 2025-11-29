@@ -49,4 +49,6 @@ looking for matching `%c`\n"
 # define MIN_EXIT_ERR "minishell: usage: minishell does not accept arguments"
 # define MINISHELL "minishell"
 # define ERR_CNF "Command '' not found"
+# define ERR_FNAR "filename argument required"
+# define ERR_BIN "cannot execute binary file"
 #endif // DEFS_H
