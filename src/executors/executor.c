@@ -29,7 +29,7 @@ static void	run_child(char *path, char **argv, char **envp)
 	_exit(126);
 }
 
-static int	execute_child(char *path, char **argv, char **envp)
+int	execute_child(char *path, char **argv, char **envp)
 {
 	pid_t	pid;
 
@@ -45,58 +45,47 @@ static int	execute_child(char *path, char **argv, char **envp)
 	return (pid);
 }
 
-static int	spawn_and_wait(char *path, char **argv, t_env *env)
+static char	*first_nonempty(char **argv)
 {
-	pid_t	pid;
-	int		status;
-	char	**envp;
-	int		exit_code;
+	int		i;
 
-	envp = env_to_envp(env);
-	if (!envp)
-		return (1);
-	pid = execute_child(path, argv, envp);
-	free_argv(envp);
-	in_child_process(1, 0);
-	if (waitpid(pid, &status, 0) < 0)
-	{
-		perror("waitpid");
-		return (last_status(1, 1));
-	}
-	if (WIFEXITED(status))
-		exit_code = WEXITSTATUS(status);
-	else if (WIFSIGNALED(status))
-		exit_code = 128 + WTERMSIG(status);
-	else
-		exit_code = 1;
-	last_status(1, exit_code);
-	return (exit_code);
+	i = 0;
+	if (!argv)
+		return (NULL);
+	while (argv[i] && argv[i][0] == '\0')
+		i++;
+	if (!argv[i])
+		return (NULL);
+	return (argv[i]);
+}
+
+static char	*resolve_cmd_path(char *cmd, t_env *env)
+{
+	if (ft_strchr(cmd, '/'))
+		return (ft_strdup(cmd));
+	return (find_in_path(cmd, env));
 }
 
 int	execute_command(char **argv, t_env *env)
 {
-	char	*path;
 	char	*cmd;
-	int		i;
+	char	*path;
 	int		exit_code;
 
-	if (!argv)
+	cmd = first_nonempty(argv);
+	if (!cmd)
 		return (0);
-	i = 0;
-	while (argv[i] && argv[i][0] == '\0')
-		i++;
-	if (!argv[i])
-		return (0);
-	cmd = argv[i];
-	if (ft_strchr(cmd, '/'))
-		path = ft_strdup(cmd);
-	else
-		path = find_in_path(cmd, env);
+	if (ft_strcmp(cmd, "..") == 0)
+		return (print_minishell_error(cmd, NULL, ERR_CNF2, 127));
+	path = resolve_cmd_path(cmd, env);
 	if (!path)
-		return (print_minishell_error(cmd, NULL, "command not found", 127));
+		return (print_minishell_error(cmd, NULL, ERR_CNF2, 127));
 	exit_code = check_exec_path(path);
 	if (exit_code != 0)
-		return (free(path), last_status(1, exit_code));
+	{
+		free(path);
+		return (last_status(1, exit_code));
+	}
 	exit_code = spawn_and_wait(path, argv, env);
 	free(path);
 	return (exit_code);

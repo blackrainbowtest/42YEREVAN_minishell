@@ -22,15 +22,17 @@ static char	*resolve_command_path(t_cmd *cmd, t_env *env)
 		path = ft_strdup(cmd->argv[0]);
 		if (access(path, F_OK) != 0)
 		{
-			perror("path");
+			print_minishell_error(cmd->argv[0], NULL, ERR_DIR, 127);
 			_exit(127);
 		}
 	}
 	else
+	{
 		path = find_in_path(cmd->argv[0], env);
+	}
 	if (!path)
 	{
-		print_minishell_error(cmd->argv[0], NULL, "command not found", 127);
+		print_minishell_error(cmd->argv[0], NULL, ERR_CNF2, 127);
 		_exit(127);
 	}
 	return (path);

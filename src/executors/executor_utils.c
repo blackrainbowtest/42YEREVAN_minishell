@@ -6,7 +6,7 @@
 /*   By: aramarak <aramarak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 19:52:48 by aramarak          #+#    #+#             */
-/*   Updated: 2025/09/18 19:23:07 by aramarak         ###   ########.fr       */
+/*   Updated: 2025/11/29 13:29:27 by aramarak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,4 +81,32 @@ void	free_argv(char **argv)
 	while (argv[i])
 		free(argv[i++]);
 	free(argv);
+}
+
+int	spawn_and_wait(char *path, char **argv, t_env *env)
+{
+	pid_t	pid;
+	int		status;
+	char	**envp;
+	int		exit_code;
+
+	envp = env_to_envp(env);
+	if (!envp)
+		return (1);
+	pid = execute_child(path, argv, envp);
+	free_argv(envp);
+	in_child_process(1, 0);
+	if (waitpid(pid, &status, 0) < 0)
+	{
+		perror("waitpid");
+		return (last_status(1, 1));
+	}
+	if (WIFEXITED(status))
+		exit_code = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+		exit_code = 128 + WTERMSIG(status);
+	else
+		exit_code = 1;
+	last_status(1, exit_code);
+	return (exit_code);
 }

@@ -25,9 +25,11 @@ int		execute_pipeline(t_cmd *cmds, t_env **env);
 /* ===== executor_utils.c ===== */
 char	**env_to_envp(t_env *env);
 void	free_argv(char **argv);
+int		spawn_and_wait(char *path, char **argv, t_env *env);
 
 /* ===== executor.c ===== */
 int		execute_command(char **argv, t_env *env);
+int		execute_child(char *path, char **argv, char **envp);
 
 /* ===== child_process_utils.c ===== */
 void	exec_child_builtin_or_execve(t_cmd *cmd, t_env **env);
