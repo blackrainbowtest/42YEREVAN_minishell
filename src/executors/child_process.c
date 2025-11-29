@@ -38,7 +38,6 @@ void	child_process(t_cmd *cmd, int in_fd, int out_fd, t_env **env)
 	handle_redirections(cmd);
 	if (!cmd->argv || !cmd->argv[0])
 		_exit(0);
-
 	if (cmd->argv[0][0] == '\0')
 	{
 		print_minishell_error("", NULL, ERR_CNF, 127);

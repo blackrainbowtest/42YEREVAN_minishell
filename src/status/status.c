@@ -29,7 +29,6 @@ int	print_minishell_error(char *cmd, char *arg, char *msg, int status)
 	else
 		len = snprintf(buf, sizeof(buf),
 				"minishell: %s: %s\n", cmd, msg);
-
 	write(2, buf, len);
 	last_status(1, status);
 	return (status);
