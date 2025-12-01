@@ -70,7 +70,7 @@ int	builtin_exit(char **argv)
 	if (isatty(STDIN_FILENO))
 		ft_putendl_fd("exit", STDERR_FILENO);
 	if (!argv[1])
-		clean_and_exit(0);
+		return (-1);
 	if (!is_numeric_arg(argv[1]))
 	{
 		err_code = print_minishell_error("exit", argv[1], ERR_NUMERIC, 2);

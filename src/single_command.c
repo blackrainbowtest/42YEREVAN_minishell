@@ -45,6 +45,11 @@ static int	handle_direct_builtin(t_cmd *cmd, t_env **env, int i)
 	if (is_direct_builtin(cmd->argv[i]))
 	{
 		exit_code = run_builtin(&cmd->argv[i], env);
+		if (exit_code < 0)
+		{
+			free_cmds(cmd);
+			clean_and_exit(0);
+		}
 		last_status(1, exit_code);
 		return (1);
 	}
@@ -85,7 +90,7 @@ void	run_single_command(t_cmd *cmd, t_env **env)
 	i = skip_empty_args(cmd);
 	if (i < 0)
 	{
-		print_minishell_error("", NULL, ERR_CNF, 127);
+		print_minishell_error(NULL, NULL, ERR_CNF, 127);
 		return ;
 	}
 	if (handle_direct_builtin(cmd, env, i))

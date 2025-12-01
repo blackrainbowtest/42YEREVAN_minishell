@@ -40,7 +40,7 @@ void	child_process(t_cmd *cmd, int in_fd, int out_fd, t_env **env)
 		_exit(0);
 	if (cmd->argv[0][0] == '\0')
 	{
-		print_minishell_error("", NULL, ERR_CNF, 127);
+		print_minishell_error(NULL, NULL, ERR_CNF, 127);
 		_exit(127);
 	}
 	exec_child_builtin_or_execve(cmd, env);

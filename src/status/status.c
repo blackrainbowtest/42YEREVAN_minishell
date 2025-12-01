@@ -26,6 +26,9 @@ int	print_minishell_error(char *cmd, char *arg, char *msg, int status)
 	if (arg[0])
 		len = snprintf(buf, sizeof(buf),
 				"minishell: %s: %s: %s\n", cmd, arg, msg);
+	else if (cmd[0] == '\0' && arg[0] == '\0')
+		len = snprintf(buf, sizeof(buf),
+				"minishell: %s\n", msg);
 	else
 		len = snprintf(buf, sizeof(buf),
 				"minishell: %s: %s\n", cmd, msg);
